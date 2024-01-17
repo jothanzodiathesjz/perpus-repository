@@ -71,9 +71,29 @@
     </div>
   </section>
   <div class="py-2">
-
+<!-- E-commerce Search Bar Starts -->
+<section id="ecommerce-searchbar" class="ecommerce-searchbar" style="margin-top: 1rem ">
+  <div class="row mt-1">
+    <div class="col-6">
+      <div class="input-group input-group-merge">
+        <input
+          type="text"
+          class="form-control search-product"
+          value=""
+          id="shop-search"
+          placeholder="Search Junal"
+          aria-label="Search..."
+          aria-describedby="shop-search"
+        />
+        <span class="input-group-text"><i data-feather="search" class="text-muted"></i></span>
+      </div>
+    </div>
   </div>
-  <div class="col-xl-9 col-md-8 col-12 mb-md-0 mb-4 mt-10">
+</section>
+<!-- E-commerce Search Bar Ends -->
+  </div>
+  
+  <div class="col-12">
     <div class="card invoice-preview-card">
       <div class="card-body">
         <h3 id="buletin-title">Buletin Teknik Sipil: Recent Submssion</h3>
@@ -241,6 +261,41 @@ function fillPagination(links) {
       paginationElement.appendChild(li);
   });
 }
+
+function searchJurnal(search){
+  fetch(`/api/skbp1/search?prodi=sipil&type=Jurnal&search=${search}`)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data)
+          $('#jurnal-content').html('')
+          fillPagination(data.data.links);
+            console.log('Data yang diterima:', data.data);
+            data.data.data.forEach(element => {
+              $('#jurnal-content').append(`
+              <div class="">
+            <div class="">
+              <h5 class="mb-0">
+              <a href="/jurnal/content/${element.id}">${element.judul}</a>
+              </h5>
+              <div class="artifact-info">
+              <span class="author"><small>${element.nama}</small> <small>(<span class="date">${element.tahun}</span>)</small></span>
+              </div>
+              <div class="text-truncate">${element.abstrak}</div>
+              </div>
+          </div>
+              `)
+            })
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+}
+
+var searchInput = document.getElementById('shop-search');
+  searchInput.addEventListener('input', function() {
+    searchJurnal(searchInput.value)
+  })
+
 </script>
 @endpush
 @endsection

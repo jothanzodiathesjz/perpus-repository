@@ -240,6 +240,7 @@ Route::middleware(['session'])->group(function () {
     Route::get('/jurnal/hukum',[SkbpController::class, 'JurnalHukumView'])->name('jurnal.hukum');
     Route::get('/jurnal/hukum',[SkbpController::class, 'JurnalAkuntansiView'])->name('jurnal.hukum');
     Route::get('/jurnal/manajemen',[SkbpController::class, 'JurnalManajemenView'])->name('jurnal.manajemen');
+    Route::get('/jurnal/content/{id}',[SkbpController::class, 'jurnalContentView'])->name('jurnal.content');
 
  
     Route::middleware(['adminarea'])->group(function () {

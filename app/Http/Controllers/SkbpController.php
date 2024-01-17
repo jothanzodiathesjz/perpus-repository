@@ -268,10 +268,32 @@ class SkbpController extends Controller
                         ->where('jurusan', $prodi)
                         ->paginate( 8, ['*'], 'page', $paginate)
                         ->withQueryString(['type' => $type, 'prodi' => $prodi]);
-                        ; 
+                         
 
             return response()->json(['data' => $data]);
         }
        
+   }
+
+   function skbp1Search(Request $request)
+   {
+       $prodi = $request->query('prodi');
+       $type = $request->query('type');
+       $search = $request->query('search');
+       $paginate= $request->query('paginate');
+       if($prodi){
+           $data = Skbp1::where('type', $type)
+                                ->where('jurusan', $prodi)
+                                ->where('judul', 'like', '%'.$search.'%')
+                                ->paginate( 8, ['*'], 'page', $paginate)
+                                ->withQueryString(['type' => $type, 'prodi' => $prodi, 'search' => $search]);
+            return response()->json(['data' => $data]);
+       }
+       return response()->json(['data' => null]);
+   }
+
+   function jurnalContentView()
+   {
+       return view('content.skbp.skbp1-content');
    }
 }

@@ -51,4 +51,5 @@ Route::post('/skbp1/setfileshow/{id}',[SkbpController::class, 'setFileShow']);
 Route::get('/skbp1/setfileshow',[SkbpController::class, 'setFileShow']);
 Route::get('/skbp1/getvolume',[SkbpController::class, 'getVolumeWithJurusan']);
 Route::get('/skbp1/getList',[SkbpController::class, 'getlistSkbp1']);
+Route::get('/skbp1/search',[SkbpController::class, 'skbp1Search']);
 
