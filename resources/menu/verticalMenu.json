@@ -1,0 +1,142 @@
+{
+  "menu": [
+    {
+      "name": "Dashboards",
+      "icon": "menu-icon tf-icons ti ti-smart-home",
+      "slug": "dashboard",
+      "url": "/dashboard"
+    },
+    {
+      "name": "Daftar Buku",
+      "icon":"menu-icon tf-icons ti ti-book-2",
+      "slug":"books",
+      "submenu": [
+        {
+          "url": "/books",
+          "name": "Books",
+          "slug": "books",
+          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+        }
+      ]
+    },
+    {
+      "menuHeader": "Repository",
+      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+    },
+    {
+      "name": "Journal",
+      "icon": "menu-icon tf-icons ti ti-notebook",
+      "slug": "jurnal",
+      "submenu": [
+        {
+          "url": "/jurnal/sipil",
+          "name": "Teknik Sipil",
+          "slug": "jurnal.sipil",
+          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+        },
+        {
+          "url": "/jurnal/mesin",
+          "name": "Teknik Mesin",
+          "slug": "jurnal.mesin",
+          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+        },
+        {
+          "url": "/jurnal/elektro",
+          "name": "Teknik Elektro",
+          "slug": "jurnal.elektro",
+          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+        },
+        {
+          "url": "/jurnal/kimia",
+          "name": "Teknik Kimia",
+          "slug": "jurnal.kimia",
+          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+        },
+        {
+          "url": "/jurnal/informatika",
+          "name": "Teknik Informatika",
+          "slug": "jurnal.informatika",
+          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+        },
+        {
+          "url": "/jurnal/akuntansi",
+          "name": "Akuntansi",
+          "slug": "jurnal.akuntansi",
+          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+        },
+        {
+          "url": "/jurnal/manajemen",
+          "name": "Manajemen",
+          "slug": "jurnal.manajemen",
+          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+        },
+        {
+          "url": "/jurnal/hukum",
+          "name": "Hukum",
+          "slug": "jurnal.hukum",
+          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+        }
+      ]
+    },
+    {
+      "url": "/dashboard",
+      "name": "Skripsi",
+      "icon": "menu-icon tf-icons ti ti-notes",
+      "slug": "app-email",
+      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+    },
+    {
+      "menuHeader": "Others"
+    },
+    {
+      "url": "/daftarpinjam",
+      "name": "Daftar Pinjam",
+      "icon": "menu-icon tf-icons ti ti-clipboard",
+      "slug": "daftarpinjam",
+      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+    },
+    {
+      "url": "/books/checkout",
+      "name": "Carts",
+      "icon": "menu-icon tf-icons ti ti-clipboard",
+      "slug": "checkout",
+      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+    },
+    {
+      "url": "/dashboard",
+      "name": "Skbp1",
+      "icon": "menu-icon tf-icons ti ti-clipboard",
+      "slug": "app-email",
+      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+    },
+    {
+      "url": "/dashboard",
+      "name": "Skbp2",
+      "icon": "menu-icon tf-icons ti ti-clipboard-text",
+      "slug": "app-email",
+      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+    },
+    {
+      "url": "/dashboard",
+      "name": "Sumbangan",
+      "icon": "menu-icon tf-icons ti ti-heart",
+      "slug": "app-email",
+      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+    },
+    {
+      "url": "/admin/books",
+      "name": "Books Management",
+      "icon": "menu-icon tf-icons ti ti-books",
+      "slug": "admin.books",
+      "adminOnly":true,
+      "tes": "tes"
+    },
+    {
+      "url": "/admin/skbp1/",
+      "name": "Skbp1 Management",
+      "icon": "menu-icon tf-icons ti ti-layout",
+      "slug": ["admin.skbp1","admin.skbp1.detail"],
+      "adminOnly":true
+    }
+  ]
+}

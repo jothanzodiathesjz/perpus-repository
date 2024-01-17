@@ -1,0 +1,52 @@
+{
+    "data":{
+        "Teknik":{
+            "fakultas": "Fakultas Teknik",
+            "prodi": [
+                {
+                    "name": "Teknik Sipil",
+                    "code": "TS001"
+                },
+                {
+                    "name": "Teknik Mesin",
+                    "code": "TM002"
+                },
+                {
+                    "name": "Teknik Elektro",
+                    "code": "TE003"
+                },
+                {
+                    "name": "Teknik Kimia",
+                    "code": "TK004"
+                }
+            ]
+        },
+        "Hukum":{
+            "fakultas": "Fakultas Hukum",
+            "prodi": {
+                "name": "Hukum",
+                "code": "HU001"
+            }
+        },
+        "Ekonomi":{
+            "fakultas": "Fakultas Ekonomi",
+            "prodi": [
+                {
+                  "name": "Akuntansi",
+                  "code": "AK001"
+                },
+                {
+                  "name": "Manajemen",
+                  "code": "MA002"
+                }
+            ]
+        },
+        "Informatika":{
+            "fakultas": "Fakultas Informatika dan Komputer",
+            "prodi": {
+                "name": "Teknik Informatika",
+                "code": "TI001"
+            }
+        }
+    }
+}
