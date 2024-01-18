@@ -104,10 +104,6 @@
             <td class="text-nowrap">Sampul</td>
             <td><a id="sampul" ><i class="text-primary ti ti-eye"></i></a></td>
           </tr>
-          <tr>
-            <td class="text-nowrap">Turnitin</td>
-            <td><a id="turnitin"><i class="text-primary ti ti-eye"></i></a></td>
-          </tr>
         </tbody>
       </table>
     </div>
@@ -130,7 +126,6 @@
  var bab3 = $("#bab3");
  var fulltext = $("#fulltext");
  var sampul = $("#sampul");
- var turnitin = $("#turnitin");
 
  function getDatabyid(){
    $.ajax({
@@ -146,35 +141,20 @@
        jurusan.text(data.jurusan)
        judul.text(data.judul.toUpperCase())
        abstrak.text(data.abstrak)
+       sampul.attr('href', data.sampul);
 
-
-
-       function setHref(element,check, url,status) {
-        if (url) {
-          element.attr('href', url);
-          if(check && status){
-            // set checked
-            // $(`${check} input`).prop("checked", status);
-            // check.prop('checked', status);
-            $(`${check} input`).prop("checked", function (i, value) {
-                return !value;
-            });
-          }
+       function setHref(element, url, status) {
+        if (status) {
+          element.attr('href', url.url);
         } else {
           element.removeAttr('href').text('-');
-          if(check){
-            // remove child
-            $(check).text('-');
-          }
         }
       }
 
-      setHref(bab1,'#checkBab1', data?.bab1?.url,data?.bab1?.status);
-      setHref(bab2,'#checkBab2', data?.bab2?.url,data?.bab2?.status);
-      setHref(bab3,'#checkBab3', data?.bab3?.url,data?.bab3?.status);
-      setHref(fulltext,'#checkfulltext', data?.fulltext?.url,data?.fulltext?.status);
-      setHref(sampul,null, data?.sampul,null);
-      setHref(turnitin,null, data?.turnitin,null);
+      setHref(bab1, data?.bab1,data?.bab1?.status);
+      setHref(bab2, data?.bab2,data?.bab2?.status);
+      setHref(bab3, data?.bab3,data?.bab3?.status);
+      setHref(fulltext, data?.fulltext,data?.fulltext?.status);
 
      },
      error: function(jqXHR, textStatus, errorThrown) {

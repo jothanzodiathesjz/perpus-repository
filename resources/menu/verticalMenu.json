@@ -79,11 +79,60 @@
       ]
     },
     {
-      "url": "/dashboard",
       "name": "Skripsi",
       "icon": "menu-icon tf-icons ti ti-notes",
-      "slug": "app-email",
-      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+      "slug": "skripsi",
+      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"],
+      "submenu": [
+        {
+          "url": "/skripsi/sipil",
+          "name": "Teknik Sipil",
+          "slug": "skripsi.sipil",
+          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+        },
+        {
+          "url": "/skripsi/mesin",
+          "name": "Teknik Mesin",
+          "slug": "skripsi.mesin",
+          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+        },
+        {
+          "url": "/skripsi/elektro",
+          "name": "Teknik Elektro",
+          "slug": "skripsi.elektro",
+          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+        },
+        {
+          "url": "/skripsi/kimia",
+          "name": "Teknik Kimia",
+          "slug": "skripsi.kimia",
+          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+        },
+        {
+          "url": "/skripsi/informatika",
+          "name": "Teknik Informatika",
+          "slug": "skripsi.informatika",
+          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+        },
+        {
+          "url": "/skripsi/akuntansi",
+          "name": "Akuntansi",
+          "slug": "skripsi.akuntansi",
+          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+        },
+        {
+          "url": "/skripsi/manajemen",
+          "name": "Manajemen",
+          "slug": "skripsi.manajemen",
+          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+        },
+        {
+          "url": "/skripsi/hukum",
+          "name": "Hukum",
+          "slug": "skripsi.hukum",
+          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+        }
+      ]
     },
     {
       "menuHeader": "Others"

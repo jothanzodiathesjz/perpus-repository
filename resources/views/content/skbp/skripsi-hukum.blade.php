@@ -41,7 +41,7 @@
 
 @section('content')
 <h4 class="fw-bold py-3 mb-4">
-  <span class="text-muted fw-light">Dashboard/</span> Skbp1 / Jurnal
+  <span class="text-muted fw-light">Dashboard/</span> Skbp1 / Skripsi
 </h4>
 <section id="ecommerce-header">
     <div class="row">
@@ -96,7 +96,7 @@
   <div class="col-12">
     <div class="card invoice-preview-card">
       <div class="card-body">
-        <h3 id="buletin-title">Buletin Teknik Sipil: Recent Submssion</h3>
+        <h3 id="buletin-title">Skripsi Hukum: Recent Submssion</h3>
         <div id="jurnal-content" class="d-flex flex-column gap-4">
           {{-- <div class="mb-xl-0 mb-0">
             <div class="artifact-description">
@@ -130,7 +130,7 @@
 
     function getVolume(){
       // Mendefinisikan URL endpoint
-const url = '/api/skbp1/getvolume?prodi=sipil&type=Jurnal';
+const url = '/api/skbp1/getvolume?prodi=hukum&type=skripsi';
 
 // Menggunakan fetch untuk melakukan GET request ke endpoint
 fetch(url)
@@ -179,11 +179,11 @@ getVolume()
 
           let url;
           if(volume){
-            url ='/api/skbp1/getList?vol='+volume+'&prodi=sipil&type=jurnal';
+            url ='/api/skbp1/getList?vol='+volume+'&prodi=hukum&type=skripsi';
           }else if(paginate){
             url =paginate;
           }else{
-            url ='/api/skbp1/getList?prodi=sipil&type=jurnal';
+            url ='/api/skbp1/getList?prodi=hukum&type=skripsi';
           }
 
         // Menggunakan fetch untuk melakukan GET request ke endpoint
@@ -263,7 +263,7 @@ function fillPagination(links) {
 }
 
 function searchJurnal(search){
-  fetch(`/api/skbp1/search?prodi=sipil&type=Jurnal&search=${search}`)
+  fetch(`/api/skbp1/search?prodi=hukum&type=skripsi&search=${search}`)
         .then(response => response.json())
         .then(data => {
           console.log(data)

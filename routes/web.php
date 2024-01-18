@@ -238,9 +238,17 @@ Route::middleware(['session'])->group(function () {
     Route::get('/jurnal/elektro',[SkbpController::class, 'JurnalElektroView'])->name('jurnal.elektro');
     Route::get('/jurnal/akuntansi',[SkbpController::class, 'JurnalAkuntansiView'])->name('jurnal.akuntansi');
     Route::get('/jurnal/hukum',[SkbpController::class, 'JurnalHukumView'])->name('jurnal.hukum');
-    Route::get('/jurnal/hukum',[SkbpController::class, 'JurnalAkuntansiView'])->name('jurnal.hukum');
     Route::get('/jurnal/manajemen',[SkbpController::class, 'JurnalManajemenView'])->name('jurnal.manajemen');
     Route::get('/jurnal/content/{id}',[SkbpController::class, 'jurnalContentView'])->name('jurnal.content');
+
+    Route::get('/skripsi/manajemen',[SkbpController::class, 'skripsimanajemenView'])->name('skripsi.manajemen');
+    Route::get('/skripsi/sipil',[SkbpController::class, 'skripsisipilView'])->name('skripsi.sipil');
+    Route::get('/skripsi/informatika',[SkbpController::class, 'skripsiinformatikaView'])->name('skripsi.informatika');
+    Route::get('/skripsi/mesin',[SkbpController::class, 'skripsimesinView'])->name('skripsi.mesin');
+    Route::get('/skripsi/kimia',[SkbpController::class, 'skripsikimiaView'])->name('skripsi.kimia');
+    Route::get('/skripsi/elektro',[SkbpController::class, 'skripsielektroView'])->name('skripsi.elektro');
+    Route::get('/skripsi/akuntansi',[SkbpController::class, 'skripsiakuntansiView'])->name('skripsi.akuntansi');
+    Route::get('/skripsi/hukum',[SkbpController::class, 'skripsihukumView'])->name('skripsi.hukum');
 
  
     Route::middleware(['adminarea'])->group(function () {

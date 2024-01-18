@@ -236,8 +236,11 @@ class SkbpController extends Controller
    function getVolumeWithJurusan(Request $request)
    {
        $query = $request->query('prodi');
+       $type = $request->query('type');
        if ($query) {
-           $data = Skbp1::select('volume')->where('jurusan', $query)->distinct()->get();
+           $data = Skbp1::select('volume')
+                                        ->where('jurusan', $query)
+                                        ->where('type', $type)->distinct()->get();
            return response()->json(['data' => $data]);
        }
    
@@ -295,5 +298,38 @@ class SkbpController extends Controller
    function jurnalContentView()
    {
        return view('content.skbp.skbp1-content');
+   }
+
+   function skripsiakuntansiView(){
+
+       return view('content.skbp.skripsi-akuntansi');
+   }
+   function skripsielektroView(){
+
+       return view('content.skbp.skripsi-elektro');
+   }
+   function skripsihukumView(){
+
+       return view('content.skbp.skripsi-hukum');
+   }
+   function skripsiinformatikaView(){
+
+       return view('content.skbp.skripsi-informatika');
+   }
+   function skripsikimiaView(){
+
+       return view('content.skbp.skripsi-kimia');
+   }
+   function skripsimanajemenView(){
+
+       return view('content.skbp.skripsi-manajemen');
+   }
+   function skripsimesinView(){
+
+       return view('content.skbp.skripsi-mesin');
+   }
+   function skripsisipilView(){
+
+       return view('content.skbp.skripsi-sipil');
    }
 }

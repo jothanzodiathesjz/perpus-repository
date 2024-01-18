@@ -109,7 +109,7 @@
           <!-- E-commerce Search Bar Ends -->
           
           <!-- E-commerce Products Starts -->
-          <section id="ecommerce-products" class="grid-view justify-content-center ">
+          <section id="ecommerce-products" class="d-flex flex-row gap-xxl-5 flex-wrap justify-content-center ">
           </section>
           <!-- E-commerce Products Ends -->
           
