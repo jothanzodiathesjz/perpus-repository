@@ -9,10 +9,49 @@ use App\Models\Keranjang;
 use App\Models\ValidationCode;
 use App\Models\PinjamBuku;
 use App\Models\Skbp1;
+use App\Models\User;
+use App\Models\UserDetail;
+use App\Models\Denda;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 class SkbpController extends Controller
 {
     //
+    public function __construct() {
+    }
+    public static function updatePinjam()
+    {
+        $now = Carbon::now();
+        $hasUpdates = false;
+        
+        $data = PinjamBuku::where('status', 'pinjam')->get();
+    
+        $data->each(function ($item) use ($now, &$hasUpdates) {
+            $expiredDate = Carbon::createFromTimestampMs($item->tanggal_kembali);
+            if ($expiredDate->isPast()) {
+                $update = PinjamBuku::where('id', $item->id)->update([
+                    'status' => 'expired',
+                ]);
+                $denda = Denda::where('id_pinjam_buku', $item->id)->first();
+
+            if ($denda) {
+                $denda->update([
+                    'status' => 'unpaid',
+                    'denda' => $expiredDate->diffInDays($now) * 500,
+                ]);
+            } else {
+                // Create Denda if it doesn't exist
+                $createDenda = Denda::create([
+                    'id_pinjam_buku' => $item->id,
+                    'status' => 'unpaid',
+                    'denda' => $expiredDate->diffInDays($now) * 500,
+                ]);
+            }
+            }
+        });
+    
+        return $data;
+    }
    public function skbp1adminView()
     {
         return view('content.skbp.skbp1-admin');
@@ -27,7 +66,7 @@ class SkbpController extends Controller
            'fakultas' => 'required|string',
            'jurusan' => 'required|string',
            'judul' => 'required|string',
-           'abstrak' => 'required|string',  // Contoh aturan untuk file gambar
+           'abstrak' => 'required|string',
            'alamat' => 'nullable|string',
            'type' => 'required|string',
            'volume' => 'required|string',
@@ -89,7 +128,7 @@ class SkbpController extends Controller
 
    public function getSbkp1(Request $request)
    {
-       $data = Skbp1::all();
+       $data = Skbp1::orderBy('created_at', 'asc')->get();
        return response()->json(['data' => $data]);
    }
   
@@ -331,5 +370,133 @@ class SkbpController extends Controller
    function skripsisipilView(){
 
        return view('content.skbp.skripsi-sipil');
+   }
+
+   function skbp1FormView()
+   {
+       return view('content.skbp.skbp1-form');
+   }
+
+   function skbp2PrintView()
+   {
+       return view('content.skbp.skbp2-print');
+   }
+
+   function skbp2PrintData(Request $request)
+   {
+       $id = $request->route('id');
+       $record = Skbp1::find($id);
+       if($record){
+           return response()->json(['data' => [
+               'record' => $record,
+               'index' => $record->getKey()
+           ]]);
+       }
+       return response()->json(['data' => null]);
+   }
+
+   function bebasPinjamView()
+   {
+        // updatePinjam();
+        // $data = PinjamBuku::selectRaw('id_user, COUNT(*) as total_peminjaman')
+        //           ->groupBy('id_user')
+        //           ->get();
+        // $data = PinjamBuku::all();
+        // $map = $data->map(function ($item) {
+        //     return [
+        //         'id' => $item->id,
+        //         'id_user' => $item->id_user,
+        //         'total_book' => count(explode(',', $item->id_buku)),
+        //     ];
+        // });
+        
+        return view('content.skbp.bebas-pinjam');
+        // return response()->json(['data' => $map]);
+   }
+
+   function dataBebasPinjam()
+   {
+    // $data = User::whereIn('role', ['mahasiswa', 'dosen', 'alumni'])->get();
+        $data = PinjamBuku::selectRaw('id_user, GROUP_CONCAT(id) as ids, GROUP_CONCAT(id_buku) as id_bukus')
+        ->groupBy('id_user')
+        ->get();
+
+        $map = $data->map(function ($item) {
+            $dataUser = UserDetail::where('user_id', $item->id_user)->first();
+        return [
+        'id' => explode(',', $item->ids),
+        'user' => [
+            'name' => $dataUser->fullname,
+            'prodi' => $dataUser->ProgramStudi,
+            'stambuk' => $dataUser->stambuk,
+        ],
+        'total_book' => count(array_unique(explode(',', $item->id_bukus))),
+        'id_user' => $item->id_user
+        ];
+        });
+
+        return response()->json(['data' => $map]);
+
+   }
+
+   function bebasPinjamViewDetail(Request $request)
+   {
+       $id = $request->route('id');
+       $update = $this->updatePinjam();
+       $idUser = Auth::user()->id;
+        $data = PinjamBuku::where('id_user', $id)->get();
+        $data2 = $data->map(function ($item) {
+            $buku = Books::whereIn('id', explode(',', $item->id_buku))
+            ->select('id', 'judul','penulis','tahun_publikasi','imgfile','kategori_buku')
+            ->get();
+            return [
+                'books'=> $buku,
+                'id_user'=> $item->id_user,
+                'tanggal_pinjam'=> $item->tanggal_pinjam,
+                'tanggal_kembali'=> $item->tanggal_kembali,
+                'nama_lengkap'=> $item->nama_lengkap,
+                'status'=> $item->status,
+                'expired_date'=> $item->expired_date,
+                'count_book'=> count($buku)
+            ];
+        });
+        $data3 = $data->map(function ($item) {
+            $denda = Denda::where('id_pinjam_buku', $item->id)
+            ->where('status', 'unpaid')
+            ->get();
+            return [
+                'denda'=> $denda->sum('denda'),
+            ];
+        });
+        // return response()->json(['data' => $data2]);
+        return view('content.skbp.bebas-pinjam-detail', [
+            'data' => $data2,
+            'denda' => $data3->sum('denda'),
+            'id_user' => $id
+        ]);
+   }
+   function skbp1PrintView(Request $request)
+   {
+       $id = $request->route('id');
+       $record = UserDetail::where('user_id', $id)->first();
+       return view('content.skbp.skbp1-print',[
+        'nama' => $record->fullname,
+        'prodi' => $record->ProgramStudi,
+        'stambuk' => $record->stambuk,
+        'fakultas' => $record->fakultas
+       ]);
+   }
+
+   function skbp21rintData(Request $request)
+   {
+       $id = $request->route('id');
+       $record = Skbp1::find($id);
+       if($record){
+           return response()->json(['data' => [
+               'record' => $record,
+               'index' => $record->getKey()
+           ]]);
+       }
+       return response()->json(['data' => null]);
    }
 }

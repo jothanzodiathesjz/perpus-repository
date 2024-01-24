@@ -130,7 +130,7 @@
 
     function getVolume(){
       // Mendefinisikan URL endpoint
-const url = '/api/skbp1/getvolume?prodi=hukum&type=skripsi';
+const url = '/api/skbp1/getvolume?prodi=hukum&type=Skripsi';
 
 // Menggunakan fetch untuk melakukan GET request ke endpoint
 fetch(url)

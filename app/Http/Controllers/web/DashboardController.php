@@ -10,25 +10,50 @@ use App\Models\Keranjang;
 use App\Models\ValidationCode;
 use App\Models\PinjamBuku;
 use App\Models\Skbp1;
+use App\Models\Denda;
 use Illuminate\Support\Facades\Auth;
-
+use Carbon\Carbon;
 use Illuminate\Routing\Route;
 
 class DashboardController extends Controller
 {
 
     public function __construct() {
-    function generateRandomString($length = 7) {
-            $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
-            $randomString = '';
-        
-            for ($i = 0; $i < $length; $i++) {
-                $randomString .= $characters[random_int(0, strlen($characters) - 1)];
-            }
-        
-            return $randomString;
-        }
     }
+   public static function generateRandomString($length = 7) {
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+        $randomString = '';
+    
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[random_int(0, strlen($characters) - 1)];
+        }
+    
+        return $randomString;
+    }
+
+    public static function updatePinjam()
+{
+    $now = Carbon::now();
+    $hasUpdates = false;
+    
+    $data = PinjamBuku::where('status', 'pinjam')->get();
+
+    $data->each(function ($item) use ($now, &$hasUpdates) {
+        $expiredDate = Carbon::createFromTimestampMs($item->tanggal_kembali);
+        if ($expiredDate->isPast()) {
+            $update = PinjamBuku::where('id', $item->id)->update([
+                'status' => 'expired',
+            ]);
+            $createDenda = Denda::create([
+                'id_pinjam_buku' => $item->id,
+                'status' => 'unpaid',
+                'denda' => $expiredDate->diffInDays($now) * 500,
+            ]);
+        }
+    });
+
+    return $data;
+}
     //
     public function BooksView()
     {
@@ -186,7 +211,7 @@ class DashboardController extends Controller
     public function CreateValidationCode(Request $request)
     {
         try{
-            $validation_code = generateRandomString();
+            $validation_code = $this->generateRandomString();
             $create = ValidationCode::create([
                 'code' => $validation_code,
                 'status_code'=> 'true'
@@ -238,12 +263,12 @@ class DashboardController extends Controller
             //throw $th;
             return response()->json(['error' => $th->getMessage()], 400);
         }
-
        
      }
 
-
-     public function DaftarPinjamView(){
+     public function DaftarPinjamView()
+     {
+        $update = $this->updatePinjam();
         $idUser = Auth::user()->id;
         $data = PinjamBuku::where('id_user', $idUser)->get();
         $data2 = $data->map(function ($item) {
@@ -261,11 +286,28 @@ class DashboardController extends Controller
                 'count_book'=> count($buku)
             ];
         });
-            return view('content.pinjam.daftarpinjam', ['data' => $data2]);
+        $data3 = $data->map(function ($item) {
+            $denda = Denda::where('id_pinjam_buku', $item->id)
+            ->where('status', 'unpaid')
+            ->get();
+            return [
+                'denda'=> $denda->sum('denda'),
+            ];
+        });
+            return view('content.pinjam.daftarpinjam', [
+                'data' => $data2,
+                'denda' => $data3->sum('denda')
+            ]);
+                // return response()->json([
+                //     'data' => $data2,
+                //     'denda' => $data3
+                // ]);
+                // return response()->json(['data' => $update]);
      }
 
      public function getDataPinjamByUser(Request $request )
      {
+        $update = $this->updatePinjam();
         $data = PinjamBuku::where('id_user', $request->route('id'))->get();
         $data2 = $data->map(function ($item) {
             $buku = Books::whereIn('id', explode(',', $item->id_buku))

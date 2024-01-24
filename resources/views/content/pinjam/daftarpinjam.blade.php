@@ -18,7 +18,7 @@
         <h2 class="accordion-header d-flex align-items-center">
           <button type="button"  class="accordion-button" data-bs-toggle="collapse" data-bs-target="#accordionWithIcon-{{$number++}}" aria-expanded="true">
             <i class="ti ti-star ti-xs me-2"></i>
-            {{Carbon::createFromTimestampMs($item['tanggal_pinjam'])->format('Y-m-d')}}
+            {{Carbon::createFromTimestampMs($item['tanggal_pinjam'])->toDateString()}}
           </button>
         </h2>
         <div id="accordionWithIcon-{{$number2++}}" class="accordion-collapse collapse ">
@@ -47,13 +47,13 @@
                     <dd class="col-6 text-end">{{$item['nama_lengkap']}}</dd>
     
                     <dt class="col-sm-6 fw-normal">Tanggal Pinjam</dt>
-                    <dd class="col-sm-6 text-success text-end"> {{Carbon::createFromTimestampMs($item['tanggal_pinjam'])->format('Y-m-d')}}</dd>
+                    <dd class="col-sm-6 text-success text-end"> {{Carbon::createFromTimestampMs($item['tanggal_pinjam'])->toDateString()}}</dd>
     
                     <dt class="col-6 fw-normal">Tanggal Kembali</dt>
-                    <dd class="col-6 text-end">{{Carbon::createFromTimestampMs($item['tanggal_kembali'])->format('Y-m-d')}}</dd>
+                    <dd class="col-6 text-end">{{Carbon::createFromTimestampMs($item['tanggal_kembali'])->toDateString()}}</dd>
     
                     <dt class="col-6 fw-normal">Status</dt>
-                    <dd class="col-6 text-end"><span class="badge {{$item['status'] == 'pinjam' ? 'bg-label-warning' : 'bg-label-success'}} ms-1">{{$item['status']}}</span></dd>
+                    <dd class="col-6 text-end"><span class="badge {{$item['status'] == 'pinjam' ? 'bg-label-success' : 'bg-label-warning'}} ms-1">{{$item['status']}}</span></dd>
                   </dl>
     
                   <hr class="mx-n4">
@@ -70,7 +70,28 @@
       @endforeach
     </div>
   </div>
-
+  <div class="checkout-options col-md col-lg-4">
+    <div class="card">
+      <div class="card-body">
+        <label class="section-label form-label mb-1">Tagihan Denda</label>
+        <hr />
+        <div class="price-details">
+          <p>
+            jangan lupa untuk mengembalikan buku yang Anda pinjam. Kepatuhan Anda sangat membantu kami menjaga koleksi perpustakaan.
+          </p>
+          <hr />
+          <ul class="list-unstyled">
+            <li class="price-detail">
+              <div class="detail-title detail-total">Total Denda</div>
+              <div class="detail-amt fw-bolder" id="total-book">Rp {{$denda}}</div>
+            </li>
+          </ul>
+          {{-- <button type="button" class="btn btn-primary w-100 btn-next place-order" id="btn-pinjam" data-bs-toggle="modal" data-bs-target="#animationModal">Pinjam Buku</button> --}}
+        </div>
+      </div>
+    </div>
+    <!-- Checkout Place Order Right ends -->
+  </div>
 </div>
 
 <script>

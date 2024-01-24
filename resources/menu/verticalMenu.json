@@ -152,17 +152,10 @@
       "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
     },
     {
-      "url": "/dashboard",
-      "name": "Skbp1",
+      "url": "/form-pustaka",
+      "name": "Form Pustaka",
       "icon": "menu-icon tf-icons ti ti-clipboard",
-      "slug": "app-email",
-      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
-    },
-    {
-      "url": "/dashboard",
-      "name": "Skbp2",
-      "icon": "menu-icon tf-icons ti ti-clipboard-text",
-      "slug": "app-email",
+      "slug": "skbp1-form",
       "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
     },
     {
@@ -181,8 +174,15 @@
       "tes": "tes"
     },
     {
+      "url": "/admin/bebas-pinjam",
+      "name": "Data Skbp1",
+      "icon": "menu-icon tf-icons ti ti-clipboard-text",
+      "slug": "admin.bebas-pinjam",
+      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+    },
+    {
       "url": "/admin/skbp1/",
-      "name": "Skbp1 Management",
+      "name": "Data Skbp2",
       "icon": "menu-icon tf-icons ti ti-layout",
       "slug": ["admin.skbp1","admin.skbp1.detail"],
       "adminOnly":true

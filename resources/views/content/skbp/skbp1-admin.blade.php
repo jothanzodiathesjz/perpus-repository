@@ -352,7 +352,7 @@ function editItem(id){
              
             // Creates full output for row
             var $row_output =
-              '<span class="emp_name text-truncate">' +
+              '<span class="">' +
               $name +
               '</span>'
             return $row_output;
@@ -375,12 +375,12 @@ function editItem(id){
           render: function (data, type, full, meta) {
             return (
               `<a href="javascript:;" onclick="deleteItem('${full.id}')" class="btn btn-sm btn-icon" ><i class="text-primary ti ti-trash"></i></a>` + 
-              `<a href="/admin/skbp1/${full.id}" class="btn btn-sm btn-icon item-edit"><i class="text-primary ti ti-eye"></i></a>`
+              `<a href="/admin/skbp1/${full.id}?no=${meta.row + 1}" class="btn btn-sm btn-icon item-edit"><i class="text-primary ti ti-eye"></i></a>`
             );
           }
         }
       ],
-      order: [[1, 'asc']],
+      order: [[1, 'desc']],
       dom: '<"card-header flex-column flex-md-row"<"head-label text-center"><"dt-action-buttons text-end pt-3 pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
       displayLength: 7,
       lengthMenu: [7, 10, 25, 50, 75, 100],

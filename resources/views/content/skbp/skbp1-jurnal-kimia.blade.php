@@ -130,7 +130,7 @@
 
     function getVolume(){
       // Mendefinisikan URL endpoint
-const url = '/api/skbp1/getvolume?prodi=kimia&type=Jurnal';
+const url = '/api/skbp1/getvolume?prodi=Teknik Kimia&type=Jurnal';
 
 // Menggunakan fetch untuk melakukan GET request ke endpoint
 fetch(url)
@@ -179,11 +179,11 @@ getVolume()
 
           let url;
           if(volume){
-            url ='/api/skbp1/getList?vol='+volume+'&prodi=kimia&type=jurnal';
+            url ='/api/skbp1/getList?vol='+volume+'&prodi=Teknik Kimia&type=jurnal';
           }else if(paginate){
             url =paginate;
           }else{
-            url ='/api/skbp1/getList?prodi=kimia&type=jurnal';
+            url ='/api/skbp1/getList?prodi=Teknik Kimia&type=jurnal';
           }
 
         // Menggunakan fetch untuk melakukan GET request ke endpoint

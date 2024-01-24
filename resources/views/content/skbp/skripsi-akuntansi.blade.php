@@ -130,7 +130,7 @@
 
     function getVolume(){
       // Mendefinisikan URL endpoint
-const url = '/api/skbp1/getvolume?prodi=akuntansi';
+const url = '/api/skbp1/getvolume?prodi=akuntansi&type=Skripsi';
 
 // Menggunakan fetch untuk melakukan GET request ke endpoint
 fetch(url)
@@ -179,11 +179,11 @@ getVolume()
 
           let url;
           if(volume){
-            url ='/api/skbp1/getList?vol='+volume+'&prodi=akuntansi&type=jurnal';
+            url ='/api/skbp1/getList?vol='+volume+'&prodi=akuntansi&type=skripsi';
           }else if(paginate){
             url =paginate;
           }else{
-            url ='/api/skbp1/getList?prodi=akuntansi&type=jurnal';
+            url ='/api/skbp1/getList?prodi=akuntansi&type=skripsi';
           }
 
         // Menggunakan fetch untuk melakukan GET request ke endpoint
@@ -263,7 +263,7 @@ function fillPagination(links) {
 }
 
 function searchJurnal(search){
-  fetch(`/api/skbp1/search?prodi=akuntansi&type=Jurnal&search=${search}`)
+  fetch(`/api/skbp1/search?prodi=akuntansi&type=Skripsi&search=${search}`)
         .then(response => response.json())
         .then(data => {
           console.log(data)

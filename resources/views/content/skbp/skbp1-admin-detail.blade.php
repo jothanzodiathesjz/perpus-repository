@@ -45,7 +45,7 @@
 </h4>
 <div class="col-xl-9 col-md-8 col-12 mb-md-0 mb-4">
   <div class="card invoice-preview-card">
-    <div class="card-body">
+    <div class="card-body d-flex justify-content-between align-items-start">
       <div class="d-flex justify-content-between flex-xl-row flex-md-column flex-sm-row flex-column m-sm-3 m-0">
         <div class="mb-xl-0 mb-0">
           <p class="mb-3">
@@ -65,6 +65,7 @@
             <span id="judul"></span></p>
         </div>
       </div>
+      <a id="print" class="btn btn-primary w-25">Print Skbp2</a>
     </div>
     <hr class="my-0" />
     <div class="card-body">
@@ -154,7 +155,8 @@
  var checkBab2 = $("#checkBab2");
  var checkBab3 = $("#checkBab3");
  var checkFulltext = $("#checkfulltext");
-
+ var print = $("#print");
+console.log('{{request()->query('no')}}')
  function getDatabyid(){
    $.ajax({
      type: "GET",
@@ -169,6 +171,7 @@
        jurusan.text(data.jurusan)
        judul.text(data.judul.toUpperCase())
        abstrak.text(data.abstrak)
+       print.attr('href','/admin/skbp2/print/'+data.id+'?no={{request()->query('no')}}')
 
 
 

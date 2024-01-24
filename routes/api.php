@@ -53,3 +53,7 @@ Route::get('/skbp1/getvolume',[SkbpController::class, 'getVolumeWithJurusan']);
 Route::get('/skbp1/getList',[SkbpController::class, 'getlistSkbp1']);
 Route::get('/skbp1/search',[SkbpController::class, 'skbp1Search']);
 
+Route::get('/skbp1/data-bebas-pinjam',[SkbpController::class, 'dataBebasPinjam']);
+
+Route::get('/skbp2/print-content/{id}',[SkbpController::class, 'skbp2PrintData']);
+

@@ -84,15 +84,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr id="rowbab1">
             <td class="text-nowrap">Bab1</td>
             <td><a id="bab1"><i class="text-primary ti ti-eye"></i></a></td>
           </tr>
-          <tr>
+          <tr id="rowbab2">
             <td class="text-nowrap">Bab2</td>
             <td><a id="bab2"><i class="text-primary ti ti-eye"></i></a></td>
           </tr>
-          <tr>
+          <tr id="rowbab3">
             <td class="text-nowrap">Bab3</td>
             <td><a id="bab3" ><i class="text-primary ti ti-eye"></i></a></td>
           </tr>
@@ -147,7 +147,9 @@
         if (status) {
           element.attr('href', url.url);
         } else {
-          element.removeAttr('href').text('-');
+          $("#rowbab1").remove();
+          $("#rowbab2").remove();
+          $("#rowbab3").remove();
         }
       }
 

@@ -129,45 +129,34 @@
 <script>
 
     function getVolume(){
-      // Mendefinisikan URL endpoint
-const url = '/api/skbp1/getvolume?prodi=mesin';
-
-// Menggunakan fetch untuk melakukan GET request ke endpoint
+const url = '/api/skbp1/getvolume?prodi=Teknik mesin&type=Skripsi';
 fetch(url)
   .then(response => {
-    // Memeriksa apakah responsenya berhasil (status code 200 OK)
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
     }
-    // Mengonversi responsenya ke dalam format JSON
     return response.json();
   })
   .then(data => {
-    // Menangani data yang telah diterima dari server
     console.log('Data yang diterima:', data);
     let dropdownMenu = document.getElementById('book-category');
-    let activeSortingElement = document.querySelector('.active-sorting');
+    let activeSortingElement = document.querySelector('.active--sorting');
       data.data.forEach(element => {
         let newLink = document.createElement('a');
         newLink.className = 'dropdown-item';
         newLink.textContent = element.volume;
         newLink.href = '#';
-        newLink.style.cursor = "pointer"; // Menambahkan style cursor untuk menunjukkan bahwa ini dapat diklik
+        newLink.style.cursor = "pointer";
         newLink.onclick = function() {
           $('#jurnal-content').html('')
             getListFromVolume(element.volume)
             // getBooksCategory(element.kategori_buku);
             activeSortingElement.textContent = element.volume;
         };
-  
-        // Menambahkan elemen <a> ke elemen dropdown-menu
         dropdownMenu.appendChild(newLink);
       })
-
-    // Lakukan operasi lainnya sesuai kebutuhan Anda
   })
   .catch(error => {
-    // Menangani kesalahan yang mungkin terjadi selama proses fetch
     console.error('Fetch error:', error);
   });
 
@@ -175,15 +164,13 @@ fetch(url)
 getVolume()
 
         function getListFromVolume(volume,paginate){
-          // Mendefinisikan URL endpoint
-
           let url;
           if(volume){
-            url ='/api/skbp1/getList?vol='+volume+'&prodi=mesin&type=jurnal';
+            url ='/api/skbp1/getList?vol='+volume+'&prodi=Teknik mesin&type=Skripsi';
           }else if(paginate){
             url =paginate;
           }else{
-            url ='/api/skbp1/getList?prodi=mesin&type=jurnal';
+            url ='/api/skbp1/getList?prodi=Teknik mesin&type=Skripsi';
           }
 
         // Menggunakan fetch untuk melakukan GET request ke endpoint
@@ -263,7 +250,7 @@ function fillPagination(links) {
 }
 
 function searchJurnal(search){
-  fetch(`/api/skbp1/search?prodi=mesin&type=Jurnal&search=${search}`)
+  fetch(`/api/skbp1/search?prodi=Teknik mesin&type=Skripsi&search=${search}`)
         .then(response => response.json())
         .then(data => {
           console.log(data)
