@@ -41,7 +41,7 @@
 
 @section('content')
 <h4 class="fw-bold py-3 mb-4">
-  <span class="text-muted fw-light">Dashboard/</span> Skbp1
+  <span class="text-muted fw-light">Dashboard/</span> Data Bebas Pustaka
 </h4>
 <div class="card-datatable table-responsive pt-0">
   {{-- <button class="create-new btn btn-primary"><i class="ti ti-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Add New Book</span></button> --}}

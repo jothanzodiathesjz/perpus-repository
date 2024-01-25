@@ -52,6 +52,7 @@ Route::get('/skbp1/setfileshow',[SkbpController::class, 'setFileShow']);
 Route::get('/skbp1/getvolume',[SkbpController::class, 'getVolumeWithJurusan']);
 Route::get('/skbp1/getList',[SkbpController::class, 'getlistSkbp1']);
 Route::get('/skbp1/search',[SkbpController::class, 'skbp1Search']);
+Route::post('/skbp1/bebaspinjam/update/{id}',[SkbpController::class, 'updatePinjamBuku']);
 
 Route::get('/skbp1/data-bebas-pinjam',[SkbpController::class, 'dataBebasPinjam']);
 

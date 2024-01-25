@@ -275,7 +275,7 @@ function searchJurnal(search){
               <div class="">
             <div class="">
               <h5 class="mb-0">
-              <a href="/jurnal/content/${element.id}">${element.judul}</a>
+              <a href="/skripsi/content/${element.id}">${element.judul}</a>
               </h5>
               <div class="artifact-info">
               <span class="author"><small>${element.nama}</small> <small>(<span class="date">${element.tahun}</span>)</small></span>

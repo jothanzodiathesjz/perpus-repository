@@ -39,16 +39,28 @@ class DashboardController extends Controller
     $data = PinjamBuku::where('status', 'pinjam')->get();
 
     $data->each(function ($item) use ($now, &$hasUpdates) {
-        $expiredDate = Carbon::createFromTimestampMs($item->tanggal_kembali);
+        $expiredDate = Carbon::createFromTimestampMs(strtotime($item->expired_date + 0));
         if ($expiredDate->isPast()) {
             $update = PinjamBuku::where('id', $item->id)->update([
                 'status' => 'expired',
             ]);
+            $denda = Denda::where('id_pinjam_buku', $item->id)->first();
+
+        if ($denda) {
+            if($denda->status !== 'paid'){    
+                $denda->update([
+                    'status' => 'unpaid',
+                    'denda' => $expiredDate->diffInDays($now) * 500,
+                ]);
+            } 
+        } else {
+            // Create Denda if it doesn't exist
             $createDenda = Denda::create([
                 'id_pinjam_buku' => $item->id,
                 'status' => 'unpaid',
                 'denda' => $expiredDate->diffInDays($now) * 500,
             ]);
+        }
         }
     });
 
@@ -276,6 +288,7 @@ class DashboardController extends Controller
             ->select('id', 'judul','penulis','tahun_publikasi','imgfile','kategori_buku')
             ->get();
             return [
+                'id' => $item->id,
                 'books'=> $buku,
                 'id_user'=> $item->id_user,
                 'tanggal_pinjam'=> $item->tanggal_pinjam,

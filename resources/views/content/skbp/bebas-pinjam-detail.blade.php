@@ -1,7 +1,19 @@
 @extends('layouts/layoutMaster')
 
 @section('title', 'Daftar PInjam')
-
+@section('vendor-style')
+<link rel="stylesheet" href="{{ asset('vendors/css/extensions/nouislider.min.css') }}">
+<link rel="stylesheet" href="{{ asset('vendors/css/extensions/toastr.min.css') }}">
+@endsection
+@section('page-style')
+<link rel="stylesheet" href="{{ asset('css/base/plugins/extensions/ext-component-toastr.css') }}">
+@endsection
+@section('vendor-script')
+<script src="{{asset('assets/vendor/libs/masonry/masonry.js')}}"></script>
+<script src="{{ asset('vendors/js/extensions/wNumb.min.js') }}"></script>
+<script src="{{ asset('vendors/js/extensions/nouislider.min.js') }}"></script>
+<script src="{{ asset('vendors/js/extensions/toastr.min.js') }}"></script>
+@endsection
 @section('content')
 <h4 class="fw-bold py-3 "><span class="text-muted fw-light">Daftar Pinjam /</span> Data Pinjam</h4>
 @php
@@ -50,10 +62,10 @@
                     <dd class="col-sm-6 text-success text-end"> {{Carbon::createFromTimestampMs($item['tanggal_pinjam'])->toDateString()}}</dd>
     
                     <dt class="col-6 fw-normal">Tanggal Kembali</dt>
-                    <dd class="col-6 text-end">{{Carbon::createFromTimestampMs($item['tanggal_kembali'])->toDateString()}}</dd>
+                    <dd id="kembali{{$item['id']}}" class="col-6 text-end">{{Carbon::createFromTimestampMs($item['tanggal_kembali'])->toDateString()}}</dd>
     
                     <dt class="col-6 fw-normal">Status</dt>
-                    <dd class="col-6 text-end"><span class="badge {{$item['status'] == 'pinjam' ? 'bg-label-success' : 'bg-label-warning'}} ms-1">{{$item['status']}}</span></dd>
+                    <dd class="col-6 text-end"><span id="status{{$item['id']}}" class="badge {{$item['status'] == 'pinjam' ? 'bg-label-success' : 'bg-label-warning'}} ms-1">{{$item['status']}}</span></dd>
                   </dl>
     
                   <hr class="mx-n4">
@@ -65,14 +77,13 @@
                 
                 <div class="price-details">
                     <dt class="col-6 fw-normal">Update Status</dt>
-                    <div class="dropdown">
-                        <select class="form-select" onchange="changeStatus(this.value)">
-                            <option selected disabled>Status Buku</option>
-                            <option value="kembali">Kembali</option>
-                            <option value="pinjam">Pinjam</option>
-                            <option value="expired">Expired</option>
-                        </select>
-                    </div>
+                    
+                    <select id="statusDropdown{{$item['id']}}" class="form-select" onchange="changeStatus(this.value, '{{$item['id']}}')">
+                      <option disabled>Status Buku</option>
+                      <option value="kembali" {{ $item['status'] === 'kembali' ? 'selected' : '' }}>Kembali</option>
+                      <option value="pinjam" {{ $item['status'] === 'pinjam' ? 'selected' : '' }}>Pinjam</option>
+                      <option value="expired" {{ $item['status'] === 'expired' ? 'selected' : '' }}>Expired</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -104,12 +115,32 @@
 
 @push('body-scripts')
 <script>
-     function changeStatus(selectedValue) {
-        // Lakukan apa yang Anda perlukan dengan nilai yang dipilih, misalnya, tampilkan di konsol
-        console.log("Selected Status: " + selectedValue);
-        
-        // Tambahkan logika lain sesuai kebutuhan aplikasi Anda
-    }
+  toastr.options.timeOut = 1600;
+     function changeStatus(selectedValue, itemId) {
+    // Lakukan apa yang Anda perlukan dengan nilai yang dipilih
+    console.log("Selected Status: " + selectedValue);
+    console.log("Selected Status: " + itemId);
+
+    fetch(`/api/skbp1/bebaspinjam/update/${itemId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ status: selectedValue }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data.message);
+      document.getElementById('status'+itemId).innerHTML = data.data.status;
+      document.getElementById('kembali'+itemId).innerHTML = new Date(data.data.tanggal_kembali).toLocaleDateString();
+      document.getElementById('total-book').innerHTML = 'Rp '+data.denda;
+      toastr.success(data.message);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
 </script>
 @endpush
 <!--/ Advance Styling Options -->

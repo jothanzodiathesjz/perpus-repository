@@ -5,7 +5,7 @@ $configData = Helper::appClasses();
 
 @extends('layouts/layoutMaster')
 
-@section('title', 'Login Cover - Pages')
+@section('title', 'Login Mahasiswa - Mahasiswa')
 
 @section('vendor-style')
 <!-- Vendor -->
@@ -33,9 +33,7 @@ $configData = Helper::appClasses();
     <!-- /Left Text -->
     <div class="d-none d-lg-flex col-lg-7 p-0">
       <div class="auth-cover-bg auth-cover-bg-color d-flex justify-content-center align-items-center">
-        <img src="{{ asset('assets/img/illustrations/auth-login-illustration-'.$configData['style'].'.png') }}" alt="auth-login-cover" class="img-fluid my-5 auth-illustration" data-app-light-img="illustrations/auth-login-illustration-light.png" data-app-dark-img="illustrations/auth-login-illustration-dark.png">
-
-        <img src="{{ asset('assets/img/illustrations/bg-shape-image-'.$configData['style'].'.png') }}" alt="auth-login-cover" class="platform-bg" data-app-light-img="illustrations/bg-shape-image-light.png" data-app-dark-img="illustrations/bg-shape-image-dark.png">
+        <img src="{{ asset('assets/img/illustrations/auth-forgot-password-illustration-light-'.$configData['style'].'.png') }}" alt="auth-login-cover" class="img-fluid my-5 auth-illustration" data-app-light-img="illustrations/auth-forgot-password-illustration-light.png" data-app-dark-img="illustrations/auth-forgot-password-illustration-dark.png">
       </div>
     </div>
     <!-- /Left Text -->
@@ -46,11 +44,11 @@ $configData = Helper::appClasses();
         <!-- Logo -->
         <div class="app-brand mb-4">
           <a href="{{url('/')}}" class="app-brand-link gap-2">
-            <span class="app-brand-logo demo">@include('_partials.macros',["height"=>20,"withbg"=>'fill: #fff;'])</span>
+            <img src="{{ asset('assets/img/perpus/ukip.png')}}" alt="" style="width: 75px;height: 75px;">
           </a>
         </div>
         <!-- /Logo -->
-        <h3 class=" mb-1 fw-bold">Welcome to {{config('variables.templateName')}}! 👋</h3>
+        <h3 class=" mb-1 fw-bold">Welcome to E-Library UKI Paulus! 👋</h3>
         <p class="mb-4">Please sign-in to your account and start the adventure</p>
         @if (session()->has('error'))
                           <div class="alert alert-success">
@@ -65,8 +63,8 @@ $configData = Helper::appClasses();
         <form id="formAuthentication" class="mb-3" action="{{url('/login/store')}}" method="POST">
           @csrf
           <div class="mb-3">
-            <label for="email" class="form-label">Email or Username</label>
-            <input type="text" class="form-control" id="email" name="username" placeholder="Enter your email or username" autofocus>
+            <label for="email" class="form-label">Username</label>
+            <input type="text" class="form-control" id="email" name="username" placeholder="Enter your username" autofocus>
           </div>
           <div class="mb-3 form-password-toggle">
             <div class="d-flex justify-content-between">
@@ -80,43 +78,10 @@ $configData = Helper::appClasses();
               <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
             </div>
           </div>
-          <div class="mb-3">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="remember-me">
-              <label class="form-check-label" for="remember-me">
-                Remember Me
-              </label>
-            </div>
-          </div>
           <button class="btn btn-primary d-grid w-100">
             Sign in
           </button>
         </form>
-
-        <p class="text-center">
-          <span>New on our platform?</span>
-          <a href="{{url('auth/register-cover')}}">
-            <span>Create an account</span>
-          </a>
-        </p>
-
-        <div class="divider my-4">
-          <div class="divider-text">or</div>
-        </div>
-
-        <div class="d-flex justify-content-center">
-          <a href="javascript:;" class="btn btn-icon btn-label-facebook me-3">
-            <i class="tf-icons fa-brands fa-facebook-f fs-5"></i>
-          </a>
-
-          <a href="javascript:;" class="btn btn-icon btn-label-google-plus me-3">
-            <i class="tf-icons fa-brands fa-google fs-5"></i>
-          </a>
-
-          <a href="javascript:;" class="btn btn-icon btn-label-twitter">
-            <i class="tf-icons fa-brands fa-twitter fs-5"></i>
-          </a>
-        </div>
       </div>
     </div>
     <!-- /Login -->

@@ -41,11 +41,11 @@
 
 @section('content')
 <h4 class="fw-bold py-3 mb-4">
-  <span class="text-muted fw-light">Dashboard/</span> Bebas Pustaka
+  <span class="text-muted fw-light">Dashboard/</span> Skbp1
 </h4>
 <div class="col-xl-9 col-md-8 col-12 mb-md-0 mb-4">
   <div class="card invoice-preview-card">
-    <div class="card-body d-flex justify-content-between align-items-start">
+    <div class="card-body">
       <div class="d-flex justify-content-between flex-xl-row flex-md-column flex-sm-row flex-column m-sm-3 m-0">
         <div class="mb-xl-0 mb-0">
           <p class="mb-3">
@@ -65,7 +65,6 @@
             <span id="judul"></span></p>
         </div>
       </div>
-      <a id="print" class="btn btn-primary w-25">Print Skbp2</a>
     </div>
     <hr class="my-0" />
     <div class="card-body">
@@ -82,51 +81,28 @@
           <tr>
             <th>Item</th>
             <th>File</th>
-            <th>Publish</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr id="rowbab1">
             <td class="text-nowrap">Bab1</td>
             <td><a id="bab1"><i class="text-primary ti ti-eye"></i></a></td>
-            <td><div id="checkBab1" data-bab="bab1" class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-              <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch to publish the file</label>
-            </div></td>
           </tr>
-          <tr>
+          <tr id="rowbab2">
             <td class="text-nowrap">Bab2</td>
             <td><a id="bab2"><i class="text-primary ti ti-eye"></i></a></td>
-            <td><div id="checkBab2" data-bab="bab2" class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-              <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch to publish the file</label>
-            </div></td>
           </tr>
-          <tr>
+          <tr id="rowbab3">
             <td class="text-nowrap">Bab3</td>
             <td><a id="bab3" ><i class="text-primary ti ti-eye"></i></a></td>
-            <td><div id="checkBab3" data-bab="bab3" class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-              <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch to publish the file</label>
-            </div></td>
           </tr>
           <tr>
             <td class="text-nowrap">Fulltext</td>
             <td><a id="fulltext" ><i class="text-primary ti ti-eye"></i></a></td>
-            <td><div id="checkfulltext" data-bab="fulltext" class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
-              <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch to publish the file</label>
-            </div></td>
           </tr>
           <tr>
-            <td class="text-nowrap">Cover</td>
+            <td class="text-nowrap">Sampul</td>
             <td><a id="sampul" ><i class="text-primary ti ti-eye"></i></a></td>
-            <td>-</td>
-          </tr>
-          <tr>
-            <td class="text-nowrap">Epidiens</td>
-            <td><a id="turnitin"><i class="text-primary ti ti-eye"></i></a></td>
-            <td>-</td>
           </tr>
         </tbody>
       </table>
@@ -150,13 +126,7 @@
  var bab3 = $("#bab3");
  var fulltext = $("#fulltext");
  var sampul = $("#sampul");
- var turnitin = $("#turnitin");
- var checkBab1 = $("#checkBab1");
- var checkBab2 = $("#checkBab2");
- var checkBab3 = $("#checkBab3");
- var checkFulltext = $("#checkfulltext");
- var print = $("#print");
-console.log('{{request()->query('no')}}')
+
  function getDatabyid(){
    $.ajax({
      type: "GET",
@@ -171,36 +141,23 @@ console.log('{{request()->query('no')}}')
        jurusan.text(data.jurusan)
        judul.text(data.judul.toUpperCase())
        abstrak.text(data.abstrak)
-       print.attr('href','/admin/skbp2/print/'+data.id+'?no={{request()->query('no')}}')
+       sampul.attr('href', data.sampul);
 
-
-
-       function setHref(element,check, url,status) {
-        if (url) {
-          element.attr('href', url);
-          if(check && status){
-            // set checked
-            // $(`${check} input`).prop("checked", status);
-            // check.prop('checked', status);
-            $(`${check} input`).prop("checked", function (i, value) {
-                return !value;
-            });
-          }
+       function setHref(element, url, status) {
+        console.log(url)
+        if (status) {
+          element.attr('href', url.url);
         } else {
-          element.removeAttr('href').text('-');
-          if(check){
-            // remove child
-            $(check).text('-');
-          }
+            var stringValue = url.url.split('/')[3];
+            console.log(stringValue)
+          $(`#row${stringValue}`).remove();
         }
       }
 
-      setHref(bab1,'#checkBab1', data?.bab1?.url,data?.bab1?.status);
-      setHref(bab2,'#checkBab2', data?.bab2?.url,data?.bab2?.status);
-      setHref(bab3,'#checkBab3', data?.bab3?.url,data?.bab3?.status);
-      setHref(fulltext,'#checkfulltext', data?.fulltext?.url,data?.fulltext?.status);
-      setHref(sampul,null, data?.sampul,null);
-      setHref(turnitin,null, data?.turnitin,null);
+      setHref(bab1, data?.bab1,data?.bab1?.status);
+      setHref(bab2, data?.bab2,data?.bab2?.status);
+      setHref(bab3, data?.bab3,data?.bab3?.status);
+      setHref(fulltext, data?.fulltext,data?.fulltext?.status);
 
      },
      error: function(jqXHR, textStatus, errorThrown) {
@@ -210,38 +167,7 @@ console.log('{{request()->query('no')}}')
  }
 
 getDatabyid()
-$(".form-check-input").on('change', function() {
-            // Mendapatkan nilai checkbox yang berubah
-            var isChecked = $(this).prop("checked");
 
-            // Mendapatkan id dari parent <div>
-            var parentId = $(this).closest('div').data("bab");
-            console.log(parentId)
-            // Menyusun data yang akan dikirimkan
-            var requestData = {
-                data: {
-                    status: isChecked,
-                    bab:parentId
-                }
-            };
-            var paramsId = '{{Route::current()->parameter('id')}}';
-            // Melakukan permintaan AJAX ke route /api/skbp1/setshow
-            $.ajax({
-                type: 'POST',
-                url: '/api/skbp1/setfileshow/'+paramsId,
-                data: JSON.stringify(requestData),
-                contentType: 'application/json',
-                success: function(response) {
-                    console.log(response);
-                    // Lakukan sesuatu setelah permintaan berhasil
-                    toastr.success('success update')
-                },
-                error: function(error) {
-                    console.error(error);
-                    // Lakukan sesuatu jika ada kesalahan
-                }
-            });
-        });
 </script>
 @endpush
 @endsection

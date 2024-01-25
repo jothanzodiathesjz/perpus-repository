@@ -56,12 +56,12 @@
   }
 </style>
 <h4 class="fw-bold py-3 mb-4">
-  <span class="text-muted fw-light">Dashboard/</span> Skbp1
+  <span class="text-muted fw-light">Dashboard/</span> Bebas Pustaka
 </h4>
  <!-- Bootstrap Validation -->
  <div class="col-md">
     <div class="card">
-      <h5 class="card-header">Form SKBP 1</h5>
+      <h5 class="card-header">Form Bebas Pustaka</h5>
       <div class="card-body">
         <div class="form-check form-switch mb-1 d-flex flex-column">
           <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked onchange="toggleSwitch()">
@@ -178,7 +178,7 @@
           </div>
           <div class="row">
             <div class=" col-sm-6">
-              <label class="form-label" for="sampul">Sampul</label>
+              <label class="form-label" for="sampul">Cover</label>
               <input type="file" class="form-control" id="sampul" accept=".pdf, .doc, .docx" />
               <ul class="list-unstyled pt-1 d-flex flex-row gap-4">
                 <li>
@@ -190,7 +190,7 @@
               </ul>
             </div>
             <div class=" col-sm-6">
-              <label class="form-label" for="turnitin">Turnitin</label>
+              <label class="form-label" for="turnitin">Epidiens</label>
               <input type="file" class="form-control" id="turnitin" accept=".pdf, .doc, .docx" />
               <ul class="list-unstyled pt-1 d-flex flex-row gap-4">
                 <li>

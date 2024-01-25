@@ -24,21 +24,25 @@ class SkbpController extends Controller
         $now = Carbon::now();
         $hasUpdates = false;
         
-        $data = PinjamBuku::where('status', 'pinjam')->get();
+        $data = PinjamBuku::all();
     
         $data->each(function ($item) use ($now, &$hasUpdates) {
-            $expiredDate = Carbon::createFromTimestampMs($item->tanggal_kembali);
+            $expiredDate = Carbon::createFromTimestampMs($item->expired_date + 0);
             if ($expiredDate->isPast()) {
-                $update = PinjamBuku::where('id', $item->id)->update([
-                    'status' => 'expired',
-                ]);
+                if($item->status === 'pinjam'){
+                    $update = PinjamBuku::where('id', $item->id)->update([
+                        'status' => 'expired',
+                    ]);
+                }
                 $denda = Denda::where('id_pinjam_buku', $item->id)->first();
 
             if ($denda) {
-                $denda->update([
-                    'status' => 'unpaid',
-                    'denda' => $expiredDate->diffInDays($now) * 500,
-                ]);
+                if($denda->status !== 'paid'){    
+                    $denda->update([
+                        'status' => 'unpaid',
+                        'denda' => $expiredDate->diffInDays($now) * 500,
+                    ]);
+                }
             } else {
                 // Create Denda if it doesn't exist
                 $createDenda = Denda::create([
@@ -50,7 +54,6 @@ class SkbpController extends Controller
             }
         });
     
-        return $data;
     }
    public function skbp1adminView()
     {
@@ -450,6 +453,7 @@ class SkbpController extends Controller
             ->select('id', 'judul','penulis','tahun_publikasi','imgfile','kategori_buku')
             ->get();
             return [
+                'id' => $item->id,
                 'books'=> $buku,
                 'id_user'=> $item->id_user,
                 'tanggal_pinjam'=> $item->tanggal_pinjam,
@@ -498,5 +502,47 @@ class SkbpController extends Controller
            ]]);
        }
        return response()->json(['data' => null]);
+   }
+
+   function skripsiContentView()
+   {
+       return view('content.skbp.skripsi-content');
+   }
+
+   function updatePinjamBuku(Request $request)
+   {
+        try {
+            $id = $request->route('id');
+            $status = $request->input('status');
+            $update = PinjamBuku::where('id', $id)->update([
+                'status' => $status,
+                'tanggal_kembali' => now()->timestamp * 1000
+            ]);
+            if($status == 'kembali'){
+                $updateDenda = Denda::where('id_pinjam_buku', $id)->update([
+                    'status' => 'paid',
+                ]);
+            }
+            $data = PinjamBuku::find($id);
+            $data2 = PinjamBuku::where('id_user', $data->id_user)->get();
+            $data3 = $data2->map(function ($item) {
+                $denda = Denda::where('id_pinjam_buku', $item->id)
+                ->where('status', 'unpaid')
+                ->get();
+                return [
+                    'denda'=> $denda->sum('denda'),
+                ];
+            });
+            return response()->json([
+                'message' => 'Success',
+                'data' => $data,
+                'denda' => $data3->sum('denda')
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json(['error' => $th->getMessage()], 400);
+        }
+       
+
    }
 }
