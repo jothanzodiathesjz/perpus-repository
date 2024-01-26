@@ -254,6 +254,10 @@ Route::middleware(['session'])->group(function () {
 
     Route::get('/form-pustaka',[SkbpController::class, 'skbp1FormView'])->name('skbp1-form');
 
+
+    Route::get('/users-profile/{id}',[DashboardController::class, 'profileView'])->name('users-profile');
+
+
  
     Route::middleware(['adminarea'])->group(function () {
        Route::get('/admin/books',[AdminDashboard::class, 'BookListView'])->name('admin.books'); 

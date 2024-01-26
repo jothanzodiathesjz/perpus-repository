@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\pages\UserProfile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Books;
@@ -11,9 +12,13 @@ use App\Models\ValidationCode;
 use App\Models\PinjamBuku;
 use App\Models\Skbp1;
 use App\Models\Denda;
+use App\Models\User;
+use App\Models\UserDetail;
+use App\Models\ProfileImg;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Hash;
 
 class DashboardController extends Controller
 {
@@ -172,8 +177,9 @@ class DashboardController extends Controller
             foreach ($cart as $item) {
                 $id_buku = $item->id_buku;
                 $buku = Books::find($id_buku);
+                if(!$buku) continue;
                 $dataBuku[] = [
-                    'id' => $buku->id,
+                    'id' => $buku->id ,
                     'judul' => $buku->judul,
                     'penulis' => $buku->penulis,
                     'tahun_publikasi' => $buku->tahun_publikasi,
@@ -311,11 +317,6 @@ class DashboardController extends Controller
                 'data' => $data2,
                 'denda' => $data3->sum('denda')
             ]);
-                // return response()->json([
-                //     'data' => $data2,
-                //     'denda' => $data3
-                // ]);
-                // return response()->json(['data' => $update]);
      }
 
      public function getDataPinjamByUser(Request $request )
@@ -339,5 +340,110 @@ class DashboardController extends Controller
         return response()->json(['data' => $data2]);
      }
 
+     function profileView()
+     {
+        return view('content.users.profile');
+     }
     
+     function getProfileDetails(Request $request)
+     {
+        $data = UserDetail::where('user_id', $request->route('id'))->first();
+        $profilePicture = ProfileImg::where('id_user', $request->route('id'))->first();
+        return response()->json([
+            'data' => $data,
+            'profilePicture' => $profilePicture ? $profilePicture : null
+        ]);
+     }
+
+     function changesProfileDetails(Request $request)
+     {
+        $validate = $request->validate([
+            'fullname' => 'required',
+            'telepon' => 'required',
+            'stambuk' => 'required',
+            'alamat' => 'required',
+            'fakultas' => 'required',
+            'ProgramStudi' => 'required',
+        ]);
+        $data = UserDetail::where('user_id', $request->route('id'))->update([
+            'fullname' => $request->input('fullname'),
+            'ProgramStudi' => $request->input('ProgramStudi'),
+            'fakultas' => $request->input('fakultas'),
+            'telepon' => $request->input('telepon'),
+            'alamat' => $request->input('alamat'),
+            'stambuk' => $request->input('stambuk'),
+        ]);
+
+        $data2 = UserDetail::where('user_id', $request->route('id'))->first();
+        return response()->json(['data' => $data2]);
+     }
+
+    
+
+    public function updatePassword(Request $request)
+    {
+        $validate = $request->validate([
+            'password' => 'required',
+            'newpassword' => 'required',
+        ]);
+        $user = User::find($request->route('id'));
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        if (!Hash::check($request->input('password'), $user->password)) {
+            return response()->json(['message' => 'Current password is incorrect'], 400);
+        }
+        $user->password = Hash::make($request->input('newpassword'));
+        $user->save();
+
+        return response()->json(['message' => 'Password updated successfully']);
+    }
+
+    public function updateProfilePicture(Request $request)
+    {
+        
+        $imgfile = $request->file('imgfile');
+        $id = $request->route('id');
+        $find = ProfileImg::where('id_user', $id)->first();
+        if($find){
+            $oldImagePath = str_replace('storage', 'public', $find->img);
+            if (Storage::exists($oldImagePath)) {
+                // Delete the old image file
+                Storage::delete($oldImagePath);
+            }
+            $saveimg = $request->file('imgfile')->store('public/uploads/profile');
+            
+            $imageUrl = Storage::url($saveimg);
+            $update = ProfileImg::where('id_user', $id)->update([
+                'img' => $imageUrl
+            ]);
+            return response()->json([
+                'message' => 'success',
+                'data' => $imageUrl
+            ]);
+        }else{
+            $saveimg = $request->file('imgfile')->store('public/uploads/profile');
+            $imageUrl = Storage::url($saveimg);
+            $create = ProfileImg::create([
+                'id_user' => $id,
+                'img' => $imageUrl
+            ]);
+            return response()->json([
+                'message' => 'success',
+                'data' => $imageUrl
+            ]);
+        }
+        
+    }
+
+    public function getProfilePicture(Request $request)
+    {
+        $id = $request->route('id');
+        $find= ProfileImg::where('id_user', $id)->get();
+        if($find->isEmpty()){
+            return response()->json(['data' => null]);
+        }
+        return response()->json(['data' => $find]);
+    }
+
 }

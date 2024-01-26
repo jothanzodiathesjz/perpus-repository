@@ -57,7 +57,7 @@ $navbarDetached = ($navbarDetached ?? '');
             <ul class="dropdown-menu dropdown-menu-end py-0">
               <li class="dropdown-menu-header border-bottom">
                 <div class="dropdown-header d-flex align-items-center py-3">
-                  <h5 class="text-body mb-0 me-auto">Notification</h5>
+                  <h5 class="text-body mb-0 me-auto">Carts</h5>
                   <a href="javascript:void(0)" class="dropdown-notifications-all text-body" data-bs-toggle="tooltip" data-bs-placement="top" title="Mark all as read"><i class="ti ti-mail-opened fs-4"></i></a>
                 </div>
               </li>
@@ -84,8 +84,8 @@ $navbarDetached = ($navbarDetached ?? '');
                 </ul>
               </li>
               <li class="dropdown-menu-footer border-top">
-                <a href="javascript:void(0);" class="dropdown-item d-flex justify-content-center text-primary p-2 h-px-40 mb-1 align-items-center">
-                  View all notifications
+                <a href="/books/checkout" class="dropdown-item d-flex justify-content-center text-primary p-2 h-px-40 mb-1 align-items-center">
+                  View all Carts
                 </a>
               </li>
             </ul>
@@ -109,7 +109,7 @@ $navbarDetached = ($navbarDetached ?? '');
           <li class="nav-item navbar-dropdown dropdown-user dropdown">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
               <div class="avatar avatar-online">
-                <img src="{{  asset('assets/img/avatars/1.png') }}" alt class="h-auto rounded-circle">
+                <img src="{{  asset('assets/img/avatars/1.png') }}" id="profile-img" alt class="h-8 rounded-circle">
               </div>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
@@ -118,7 +118,7 @@ $navbarDetached = ($navbarDetached ?? '');
                   <div class="d-flex">
                     <div class="flex-shrink-0 me-3">
                       <div class="avatar avatar-online">
-                        <img src="{{  asset('assets/img/avatars/1.png') }}" alt class="h-auto rounded-circle">
+                        <img src="{{  asset('assets/img/avatars/1.png') }}" id="profile-img2" alt class="h-8 rounded-circle">
                       </div>
                     </div>
                     <div class="flex-grow-1">
@@ -129,7 +129,7 @@ $navbarDetached = ($navbarDetached ?? '');
                         John Doe
                         @endif
                       </span>
-                      <small class="text-muted">Admin</small>
+                      <small class="text-muted">{{Auth::user()->role}}</small>
                     </div>
                   </div>
                 </a>
@@ -138,54 +138,10 @@ $navbarDetached = ($navbarDetached ?? '');
                 <div class="dropdown-divider"></div>
               </li>
               <li>
-                <a class="dropdown-item" href="">
+                <a class="dropdown-item" href="/users-profile/{{ Auth::user()->id }}">
                   <i class="ti ti-user-check me-2 ti-sm"></i>
                   <span class="align-middle">My Profile</span>
                 </a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="">
-                  <i class='ti ti-key me-2 ti-sm'></i>
-                  <span class="align-middle">API Tokens</span>
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="{{url('app/invoice/list')}}">
-                  <span class="d-flex align-items-center align-middle">
-                    <i class="flex-shrink-0 ti ti-credit-card me-2 ti-sm"></i>
-                    <span class="flex-grow-1 align-middle">Billing</span>
-                    <span class="flex-shrink-0 badge badge-center rounded-pill bg-label-danger w-px-20 h-px-20">2</span>
-                  </span> </a>
-              </li>
-              <li>
-                <div class="dropdown-divider"></div>
-              </li>
-              <li>
-                <h6 class="dropdown-header">Manage Team</h6>
-              </li>
-              <li>
-                <div class="dropdown-divider"></div>
-              </li>
-              <li>
-                <a class="dropdown-item" href="">
-                  <i class='ti ti-settings me-2'></i>
-                  <span class="align-middle">Team Settings</span>
-                </a>
-              </li>
-              <li>
-                <a class="dropdown-item" href="">
-                  <i class='ti ti-user me-2'></i>
-                  <span class="align-middle">Create New Team</span>
-                </a>
-              </li>
-              <li>
-                <div class="dropdown-divider"></div>
-              </li>
-              <lI>
-                <h6 class="dropdown-header">Switch Teams</h6>
-              </lI>
-              <li>
-                <div class="dropdown-divider"></div>
               </li>
               {{-- Below commented code read by artisan command while installing jetstream. !! Do not remove if you want to use jetstream. --}}
 
@@ -251,13 +207,12 @@ $navbarDetached = ($navbarDetached ?? '');
             <div class="d-flex">
               <div class="flex-shrink-0 me-3">
                 <div class="avatar">
-                  <img src="${element.imgfile}" alt class="h-auto rounded-circle">
+                  <img src="${element.imgfile}" alt class="h-10 rounded-circle">
                 </div>
               </div>
               <div class="flex-grow-1">
                 <h6 class="mb-1">${element.judul}</h6>
-                <p class="mb-0">Won the monthly best seller gold badge</p>
-                <small class="text-muted">1h ago</small>
+                <p class="mb-0">${element.penulis}</p>
               </div>
               <div class="flex-shrink-0 dropdown-notifications-actions">
                 <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
@@ -273,4 +228,18 @@ $navbarDetached = ($navbarDetached ?? '');
       })
     }
     getNotification()
+
+function getProfilePicture() {
+  fetch('/api/users/profile-picture/{{ auth()->user()->id }}',{
+    method: 'GET',
+  })
+  .then(response => response.json())
+  .then(data => {
+    if(data.data){
+      document.getElementById('profile-img').src = data.data[0].img
+      document.getElementById('profile-img2').src = data.data[0].img
+    }
+  })
+}
+getProfilePicture()
   </script>

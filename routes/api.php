@@ -58,3 +58,10 @@ Route::get('/skbp1/data-bebas-pinjam',[SkbpController::class, 'dataBebasPinjam']
 
 Route::get('/skbp2/print-content/{id}',[SkbpController::class, 'skbp2PrintData']);
 
+
+Route::get('/users/profile-data/{id}',[DashboardController::class, 'getProfileDetails']);
+Route::get('/users/profile-picture/{id}',[DashboardController::class, 'getProfilePicture']);
+Route::put('/users/profile-data/{id}',[DashboardController::class, 'changesProfileDetails']);
+Route::put('/users/profile-password/{id}',[DashboardController::class, 'updatePassword']);
+Route::post('/users/profile-picture/{id}',[DashboardController::class, 'updateProfilePicture']);
+
