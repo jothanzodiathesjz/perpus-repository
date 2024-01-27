@@ -43,6 +43,33 @@
 <h4 class="fw-bold py-3 mb-4">
   <span class="text-muted fw-light">Dashboard/</span> Data Bebas Pustaka
 </h4>
+<section id="ecommerce-header">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="ecommerce-header-items">
+          <div class="view-options d-flex">
+            <div class="btn-group dropdown-sort">
+              <button
+                type="button"
+                class="btn btn-outline-primary dropdown-toggle me-1"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="true"
+              >
+                <span class="active-sorting">Volume</span>
+              </button>
+              <div class="dropdown-menu" id="book-category">
+                <!-- <a class="dropdown-item" href="#">Featured</a>
+                <a class="dropdown-item" href="#">Lowest</a>
+                <a class="dropdown-item" href="#">Highest</a> -->
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 <div class="card-datatable table-responsive pt-0">
   {{-- <button class="create-new btn btn-primary"><i class="ti ti-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Add New Book</span></button> --}}
   <table class="datatables-basic table">
@@ -52,6 +79,7 @@
         <th>No</th>
         <th>Nama</th>
         <th>Judul</th>
+        <th>Jurusan</th>
         <th>Stambuk</th>
         <th>Type</th>
         <th>Action</th>
@@ -274,7 +302,7 @@ function editItem(id){
 
   function deleteItem(id){
     console.log(id)
-    const apiUrl = '/api/book/'+id;
+    const apiUrl = '/api/pustaka/delete/'+id;
     const options = {
         method: 'DELETE',
     };
@@ -313,6 +341,7 @@ function editItem(id){
         { data: '' },
         { data: 'nama' },
         { data: 'judul' },
+        { data: 'jurusan' },
         { data: 'stambuk' },
         { data: 'type' },
         { data: '' }
@@ -360,6 +389,9 @@ function editItem(id){
         },
         {
           targets: 4
+        },
+        {
+          targets: 5
         },
         {
           responsivePriority: 4,

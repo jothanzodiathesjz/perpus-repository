@@ -174,8 +174,7 @@
             </div>
             <div class="flex-grow-1">
               <h6 class="mb-1">${data.data.judul}</h6>
-              <p class="mb-0">Won the monthly best seller gold badge</p>
-              <small class="text-muted">1h ago</small>
+              <p class="mb-0">${data.data.penulis}</p>
             </div>
             <div class="flex-shrink-0 dropdown-notifications-actions">
               <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
@@ -429,7 +428,7 @@ function fillPagination(links) {
         newLink.className = 'dropdown-item';
         newLink.textContent = element.kategori_buku;
         newLink.href = '#';
-        newLink.style.cursor = "pointer"; // Menambahkan style cursor untuk menunjukkan bahwa ini dapat diklik
+        newLink.style.cursor = "pointer"; // Menambahkan style cursor untuk menunjukka0n bahwa ini dapat diklik
         newLink.onclick = function() {
           $('#ecommerce-products').html('')
             //getBooks(link.url);

@@ -131,6 +131,10 @@ class SkbpController extends Controller
 
    public function getSbkp1(Request $request)
    {
+       $query = $request->query('prodi');
+       if($query){
+           $data = Skbp1::where('jurusan', $query)->get();
+       }
        $data = Skbp1::orderBy('created_at', 'asc')->get();
        return response()->json(['data' => $data]);
    }
@@ -242,6 +246,20 @@ class SkbpController extends Controller
        }
    }
 
+   function deletePustaka(Request $request)
+   {
+       $id = $request->route('id');
+       $delete = Skbp1::where('id', $id)->delete();
+       if(!$delete){
+           return response()->json([
+               'message' => 'Data gagal di hapus',
+           ]);
+       }
+       return response()->json([
+           'message' => 'Data berhasil di hapus',
+       ]);
+
+   }
    function jurnalInformatikaView()
    {
        return view('content.skbp.skbp1-jurnal-informatika');

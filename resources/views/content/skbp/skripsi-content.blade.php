@@ -96,7 +96,7 @@
             <td class="text-nowrap">Bab3</td>
             <td><a id="bab3" ><i class="text-primary ti ti-eye"></i></a></td>
           </tr>
-          <tr>
+          <tr id="rowfulltext">
             <td class="text-nowrap">Fulltext</td>
             <td><a id="fulltext" ><i class="text-primary ti ti-eye"></i></a></td>
           </tr>

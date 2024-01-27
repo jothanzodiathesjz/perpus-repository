@@ -320,7 +320,6 @@
         var inputFile = document.getElementById(inputId);
         var fileSize = inputFile.files[0] ? inputFile.files[0].size : 0;
 
-        // Cek ukuran file
         if (fileSize > 5 * 1024 * 1024) {
           toastr.error('File ' + inputId + ' terlalu besar. Maksimum 5 MB diizinkan.');
           throw new Error('File ' + inputId + ' terlalu besar. Maksimum 5 MB diizinkan. UkURAN FILE: ' + fileSize);
@@ -336,7 +335,7 @@
         }
       }
     }
-
+const loader = document.getElementById('loader')
     function submitForm() {
       validateAndSubmit();
       const form = new FormData();
@@ -364,20 +363,22 @@
       method: 'POST',
       body: form
     };
-
+     loader.style.display = 'flex';
     fetch('/api/skbp1/store', options)
         .then(response => response.json())
         .then(data => {
-            // Handle response jika diperlukan
             toastr.success('Berhasil')
             console.log('Success:', data);
            
         })
         .catch(error => {
-            // Handle error jika diperlukan
             console.error('Error:', error);
             toastr.error('Gagal dimasukkan')
-        });
+            loader.style.display = 'none'
+        })
+        .finally(() => {
+            loader.style.display = 'none'
+        })
   }
     
 </script>

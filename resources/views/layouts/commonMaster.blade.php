@@ -30,26 +30,27 @@
 
 <body>
  
-  <div style="
-  position: absolute;
+ <div style="
+  position: fixed; /* Change from absolute to fixed */
   display: none;
   justify-content: center;
   align-items: center;
   z-index: 1000;
   width: 100vw;
-  height:100vh;
+  min-height: 100vh;
+  bottom: 0; /* Set bottom to 0 to keep it at the bottom of the viewport */
   "
   id="loader"
-  >
-    <div class="sk-wave sk-primary">
-      <div class="sk-wave-rect"></div>
-      <div class="sk-wave-rect"></div>
-      <div class="sk-wave-rect"></div>
-      <div class="sk-wave-rect"></div>
-      <div class="sk-wave-rect"></div>
-    </div>
-
+>
+  <div class="sk-wave sk-primary">
+    <div class="sk-wave-rect"></div>
+    <div class="sk-wave-rect"></div>
+    <div class="sk-wave-rect"></div>
+    <div class="sk-wave-rect"></div>
+    <div class="sk-wave-rect"></div>
   </div>
+</div>
+
   <!-- Layout Content -->
   @yield('layoutContent')
   <!--/ Layout Content -->
