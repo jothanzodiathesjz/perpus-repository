@@ -186,6 +186,13 @@
       "icon": "menu-icon tf-icons ti ti-layout",
       "slug": ["admin.skbp1","admin.skbp1.detail"],
       "adminOnly":true
+    },
+    {
+      "url": "/verification-code",
+      "name": "Verification Code",
+      "icon": "menu-icon tf-icons ti ti-layout",
+      "slug": "skbp-verification-code",
+      "adminOnly":true
     }
   ]
 }

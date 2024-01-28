@@ -25,6 +25,7 @@ Route::post('/payment/store', [PaymentController::class, 'PaymentStore']);
 Route::post('/payment/getnotification', [PaymentController::class, 'notification']);
 
 Route::post('/book/store',[DashboardController::class, 'BookStore']);
+Route::post('/book/update/{id}',[DashboardController::class, 'updateBook']);
 Route::get('/book/get',[DashboardController::class, 'getDataBuku']);
 Route::get('/admin/book/get',[DashboardController::class, 'getDataBukuAdmin']);
 Route::get('/book/category',[DashboardController::class, 'getBooksCategory']);

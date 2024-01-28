@@ -257,6 +257,8 @@ Route::middleware(['session'])->group(function () {
 
     Route::get('/users-profile/{id}',[DashboardController::class, 'profileView'])->name('users-profile');
 
+    Route::get('/verification-code',[DashboardController::class, 'validationCodeView'])->name('skbp-verification-code');
+
 
  
     Route::middleware(['adminarea'])->group(function () {

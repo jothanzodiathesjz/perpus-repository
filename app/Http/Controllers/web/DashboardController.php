@@ -117,6 +117,56 @@ class DashboardController extends Controller
             return response()->json(['error' => $e->getMessage()]);
         }
     }
+    public function updateBook(Request $request, $id)
+    {
+        try {
+            $validation = $request->validate([
+                'judul' => 'required',
+                'penulis' => 'required',
+                'tahun_publikasi' => 'required',
+                'kategori_buku' => 'required',
+                'isbn' => 'required',
+                'ketersediaan' => 'required' // Sesuaikan dengan jenis file yang diizinkan dan batasan ukuran
+            ]);
+
+            // Cek apakah buku dengan ID tersebut ada
+            $book = Books::find($id);
+
+            if (!$book) {
+                return response()->json(['error' => 'Buku tidak ditemukan'], 404);
+            }
+
+            // Update data buku
+            $book->judul = $request->input('judul');
+            $book->penulis = $request->input('penulis');
+            $book->tahun_publikasi = $request->input('tahun_publikasi');
+            $book->kategori_buku = $request->input('kategori_buku');
+            $book->isbn = $request->input('isbn');
+            $book->ketersediaan = $request->input('ketersediaan');
+            $book->deskripsi = $request->input('deskripsi');
+
+            // Jika ada file gambar yang diunggah, simpan gambar baru
+            if ($request->hasFile('imgfile')) {
+                // Hapus gambar lama
+                Storage::delete($book->imgfile);
+
+                // Simpan gambar baru
+                $imagePath = $request->file('imgfile')->store('public/uploads');
+                $imageUrl = Storage::url($imagePath);
+                $book->imgfile = $imageUrl;
+            }else{
+                $book->imgfile = $book->imgfile;
+            }
+
+            // Simpan perubahan
+            $book->save();
+
+            return response()->json(['message' => 'Buku berhasil diupdate', 'book' => $request->all()]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
 
     public function getDataBuku(Request $request)
     {
@@ -446,4 +496,10 @@ class DashboardController extends Controller
         return response()->json(['data' => $find]);
     }
 
+    function validationCodeView()
+    {
+        return view('content.skbp.verification-code');
+    }
+
+  
 }

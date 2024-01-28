@@ -41,7 +41,7 @@
 
 @section('content')
 <h4 class="fw-bold py-3 mb-4">
-  <span class="text-muted fw-light">DataTables /</span> Basic
+  <span class="text-muted fw-light">Dashboard /</span> Data Buku
 </h4>
 <div class="card-datatable table-responsive pt-0">
   <button class="create-new btn btn-primary"><i class="ti ti-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Add New Book</span></button>
@@ -133,8 +133,10 @@
           <input type="file" id="imgfile" name="basicPost" class="form-control dt-post" placeholder="Web Developer" aria-label="masukkan gambar" aria-describedby="basicPost2" />
         </div>
       </div>
-      <div class="col-sm-12">
-        <button type="submit" onclick="addNewRecord()" class="btn btn-primary data-submit me-sm-3 me-1">Submit</button>
+      <input type="text" id="id_book" name="basicSalary" value="0" style="display: none;" />
+      <div class="col-sm-12" id="buttonshow">
+        <button type="submit" id="btnadd" onclick="addNewRecord()" class=" data-submit me-sm-3 me-1" >Submit</button>
+        <button type="submit" id="btnupdate" onclick="updateRecord()" class="data-submit me-sm-3 me-1">Update</button>
         <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="offcanvas">Cancel</button>
       </div>
     </div>
@@ -144,7 +146,7 @@
 
 {{-- <script src="{{ asset(mix('assets/vendor/libs/jquery/jquery.js')) }}"></script> --}}
 @push('body-scripts')
-<script>
+<script> 
   function getCategory() {
     fetch(`/api/book/category`, {
       method: 'GET',
@@ -238,6 +240,8 @@
     $('.datatables-basic').DataTable().ajax.reload();
   }
 
+
+  
   let fv, offCanvasEl;
   document.addEventListener('DOMContentLoaded', function (e) {
     const formAddNewRecord = document.getElementById('form-add-new-record');
@@ -252,8 +256,15 @@
         newRecord.addEventListener('click', function () {
           offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
           // Empty fields on offCanvas open
-          
+          emptyForm()
+          const modalTitle = document.querySelector('.offcanvas-title');
+          modalTitle.textContent = 'New Record';
           // Open offCanvas with form
+          const btnadd = document.getElementById('btnadd');
+          btnadd.classList.add('btn', 'btn-primary');
+           const btnupdate = document.getElementById('btnupdate')
+           btnupdate.classList.remove('btn', 'btn-primary');
+           btnupdate.style.display = 'none';
           offCanvasEl.show();
         });
       }
@@ -263,19 +274,36 @@
   })();
 });
 
-function editItem(id){
+function editItem(id,data){
   const formAddNewRecord = document.getElementById('form-add-new-record');
     setTimeout(() => {
+      emptyForm()
         offCanvasElement = document.querySelector('#add-new-record');
         offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
         offCanvasEl.show();
-       
-    }, 200);
-    console.log(id)
+        const modalTitle = document.querySelector('.offcanvas-title');
+        modalTitle.textContent = 'Edit Record';
+         console.log(data)
+            judulInput.value = data.judul
+            penulisInput.value = data.penulis
+            kategoriBukuInput.value = data.kategori_buku
+            isbnInput.value = data.isbn
+            tahunPublikasiInput.value = data.tahun_publikasi
+            stokInput.value = data.ketersediaan
+            deskripsiTextarea.value = data.deskripsi
+            document.getElementById('id_book').value = data.id
+             const btnadd = document.getElementById('btnadd');
+             btnadd.classList.remove('btn', 'btn-primary');
+             btnadd.style.display = 'none';
+             const btnupdate = document.getElementById('btnupdate')
+             btnupdate.classList.add('btn', 'btn-primary');
+             btnupdate.style.display = 'block';
+      }, 200);
+     
   }
 
-  function deleteItem(id){
-    console.log(id)
+  function deleteItem(id,data){
+    console.log(data)
     const apiUrl = '/api/book/'+id;
     const options = {
         method: 'DELETE',
@@ -400,7 +428,18 @@ function editItem(id){
           render: function (data, type, full, meta) {
             return (
               `<a href="javascript:;" onclick="deleteItem('${full.id}')" class="btn btn-sm btn-icon" ><i class="text-primary ti ti-trash"></i></a>` + 
-              `<a href="javascript:;" onclick="editItem('${full.id}')" class="btn btn-sm btn-icon item-edit"><i class="text-primary ti ti-pencil"></i></a>`
+              `<a href="javascript:;" onclick="editItem('${full.id}',{
+                'id': '${full.id}',
+                'judul': '${full.judul}',
+                'penulis': '${full.penulis}',
+                'imgfile': '${full.imgfile}',
+                'isbn': '${full.isbn}',
+                'ketersediaan': '${full.ketersediaan}',
+                'tahun_publikasi': '${full.tahun_publikasi}',
+                'deskripsi': '${full.deskripsi}',
+                'kategori_buku': '${full.kategori_buku}',
+
+              })" class="btn btn-sm btn-icon item-edit"><i class="text-primary ti ti-pencil"></i></a>`
             );
           }
         }
@@ -477,6 +516,44 @@ function editItem(id){
     });
   }
 });
+
+function updateRecord() {
+  
+    const form = new FormData();
+    form.append("imgfile",imgfileInput.files[0]);
+    form.append("judul", judulInput.value);
+    form.append("penulis", penulisInput.value);
+    form.append("tahun_publikasi", tahunPublikasiInput.value);
+    form.append("isbn", isbnInput.value);
+    form.append("ketersediaan", stokInput.value);
+    form.append("kategori_buku", kategoriBukuInput.value);
+    form.append("deskripsi", deskripsiTextarea.value);
+
+    const apiUrl = `/api/book/update/${document.getElementById('id_book').value}`; // Sesuaikan dengan endpoint yang benar
+
+    // Mendefinisikan opsi untuk fetch
+    const options = {
+        method: 'POST',
+        body: form,
+    };
+
+    fetch(apiUrl, options)
+        .then(response => response.json())
+        .then(data => {
+            // Handle response jika diperlukan
+
+            toastr.success('Berhasil diupdate');
+            emptyForm();
+            console.log('Success:', data);
+        })
+        .catch(error => {
+            // Handle error jika diperlukan
+            console.error('Error:', error);
+            toastr.error('Gagal diupdate');
+        });
+
+    $('.datatables-basic').DataTable().ajax.reload();
+}
 </script>
 @endpush
 @endsection
