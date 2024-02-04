@@ -43,49 +43,58 @@
 <h4 class="fw-bold py-3 mb-4">
   <span class="text-muted fw-light">Dashboard/</span> Data Bebas Pustaka
 </h4>
-<section id="ecommerce-header">
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="ecommerce-header-items">
-          <div class="view-options d-flex">
-            <div class="btn-group dropdown-sort">
-              <button
-                type="button"
-                class="btn btn-outline-primary dropdown-toggle me-1"
-                data-bs-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="true"
-              >
-                <span class="active-sorting">Volume</span>
-              </button>
-              <div class="dropdown-menu" id="book-category">
-                <!-- <a class="dropdown-item" href="#">Featured</a>
-                <a class="dropdown-item" href="#">Lowest</a>
-                <a class="dropdown-item" href="#">Highest</a> -->
-              </div>
-            </div>
-            
-          </div>
+<div class="card">
+    <div class=" dropdown-sort d-flex flex-row  align-items-center w-auto  ps-3 gap-2 pt-4">
+      <div>
+        <span class="active-sorting">Filter By :</span>
+        <button
+          type="button"
+          class="btn btn-outline-secondary fs-6 rounded-1 px-2 p-1 dropdown-toggle w-auto me-1"
+          data-bs-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="true"
+        >
+          <span class="selected">Prodi</span>
+        </button>
+        <div class="dropdown-menu" id="book-category">
+          
+        </div>
+      </div>
+      <div>
+        <button
+          type="button"
+          class="btn btn-outline-secondary fs-6 rounded-1 px-2 p-1 dropdown-toggle w-auto me-1"
+          data-bs-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="true"
+        >
+          <span class="selected-type">Type</span>
+        </button>
+        <div class="dropdown-menu" id="type">
+          <li><a class="dropdown-item" onclick="filteredByType('Skripsi')" href="#">Skripsi</a></li>
+          <li><a class="dropdown-item" onclick="filteredByType('Jurnal')"  href="#">Jurnal</a></li>
         </div>
       </div>
     </div>
-  </section>
-<div class="card-datatable table-responsive pt-0">
-  {{-- <button class="create-new btn btn-primary"><i class="ti ti-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Add New Book</span></button> --}}
-  <table class="datatables-basic table">
-    <thead>
-      <tr>
-        <th></th>
-        <th>No</th>
-        <th>Nama</th>
-        <th>Judul</th>
-        <th>Jurusan</th>
-        <th>Stambuk</th>
-        <th>Type</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-  </table>
+  <div class="card-datatable table-responsive pt-0">
+    
+    {{-- <button class="create-new btn btn-primary"><i class="ti ti-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Add New Book</span></button> --}}
+    <table class="datatables-basic table">
+      
+      <thead>
+        <tr>
+          <th></th>
+          <th>No</th>
+          <th>Nama</th>
+          <th>Judul</th>
+          <th>Jurusan</th>
+          <th>Stambuk</th>
+          <th>Type</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
 </div>
 <!-- DataTable with Buttons -->
 <div class="offcanvas offcanvas-end" id="add-new-record">
@@ -172,7 +181,7 @@
 @push('body-scripts')
 <script>
   function getCategory() {
-    fetch(`/api/book/category`, {
+    fetch(`{{asset('json/prodi.json')}}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -186,14 +195,15 @@
       dropdownMenu.innerHTML = '';
 
       // Add new dropdown items based on API response
-      data.data.forEach(category => {
+      data.prodi.forEach(category => {
         let listItem = document.createElement('li');
         let link = document.createElement('a');
         link.classList.add('dropdown-item');
         link.href = '#';
-        link.textContent = category.kategori_buku;
+        link.textContent = category;
         link.onclick = function() {
-          changeInput(category.kategori_buku);
+          changeInput(category);
+          filteredData(category);
         };
         listItem.appendChild(link);
         dropdownMenu.appendChild(listItem);
@@ -203,10 +213,15 @@
   }
 
   function changeInput(value) {
-    document.getElementById('kategori_buku').value = value;
+    // document.querySelector('.active-sorting').textContent = value;
+    document.querySelector('.selected').textContent = value;
   }
 
   getCategory();
+
+  function filteredByType(value) {
+    
+  }
 
   const judulInput = document.getElementById('judul');
   const penulisInput = document.getElementById('penulis');
@@ -413,7 +428,7 @@ function editItem(id){
         }
       ],
       order: [[1, 'desc']],
-      dom: '<"card-header flex-column flex-md-row"<"head-label text-center"><"dt-action-buttons text-end pt-3 pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
+      dom: '<" flex-column flex-md-row"<"head-label text-center"><"dt-action-buttons text-end pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
       displayLength: 7,
       lengthMenu: [7, 10, 25, 50, 75, 100],
       buttons: [
@@ -484,6 +499,18 @@ function editItem(id){
     });
   }
 });
+
+function filteredData(value){
+  if(value === 'All'){
+    $('.datatables-basic').DataTable().column(4).search('').draw();
+  }else{
+    $('.datatables-basic').DataTable().column(4).search(value).draw();
+  }
+}
+function filteredByType(value) {
+    $('.selected-type').text(value);
+    $('.datatables-basic').DataTable().column(6).search(value).draw();
+  }
 </script>
 @endpush
 @endsection

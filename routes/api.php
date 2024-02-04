@@ -67,3 +67,18 @@ Route::put('/users/profile-data/{id}',[DashboardController::class, 'changesProfi
 Route::put('/users/profile-password/{id}',[DashboardController::class, 'updatePassword']);
 Route::post('/users/profile-picture/{id}',[DashboardController::class, 'updateProfilePicture']);
 
+Route::get('/users/profile',[DashboardController::class, 'userSearch']);
+
+Route::post('/users/sumbangan',[DashboardController::class, 'createSumbangan']);
+Route::delete('/users/sumbangan',[DashboardController::class, 'deleteSumbangan']);
+
+Route::get('/users/sumbangan/get',[DashboardController::class, 'getDataSumbangan']);
+
+Route::get('/users/all',[DashboardController::class, 'getDataUser']);
+
+Route::delete('/users/delete/{id}',[DashboardController::class, 'deleteUsers']);
+
+Route::get('/users/staff',[DashboardController::class, 'dataStaff']);
+
+Route::post('/users/staff', [AuthController::class, 'createDataStaff']);
+

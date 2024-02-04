@@ -159,40 +159,52 @@
       "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
     },
     {
-      "url": "/dashboard",
-      "name": "Sumbangan",
-      "icon": "menu-icon tf-icons ti ti-heart",
-      "slug": "app-email",
-      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
-    },
-    {
       "url": "/admin/books",
-      "name": "Books Management",
+      "name": "Data Buku",
       "icon": "menu-icon tf-icons ti ti-books",
       "slug": "admin.books",
       "adminOnly":true,
-      "tes": "tes"
+      "pimpinan": true
     },
     {
       "url": "/admin/bebas-pinjam",
       "name": "Data Skbp1",
       "icon": "menu-icon tf-icons ti ti-clipboard-text",
       "slug": "admin.bebas-pinjam",
-      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+      "adminOnly":true,
+      "pimpinan": true
     },
     {
       "url": "/admin/skbp1/",
       "name": "Data Skbp2",
       "icon": "menu-icon tf-icons ti ti-layout",
       "slug": ["admin.skbp1","admin.skbp1.detail"],
-      "adminOnly":true
+      "adminOnly":true,
+      "pimpinan": true
+    },
+    {
+      "url": "/admin/sumbangan",
+      "name": "Data Sumbangan",
+      "icon": "menu-icon tf-icons ti ti-archive",
+      "slug": "admin.sumbangan",
+      "adminOnly":true,
+      "pimpinan": true
     },
     {
       "url": "/verification-code",
       "name": "Verification Code",
       "icon": "menu-icon tf-icons ti ti-layout",
       "slug": "skbp-verification-code",
-      "adminOnly":true
+      "adminOnly":true,
+      "pimpinan": true
+    },
+    {
+      "url": "/admin/data-users",
+      "name": "Data Anggota",
+      "icon": "menu-icon tf-icons ti ti-user-check",
+      "slug": "admin.data-users",
+      "adminOnly":true,
+      "pimpinan": true
     }
   ]
 }

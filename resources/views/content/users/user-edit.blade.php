@@ -111,26 +111,7 @@
   </div>
 </div>
       
-    <div>
-    <div class="card">
-      <h5 class="card-header">Change Password</h5>
-      <div class="card-body">
-        <div>
-            <div class="mb-3 col-md-6">
-                <label for="password" class="form-label">Password</label>
-                <input class="form-control" type="password" id="password" name="password"  placeholder="Masukkan Password" />
-            </div>
-            <div class="mb-3 col-md-6">
-                <label for="newpassword" class="form-label">New Password</label>
-                <input class="form-control" type="password" id="newpassword" name="newpassword"  placeholder="Masukkan Password Baru" />
-            </div>
-            <div class="mt-2">
-                <button type="submit" onclick="updatePassword()" class="btn btn-primary me-2">Save changes</button>
-              </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
 </div>
 
 @push('body-scripts')
@@ -149,7 +130,7 @@
 
   function getDetailsUser()
   {
-    fetch('/api/users/profile-data/{{auth()->user()->id}}')
+    fetch('/api/users/profile-data/{{request('id')}}')
     .then(response => {
       // Memeriksa status response
       if (!response.ok) {
@@ -178,7 +159,7 @@
 getDetailsUser();
 
 function updateForm(){
-    fetch('/api/users/profile-data/{{auth()->user()->id}}', {
+    fetch('/api/users/profile-data/{{request('id')}}', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -216,37 +197,6 @@ function updateForm(){
     });
 }
 
-function updatePassword(){
-    fetch('/api/users/profile-password/{{auth()->user()->id}}', {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      password: password.value,
-      newpassword: newpassword.value,
-    }),
-  })
-  .then(response => {
-    // Memeriksa status response
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json(); // Mengubah response menjadi JSON
-  })
-  .then(data => {
-    // Handle data yang diterima dari server
-    console.log('Password updated:', data);
-    // Lakukan apa yang perlu dilakukan dengan data, misalnya menampilkan pesan sukses
-    toastr.success('Password updated successfully');
-  })
-  .catch(error => {
-    // Handle error
-    console.error('Error during fetch operation:', error);
-    // Lakukan apa yang perlu dilakukan jika ada kesalahan, misalnya menampilkan pesan kesalahan
-    toastr.error('Error updating password: ' + error.message);
-  });
-}
 
 function changePicture(){
     const imgfileInput = document.getElementById('upload');
@@ -271,7 +221,7 @@ function changePicture(){
     }
     const form = new FormData();
     form.append("imgfile", selectedFile);
-    fetch('/api/users/profile-picture/{{auth()->user()->id}}', {
+    fetch('/api/users/profile-picture/{{request('id')}}', {
         method: 'POST',
         body: form
     }).then(response => {

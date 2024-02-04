@@ -15,6 +15,8 @@ use App\Models\Denda;
 use App\Models\User;
 use App\Models\UserDetail;
 use App\Models\ProfileImg;
+use App\Models\Sumbangan;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Illuminate\Routing\Route;
@@ -38,38 +40,43 @@ class DashboardController extends Controller
 
     public static function updatePinjam()
 {
-    $now = Carbon::now();
-    $hasUpdates = false;
-    
-    $data = PinjamBuku::where('status', 'pinjam')->get();
+        $now = Carbon::now();
+        $hasUpdates = false;
 
-    $data->each(function ($item) use ($now, &$hasUpdates) {
-        $expiredDate = Carbon::createFromTimestampMs(strtotime($item->expired_date + 0));
-        if ($expiredDate->isPast()) {
-            $update = PinjamBuku::where('id', $item->id)->update([
-                'status' => 'expired',
-            ]);
-            $denda = Denda::where('id_pinjam_buku', $item->id)->first();
+        $data = PinjamBuku::all();
 
-        if ($denda) {
-            if($denda->status !== 'paid'){    
-                $denda->update([
-                    'status' => 'unpaid',
-                    'denda' => $expiredDate->diffInDays($now) * 500,
-                ]);
-            } 
-        } else {
-            // Create Denda if it doesn't exist
-            $createDenda = Denda::create([
-                'id_pinjam_buku' => $item->id,
-                'status' => 'unpaid',
-                'denda' => $expiredDate->diffInDays($now) * 500,
-            ]);
-        }
-        }
-    });
+        $data->each(function ($item) use ($now, &$hasUpdates) {
+            $expiredDate = Carbon::createFromTimestampMs($item->expired_date + 0);
+            if ($expiredDate->isPast()) {
+                if ($item->status === 'pinjam') {
+                    $update = PinjamBuku::where('id', $item->id)->update([
+                        'status' => 'expired',
+                    ]);
+                }
+                $denda = Denda::where('id_pinjam_buku', $item->id)->first();
 
-    return $data;
+                if ($denda) {
+                    
+                    $bukuArray = explode(',', $item->id_buku);
+                    $jumlahBuku = count($bukuArray);
+                    if ($denda->status !== 'paid') {
+                        $denda->update([
+                            'status' => 'unpaid',
+                            'denda' => Carbon::parse($expiredDate)->startOfDay()->diffInDays($now->startOfDay()) * $jumlahBuku  * 500,
+                        ]);
+                    }
+                } else {
+                    // Create Denda if it doesn't exist
+                    $bukuArray = explode(',', $item->id_buku);
+                    $jumlahBuku = count($bukuArray);
+                    $createDenda = Denda::create([
+                        'id_pinjam_buku' => $item->id,
+                        'status' => 'unpaid',
+                        'denda' => Carbon::parse($expiredDate)->startOfDay()->diffInDays($now->startOfDay()) * $jumlahBuku  * 500,
+                    ]);
+                }
+            }
+        });
 }
     //
     public function BooksView()
@@ -184,7 +191,6 @@ class DashboardController extends Controller
 
     public function getDataBukuAdmin(Request $request)
     {
-        
         $data = Books::all();
         return response()->json(['data' => $data]);
     }
@@ -415,17 +421,33 @@ class DashboardController extends Controller
             'fakultas' => 'required',
             'ProgramStudi' => 'required',
         ]);
-        $data = UserDetail::where('user_id', $request->route('id'))->update([
-            'fullname' => $request->input('fullname'),
-            'ProgramStudi' => $request->input('ProgramStudi'),
-            'fakultas' => $request->input('fakultas'),
-            'telepon' => $request->input('telepon'),
-            'alamat' => $request->input('alamat'),
-            'stambuk' => $request->input('stambuk'),
-        ]);
 
-        $data2 = UserDetail::where('user_id', $request->route('id'))->first();
-        return response()->json(['data' => $data2]);
+        $userDetail = UserDetail::where('user_id', $request->route('id'))->first();
+
+        if ($userDetail) {
+            // Jika data sudah ada, update
+            $userDetail->update([
+                'fullname' => $request->input('fullname'),
+                'ProgramStudi' => $request->input('ProgramStudi'),
+                'fakultas' => $request->input('fakultas'),
+                'telepon' => $request->input('telepon'),
+                'alamat' => $request->input('alamat'),
+                'stambuk' => $request->input('stambuk'),
+            ]);
+        } else {
+            // Jika data belum ada, create
+            $userDetail = UserDetail::create([
+                'user_id' => $request->route('id'),
+                'fullname' => $request->input('fullname'),
+                'ProgramStudi' => $request->input('ProgramStudi'),
+                'fakultas' => $request->input('fakultas'),
+                'telepon' => $request->input('telepon'),
+                'alamat' => $request->input('alamat'),
+                'stambuk' => $request->input('stambuk'),
+            ]);
+        }
+
+        return response()->json(['data' => $userDetail]);
      }
 
     
@@ -501,5 +523,158 @@ class DashboardController extends Controller
         return view('content.skbp.verification-code');
     }
 
-  
+  function sumbanganView()
+  {
+      return view('content.users.sumbangan');
+  }
+
+  function userSearch(Request $request)
+  {
+        $query = $request->query('search');
+
+        $data = UserDetail::where(function ($queryBuilder) use ($query) {
+            $queryBuilder->where('fullname', 'like', '%' . $query . '%')
+                ->orWhere('stambuk', 'like', '%' . $query . '%');
+        })->get();
+      return response()->json(['data' => $data]);
+  }
+
+  function createSumbangan(Request $request)
+  {
+        $updateQuery = $request->query('update');
+        $id = $request->query('id');
+
+        // Jika parameter 'update' bernilai 'true', lakukan update
+        if ($updateQuery == 'true') {
+            // Logika update di sini
+            $idProfile = $request->input('id_profile');
+            $jumlah = $request->input('jumlah');
+            $kategori = $request->input('kategori');
+            $fullname = $request->input('fullname');
+            $idBuku = implode(',', $request->input('id_buku'));
+
+            // Lakukan proses update sesuai kebutuhan
+            Sumbangan::where('id', $id)->update([
+                'id_profile' => $idProfile,
+                'id_buku' => $idBuku,
+                'jumlah' => $jumlah,
+                'kategori' => $kategori,
+                'fullname' => $fullname,
+            ]);
+
+            return response()->json(['message' => 'Data updated successfully']);
+        } else {
+            // Jika parameter 'update' tidak diatur atau tidak sama dengan 'true', lakukan create
+            $data = Sumbangan::create([
+                'id_profile' => $request->input('id_profile'),
+                'id_buku' => implode(',', $request->input('id_buku')),
+                'jumlah' => $request->input('jumlah'),
+                'kategori' => $request->input('kategori'),
+                'fullname' => $request->input('fullname'),
+            ]);
+
+            return response()->json(['data' => $data]);
+        }
+  }
+
+  function getDataSumbangan(){
+      $data = Sumbangan::all();
+      $data2 = [];
+      
+      foreach ($data as $item) {
+        $findBook = Books::whereIn('id', explode(',', $item->id_buku))->get();
+        $findDetail = UserDetail::where('id', $item->id_profile)->first();
+        
+        $data2[] = [
+          'id' => $item->id,
+          'fullname' => $findDetail->fullname ?? $item->fullname,
+          'id_profile'=> $findDetail->id ?? $item->id_profile,
+          'buku' => $findBook,
+          'jumlah' => $item->jumlah,
+          'kategori' => $item->kategori
+        ];
+      };
+      return response()->json(['data' => $data2]);
+  }
+
+  function deleteSumbangan(Request $request)
+  {
+    $id = $request->query('id');
+    $data = Sumbangan::where('id', $id)->delete();
+    return response()->json(['data' => $data]);
+  }
+
+  function dataUsersView()
+  {
+      return view('content.users.users-data');
+  }
+
+    function getDataUser()
+    {
+        $roles = ['mahasiswa', 'dosen', 'alumni'];
+        $data = User::whereIn('role', $roles)->get();
+        $data2 = [];
+
+        foreach ($data as $item) {
+            $userDetail = UserDetail::where('user_id', $item->id)->first();
+            if(!$userDetail) continue;
+            $pp = ProfileImg::where('id_user', $item->id)->first();
+            $payment = Payment::where('id_users', $item->id)->first();
+            $data2[] = [
+                'id' => $userDetail->id,
+                'user_id' => $userDetail->user_id,
+                'fullname' => $userDetail->fullname,
+                'stambuk' => $userDetail->stambuk,
+                'img' => $pp->img ?? null,
+                'fakultas' => $userDetail->fakultas,
+                'prodi' => $userDetail->ProgramStudi,
+                'alamat' => $userDetail->alamat,
+                'telepon' => $userDetail->telepon,
+                'status' => $payment->status ?? null,
+                'role' => $item->role
+            ];
+        }
+
+        return response()->json(['data' => $data2]);
+    
+    }
+
+    function updateUsersView()
+    {
+        return view('content.users.user-edit');
+    }
+
+    function deleteUsers(Request $request)
+    {
+        $id = $request->route('id');
+        $data = UserDetail::where('user_id', $id)->delete();
+        $data2 = User::where('id', $id)->delete();
+        return response()->json(['data' => $data]);
+    }
+
+    function dataStaff()
+    {
+        $roles = ['admin', 'staff', 'pimpinan'];
+        $data = User::whereIn('role', $roles)->get();
+        $data2 = [];
+
+        foreach ($data as $item) {
+            $userDetail = UserDetail::where('user_id', $item->id)->first();
+            $profileImg = ProfileImg::where('id_user', $item->id)->first();
+            $data2[] = [
+                'id' => $userDetail->id,
+                'user_id' => $userDetail->user_id,
+                'fullname' => $userDetail->fullname,
+                'stambuk' => $userDetail->stambuk,
+                'img' => $profileImg->img ?? null,
+                'fakultas' => $userDetail->fakultas,
+                'prodi' => $userDetail->ProgramStudi,
+                'alamat' => $userDetail->alamat,
+                'telepon' => $userDetail->telepon,
+                'role' => $item->role,
+            ];
+        }
+
+        return response()->json(['data' => $data2]);
+    }
 }

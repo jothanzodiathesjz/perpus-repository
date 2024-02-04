@@ -16,7 +16,7 @@ class AdminArea
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth()->user()->role !== 'admin') {
+        if(auth()->user()->role !== 'admin' && auth()->user()->role !== 'pimpinan' && auth()->user()->role !== 'staff') {
             return redirect('/');
         }
         return $next($request);

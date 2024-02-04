@@ -37,12 +37,14 @@ class SkbpController extends Controller
                 $denda = Denda::where('id_pinjam_buku', $item->id)->first();
 
             if ($denda) {
-                if($denda->status !== 'paid'){    
-                    $denda->update([
-                        'status' => 'unpaid',
-                        'denda' => $expiredDate->diffInDays($now) * 500,
-                    ]);
-                }
+                    $bukuArray = explode(',', $item->id_buku);
+                    $jumlahBuku = count($bukuArray);
+                    if ($denda->status !== 'paid') {
+                        $denda->update([
+                            'status' => 'unpaid',
+                            'denda' => $expiredDate->diffInDays($now) * $jumlahBuku  * 500,
+                        ]);
+                    } 
             } else {
                 // Create Denda if it doesn't exist
                 $createDenda = Denda::create([
@@ -435,30 +437,35 @@ class SkbpController extends Controller
         // return response()->json(['data' => $map]);
    }
 
-   function dataBebasPinjam()
-   {
-    // $data = User::whereIn('role', ['mahasiswa', 'dosen', 'alumni'])->get();
+    function dataBebasPinjam()
+    {
         $data = PinjamBuku::selectRaw('id_user, GROUP_CONCAT(id) as ids, GROUP_CONCAT(id_buku) as id_bukus')
-        ->groupBy('id_user')
-        ->get();
+            ->groupBy('id_user')
+            ->get();
 
-        $map = $data->map(function ($item) {
+        $result = [];
+
+        foreach ($data as $item) {
             $dataUser = UserDetail::where('user_id', $item->id_user)->first();
-        return [
-        'id' => explode(',', $item->ids),
-        'user' => [
-            'name' => $dataUser->fullname,
-            'prodi' => $dataUser->ProgramStudi,
-            'stambuk' => $dataUser->stambuk,
-        ],
-        'total_book' => count(array_unique(explode(',', $item->id_bukus))),
-        'id_user' => $item->id_user
-        ];
-        });
 
-        return response()->json(['data' => $map]);
+            // Pemeriksaan apakah $dataUser null
+            if ($dataUser) {
+                $result[] = [
+                    'id' => explode(',', $item->ids),
+                    'user' => [
+                        'name' => $dataUser->fullname,
+                        'prodi' => $dataUser->ProgramStudi,
+                        'stambuk' => $dataUser->stambuk,
+                    ],
+                    'total_book' => count(explode(',', $item->id_bukus)),
+                    'id_user' => $item->id_user
+                ];
+            }
+        }
 
-   }
+        return response()->json(['data' => $result]);
+    }
+
 
    function bebasPinjamViewDetail(Request $request)
    {

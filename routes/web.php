@@ -258,16 +258,20 @@ Route::middleware(['session'])->group(function () {
     Route::get('/users-profile/{id}',[DashboardController::class, 'profileView'])->name('users-profile');
 
     Route::get('/verification-code',[DashboardController::class, 'validationCodeView'])->name('skbp-verification-code');
-
-
+    Route::get('/admin/skbp1/print/{id}', [SkbpController::class, 'skbp1PrintView'])->name('admin.skbp1-print');
+    Route::get('/admin/data-users', [DashboardController::class, 'dataUsersView'])->name('admin.data-users');
+    Route::get('/admin/data-users/{id}', [DashboardController::class, 'updateUsersView'])->name('admin.data-users.edit');
  
     Route::middleware(['adminarea'])->group(function () {
        Route::get('/admin/books',[AdminDashboard::class, 'BookListView'])->name('admin.books'); 
        Route::get('/admin/skbp1',[SkbpController::class, 'skbp1adminView'])->name('admin.skbp1'); 
        Route::get('/admin/skbp1/{id}',[SkbpController::class, 'skbp1detailView'])->name('admin.skbp1.detail'); 
        Route::get('/admin/skbp2/print/{id}',[SkbpController::class, 'skbp2PrintView'])->name('admin.skbp2-print');
-       Route::get('/admin/skbp1/print/{id}',[SkbpController::class, 'skbp1PrintView'])->name('admin.skbp1-print');
+       
        Route::get('/admin/bebas-pinjam',[SkbpController::class, 'bebasPinjamView'])->name('admin.bebas-pinjam');
        Route::get('/admin/bebas-pinjam/detail/{id}',[SkbpController::class, 'bebasPinjamViewDetail'])->name('admin.bebas-pinjam-detail');
+       Route::get('/admin/sumbangan',[DashboardController::class, 'sumbanganView'])->name('admin.sumbangan');
+
+      
     });
 });

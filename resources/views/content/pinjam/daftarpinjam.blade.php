@@ -86,6 +86,22 @@
               <div class="detail-amt fw-bolder" id="total-book">Rp {{$denda}}</div>
             </li>
           </ul>
+          @if ($denda > 0)
+            <hr />
+           <p>
+            Tolong Selesaikan Adminsitrasi 
+          </p>
+           <hr />
+          @endif
+           
+          <div class="price-details">
+          <ul class="list-unstyled">
+            <li class="price-detail">
+              <div class="detail-title detail-total">Action</div>
+              <a href="/admin/skbp1/print/1t1313?no=1"  class="btn btn-primary mt-3 w-100 btn-next place-order {{$denda > 0 ? 'disabled' : ''}}" id="btn-pinjam" {{$denda > 0 ? 'disabled' : ''}}  >Print bebas pinjam</a>
+            </li>
+          </ul>
+        </div>
           {{-- <button type="button" class="btn btn-primary w-100 btn-next place-order" id="btn-pinjam" data-bs-toggle="modal" data-bs-target="#animationModal">Pinjam Buku</button> --}}
         </div>
       </div>

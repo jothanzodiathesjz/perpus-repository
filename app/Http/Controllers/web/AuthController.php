@@ -55,6 +55,39 @@ class AuthController extends Controller
 
     }
 
+    public function createDataStaff(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|unique:users,username',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6',
+            'fullname' => 'required',
+            'telepon' => 'required',
+            'alamat' => 'required',
+            'role' => 'required',
+        ]);
+
+        $user = User::create([
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'role' => $request->role,
+        ]);
+        $userDetail = UserDetail::create([
+            'user_id' => $user->id,
+            'fullname' => $request->fullname,
+            'telepon' => $request->telepon,
+            'alamat' => $request->alamat,
+            'fakultas' => '-',
+            'ProgramStudi' => '-',
+            'stambuk' => '-',
+        ]);
+
+        return response()->json([
+            'message' => 'success',
+        ]);
+    }
+
     public function LoginAdminView(){
 
     }

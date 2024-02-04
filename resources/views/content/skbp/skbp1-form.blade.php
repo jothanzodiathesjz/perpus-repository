@@ -81,7 +81,7 @@
             </div>
             <div class="mb-3 col-12 col-lg-6">
               <label class="form-label" for="bs-validation-email">Stambuk</label>
-              <input type="email" id="stambuk" class="form-control" placeholder="Masukkan Stambuk" aria-label="john.doe" required />
+              <input type="email" id="stambuk" class="form-control" placeholder="Masukkan Stambuk" maxlength="13" aria-label="john.doe" required />
             </div>
           </div>
           <div class="row">

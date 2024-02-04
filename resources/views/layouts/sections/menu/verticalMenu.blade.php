@@ -91,7 +91,25 @@ $userRole = Auth::user()->role;
                         @include('layouts.sections.menu.submenu',['menu' => $menu->submenu])
                     @endisset
                 </li>
-            @elseif ($userRole !== 'admin' && !isset($menu->adminOnly))
+            @elseif ($userRole === 'pimpinan' && isset($menu->adminOnly))
+                {{-- Tampilkan menu yang bukan hanya untuk admin --}}
+                <li class="menu-item {{$activeClass}}">
+                    <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}" class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}" @if (isset($menu->target) and !empty($menu->target)) target="_blank" @endif>
+                        @isset($menu->icon)
+                            <i class="{{ $menu->icon }}"></i>
+                        @endisset
+                        <div>{{ isset($menu->name) ? __($menu->name) : '' }}</div>
+                        @isset($menu->badge)
+                            <div class="badge bg-label-{{ $menu->badge[0] }} rounded-pill ms-auto">{{ $menu->badge[1] }}</div>
+                        @endisset
+                    </a>
+
+                    {{-- submenu --}}
+                    @isset($menu->submenu)
+                        @include('layouts.sections.menu.submenu',['menu' => $menu->submenu])
+                    @endisset
+                </li>
+            @elseif ($userRole !== 'admin' && $userRole !== 'pimpinan' && !isset($menu->adminOnly))
                 {{-- Tampilkan menu yang bukan hanya untuk admin --}}
                 <li class="menu-item {{$activeClass}}">
                     <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}" class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}" @if (isset($menu->target) and !empty($menu->target)) target="_blank" @endif>
