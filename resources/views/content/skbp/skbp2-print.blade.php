@@ -223,7 +223,7 @@ pdf2htmlEX.defaultViewer = new pdf2htmlEX.Viewer({});
         <div class="t m0 x3 h5 yc ff1 fs2 fc0 sc0 ls0 ws0"> <span class="_ _8"></span>ses<span class="_ _1"></span>u<span class="_ _1"></span>ai<span class="_ _4"></span> kebu<span class="_ _1"></span>t<span class="_ _2"></span>u<span class="_ _a"></span>h<span class="_ _1"></span>an<span class="_ _a"></span>. D<span class="_ _2"></span>an<span class="_ _a"></span> te<span class="_ _2"></span>l<span class="_ _4"></span>ah<span class="_ _a"></span> m<span class="_ _a"></span>en<span class="_ _a"></span>y<span class="_ _1"></span>et<span class="_ _2"></span>or<span class="_ _2"></span> 1 (<span class="_ _2"></span>Sat<span class="_ _2"></span>u<span class="_ _a"></span>) ex<span class="_ _a"></span>em<span class="_ _4"></span>pl<span class="_ _4"></span>ar t<span class="_ _1"></span>u<span class="_ _1"></span>g<span class="_ _a"></span>as akh<span class="_ _a"></span>i<span class="_ _4"></span>r (<span class="_ _2"></span>Skri<span class="_ _4"></span>psi<span class="_ _4"></span>)<span class="_ _2"></span> den<span class="_ _a"></span>g<span class="_ _a"></span>an<span class="_ _1"></span>  j<span class="_ _2"></span>u<span class="_ _a"></span>du<span class="_ _1"></span>l<span class="_ _4"></span> :<span class="_ _a"></span> </div>
         <div id="judul" class="t m0 x4 h5 yd ff1 fs2 fc0 sc0 ls0 ws0"> <span class="_ _8"></span>“<span class="_ _a"></span>  </div>
         <div class="t m0 x3 h5 y10 ff1 fs2 fc0 sc0 ls0 ws0"> <span class="_ _8"></span>D<span class="_ _1"></span>em<span class="_ _a"></span>i<span class="_ _4"></span>ki<span class="_ _4"></span>an<span class="_ _1"></span> su<span class="_ _a"></span>ra<span class="_ _2"></span>t<span class="_ _2"></span> ket<span class="_ _1"></span>eran<span class="_ _4"></span>g<span class="_ _1"></span>an<span class="_ _a"></span> i<span class="_ _a"></span>n<span class="_ _1"></span>i<span class="_ _4"></span> kam<span class="_ _4"></span>i<span class="_ _4"></span> beri<span class="_ _4"></span>kan<span class="_ _a"></span> u<span class="_ _1"></span>n<span class="_ _a"></span>tu<span class="_ _4"></span>k di<span class="_ _a"></span>g<span class="_ _1"></span>u<span class="_ _a"></span>n<span class="_ _1"></span>akan<span class="_ _a"></span> seper<span class="_ _1"></span>l<span class="_ _a"></span>u<span class="_ _a"></span>n<span class="_ _1"></span>y<span class="_ _1"></span>a. </div>
-        <div class="t m0 x6 h5 y11 ff1 fs2 fc0 sc0 ls0 ws0"> <span class="_ _8"></span>Maka<span class="_ _2"></span>ss<span class="_ _2"></span>ar<span class="_ _4"></span>,  21 O<span class="_ _7"></span>kt<span class="_ _2"></span>ober<span class="_ _1"></span> 2022 </div>
+        <div class="t m0 x6 h5 y11 ff1 fs2 fc0 sc0 ls0 ws0"> <span class="_ _8"></span>Maka<span class="_ _2"></span>ss<span class="_ _2"></span>ar<span class="_ _4"></span>,  <span id="tanggal_sekarang"></span> </div>
         <div class="t m0 x6 h5 y12 ff1 fs2 fc0 sc0 ls0 ws0"> <span class="_ _8"></span>K<span class="_ _7"></span>epa<span class="_ _2"></span>l<span class="_ _4"></span>a Perpu<span class="_ _4"></span>st<span class="_ _2"></span>akaan<span class="_ _4"></span> UKIP </div>
         <div class="t m0 x6 h5 y13 ff1 fs2 fc0 sc0 ls0 ws0"> <span class="_ _8"></span>E<span class="_ _1"></span>l<span class="_ _4"></span>i<span class="_ _a"></span>z<span class="_ _a"></span>abet<span class="_ _2"></span>h<span class="_ _a"></span>, ST<span class="_ _4"></span>,  MT<span class="_ _14"></span>. </div>
         <div class="t m0 x6 h5 y14 ff1 fs2 fc0 sc0 ls0 ws0"> <span class="_ _8"></span>N<span class="_ _7"></span>I<span class="_ _2"></span>D<span class="_ _1"></span>N<span class="_ _7"></span>. 0930056501 </div>
@@ -252,8 +252,20 @@ pdf2htmlEX.defaultViewer = new pdf2htmlEX.Viewer({});
     var fakultas = document.getElementById('fakultas');
     var jurusan = document.getElementById('jurusan');
     var alamat = document.getElementById('alamat');
+    var noregis = document.getElementById('noregis');
+    var tanggal_sekarang = document.getElementById('tanggal_sekarang');
 
+    var bulans = [
+      "Januari", "Februari", "Maret", "April",
+      "Mei", "Juni", "Juli", "Agustus",
+      "September", "Oktober", "November", "Desember"
+    ];
 
+    var hari = currentDate.getDate();
+    var bulang = bulans[currentDate.getMonth()];
+    var tahung = currentDate.getFullYear();
+    var formattedDate = hari + ' ' + bulang + ' ' + tahung;
+    tanggal_sekarang.innerHTML = formattedDate;
     function generateHtmlFromText(text) {
         let htmlCode = '<div class="t m0 x5 h5 ye ff1 fs2 fc0 sc0 ls0 ws0">';
   
@@ -325,6 +337,7 @@ pdf2htmlEX.defaultViewer = new pdf2htmlEX.Viewer({});
       fakultas.innerHTML = data.data.record.fakultas;
       jurusan.innerHTML = data.data.record.jurusan;
       alamat.innerHTML = data.data.record.alamat;
+      noregis.innerHTML = data.data.record.id_user.substring(0,8).toUpperCase();
       parentContent.innerHTML = generateText(`"${data.data.record.judul}"`);
     })
     .catch(error => {

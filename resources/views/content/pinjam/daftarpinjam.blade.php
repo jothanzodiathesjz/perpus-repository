@@ -98,7 +98,7 @@
           <ul class="list-unstyled">
             <li class="price-detail">
               <div class="detail-title detail-total">Action</div>
-              <a href="/admin/skbp1/print/1t1313?no=1"  class="btn btn-primary mt-3 w-100 btn-next place-order {{$denda > 0 ? 'disabled' : ''}}" id="btn-pinjam" {{$denda > 0 ? 'disabled' : ''}}  >Print bebas pinjam</a>
+              <a href="/admin/skbp1/print/{{auth()->user()->id}}?no=1"  class="btn btn-primary mt-3 w-100 btn-next place-order {{$denda > 0 ? 'disabled' : ''}}" id="btn-pinjam" {{$denda > 0 ? 'disabled' : ''}}  >Print bebas pinjam</a>
             </li>
           </ul>
         </div>

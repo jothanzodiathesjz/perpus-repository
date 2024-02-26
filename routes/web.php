@@ -218,42 +218,40 @@ Route::post('/login/admin/store',[AuthController::class, 'adminLogin'])->name('l
 Route::post('/logout',[AuthController::class, 'Logout'])->name('logout');
 Route::get('/auth/admin/login', $controller_path . '\authentications\LoginBasic@index')->name('auth-login-basic');
 
+Route::get('/dashboard',function(){
+    return view('content.dashboard.dashboard');
+})->name('dashboard');
+
+Route::get('/books',[DashboardController::class, 'BooksView'])->name('books');
+Route::get('/books/hukum',[DashboardController::class, 'BooksHukum'])->name('books.hukum');
+Route::get('/books/teknologi/{id}',[DashboardController::class, 'BooksView'])->name('books.teknologi');
+
+Route::get('/jurnal/sipil',[SkbpController::class, 'JurnalSipilView'])->name('jurnal.sipil');
+Route::get('/jurnal/informatika',[SkbpController::class, 'JurnalInformatikaView'])->name('jurnal.informatika');
+Route::get('/jurnal/mesin',[SkbpController::class, 'JurnalMesinView'])->name('jurnal.mesin');
+Route::get('/jurnal/kimia',[SkbpController::class, 'JurnalKimiaView'])->name('jurnal.kimia');
+Route::get('/jurnal/elektro',[SkbpController::class, 'JurnalElektroView'])->name('jurnal.elektro');
+Route::get('/jurnal/akuntansi',[SkbpController::class, 'JurnalAkuntansiView'])->name('jurnal.akuntansi');
+Route::get('/jurnal/hukum',[SkbpController::class, 'JurnalHukumView'])->name('jurnal.hukum');
+Route::get('/jurnal/manajemen',[SkbpController::class, 'JurnalManajemenView'])->name('jurnal.manajemen');
+Route::get('/jurnal/content/{id}',[SkbpController::class, 'jurnalContentView'])->name('jurnal.content');
+
+
+Route::get('/skripsi/content/{id}',[SkbpController::class, 'skripsiContentView'])->name('skripsi.content');
+Route::get('/skripsi/manajemen',[SkbpController::class, 'skripsimanajemenView'])->name('skripsi.manajemen');
+Route::get('/skripsi/sipil',[SkbpController::class, 'skripsisipilView'])->name('skripsi.sipil');
+Route::get('/skripsi/informatika',[SkbpController::class, 'skripsiinformatikaView'])->name('skripsi.informatika');
+Route::get('/skripsi/mesin',[SkbpController::class, 'skripsimesinView'])->name('skripsi.mesin');
+Route::get('/skripsi/kimia',[SkbpController::class, 'skripsikimiaView'])->name('skripsi.kimia');
+Route::get('/skripsi/elektro',[SkbpController::class, 'skripsielektroView'])->name('skripsi.elektro');
+Route::get('/skripsi/akuntansi',[SkbpController::class, 'skripsiakuntansiView'])->name('skripsi.akuntansi');
+Route::get('/skripsi/hukum',[SkbpController::class, 'skripsihukumView'])->name('skripsi.hukum');
 Route::middleware(['session'])->group(function () {
-    Route::get('/dashboard',function(){
-        return view('content.dashboard.dashboard');
-    })->name('dashboard');
 
-    Route::get('/books',[DashboardController::class, 'BooksView'])->name('books');
-    Route::get('/books/hukum',[DashboardController::class, 'BooksHukum'])->name('books.hukum');
-    Route::get('/books/teknologi/{id}',[DashboardController::class, 'BooksView'])->name('books.teknologi');
-    Route::get('/books/checkout',[DashboardController::class, 'checkoutView'])->name('checkout');
-    Route::get('/daftarpinjam',[DashboardController::class, 'DaftarPinjamView'])->name('daftarpinjam');
-    Route::group(['middleware' => 'adminarea'], function () {
-        
-    });
-    Route::get('/jurnal/sipil',[SkbpController::class, 'JurnalSipilView'])->name('jurnal.sipil');
-    Route::get('/jurnal/informatika',[SkbpController::class, 'JurnalInformatikaView'])->name('jurnal.informatika');
-    Route::get('/jurnal/mesin',[SkbpController::class, 'JurnalMesinView'])->name('jurnal.mesin');
-    Route::get('/jurnal/kimia',[SkbpController::class, 'JurnalKimiaView'])->name('jurnal.kimia');
-    Route::get('/jurnal/elektro',[SkbpController::class, 'JurnalElektroView'])->name('jurnal.elektro');
-    Route::get('/jurnal/akuntansi',[SkbpController::class, 'JurnalAkuntansiView'])->name('jurnal.akuntansi');
-    Route::get('/jurnal/hukum',[SkbpController::class, 'JurnalHukumView'])->name('jurnal.hukum');
-    Route::get('/jurnal/manajemen',[SkbpController::class, 'JurnalManajemenView'])->name('jurnal.manajemen');
-    Route::get('/jurnal/content/{id}',[SkbpController::class, 'jurnalContentView'])->name('jurnal.content');
-    
-    Route::get('/skripsi/content/{id}',[SkbpController::class, 'skripsiContentView'])->name('skripsi.content');
-    Route::get('/skripsi/manajemen',[SkbpController::class, 'skripsimanajemenView'])->name('skripsi.manajemen');
-    Route::get('/skripsi/sipil',[SkbpController::class, 'skripsisipilView'])->name('skripsi.sipil');
-    Route::get('/skripsi/informatika',[SkbpController::class, 'skripsiinformatikaView'])->name('skripsi.informatika');
-    Route::get('/skripsi/mesin',[SkbpController::class, 'skripsimesinView'])->name('skripsi.mesin');
-    Route::get('/skripsi/kimia',[SkbpController::class, 'skripsikimiaView'])->name('skripsi.kimia');
-    Route::get('/skripsi/elektro',[SkbpController::class, 'skripsielektroView'])->name('skripsi.elektro');
-    Route::get('/skripsi/akuntansi',[SkbpController::class, 'skripsiakuntansiView'])->name('skripsi.akuntansi');
-    Route::get('/skripsi/hukum',[SkbpController::class, 'skripsihukumView'])->name('skripsi.hukum');
-
-
+    Route::get('/books/checkout', [DashboardController::class, 'checkoutView'])->name('checkout');
+    Route::get('/daftarpinjam', [DashboardController::class, 'DaftarPinjamView'])->name('daftarpinjam');
     Route::get('/form-pustaka',[SkbpController::class, 'skbp1FormView'])->name('skbp1-form');
-
+    Route::get('/pustaka-user', [SkbpController::class, 'PustakaUserView'])->name('pustaka.user');
 
     Route::get('/users-profile/{id}',[DashboardController::class, 'profileView'])->name('users-profile');
 
@@ -261,12 +259,12 @@ Route::middleware(['session'])->group(function () {
     Route::get('/admin/skbp1/print/{id}', [SkbpController::class, 'skbp1PrintView'])->name('admin.skbp1-print');
     Route::get('/admin/data-users', [DashboardController::class, 'dataUsersView'])->name('admin.data-users');
     Route::get('/admin/data-users/{id}', [DashboardController::class, 'updateUsersView'])->name('admin.data-users.edit');
+    Route::get('/admin/skbp2/print/{id}',[SkbpController::class, 'skbp2PrintView'])->name('admin.skbp2-print');
+    Route::get('/admin/skbp1/{id}',[SkbpController::class, 'skbp1detailView'])->name('admin.skbp1.detail'); 
  
     Route::middleware(['adminarea'])->group(function () {
        Route::get('/admin/books',[AdminDashboard::class, 'BookListView'])->name('admin.books'); 
        Route::get('/admin/skbp1',[SkbpController::class, 'skbp1adminView'])->name('admin.skbp1'); 
-       Route::get('/admin/skbp1/{id}',[SkbpController::class, 'skbp1detailView'])->name('admin.skbp1.detail'); 
-       Route::get('/admin/skbp2/print/{id}',[SkbpController::class, 'skbp2PrintView'])->name('admin.skbp2-print');
        
        Route::get('/admin/bebas-pinjam',[SkbpController::class, 'bebasPinjamView'])->name('admin.bebas-pinjam');
        Route::get('/admin/bebas-pinjam/detail/{id}',[SkbpController::class, 'bebasPinjamViewDetail'])->name('admin.bebas-pinjam-detail');

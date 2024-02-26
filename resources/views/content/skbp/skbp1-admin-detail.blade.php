@@ -82,41 +82,81 @@
           <tr>
             <th>Item</th>
             <th>File</th>
+            @if (auth()->user()->role == 'admin') 
             <th>Publish</th>
+            @endif
           </tr>
         </thead>
         <tbody>
           <tr>
             <td class="text-nowrap">Bab1</td>
             <td><a id="bab1"><i class="text-primary ti ti-eye"></i></a></td>
+            @if (auth()->user()->role == 'admin')   
             <td><div id="checkBab1" data-bab="bab1" class="form-check form-switch">
               <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
               <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch to publish the file</label>
             </div></td>
+            @endif
           </tr>
           <tr>
             <td class="text-nowrap">Bab2</td>
             <td><a id="bab2"><i class="text-primary ti ti-eye"></i></a></td>
+            @if (auth()->user()->role == 'admin') 
             <td><div id="checkBab2" data-bab="bab2" class="form-check form-switch">
               <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
               <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch to publish the file</label>
             </div></td>
+            @endif
           </tr>
           <tr>
             <td class="text-nowrap">Bab3</td>
             <td><a id="bab3" ><i class="text-primary ti ti-eye"></i></a></td>
+            @if (auth()->user()->role == 'admin') 
             <td><div id="checkBab3" data-bab="bab3" class="form-check form-switch">
               <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
               <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch to publish the file</label>
             </div></td>
+            @endif
+          </tr>
+          <tr id="rowbab4">
+            <td class="text-nowrap">Bab4</td>
+            <td><a id="bab4" ><i class="text-primary ti ti-eye"></i></a></td>
+            @if (auth()->user()->role == 'admin') 
+            <td><div id="checkBab4" data-bab="bab4" class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+              <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch to publish the file</label>
+            </div></td>
+            @endif
+          </tr>
+          <tr id="rowconclusion">
+            <td class="text-nowrap">Conclusion</td>
+            <td><a id="conclusion" ><i class="text-primary ti ti-eye"></i></a></td>
+            @if (auth()->user()->role == 'admin') 
+            <td><div id="checkConclusion" data-bab="conclusion" class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+              <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch to publish the file</label>
+            </div></td>
+            @endif
+          </tr>
+          <tr id="rowreference">
+            <td class="text-nowrap">Reference</td>
+            <td><a id="reference" ><i class="text-primary ti ti-eye"></i></a></td>
+            @if (auth()->user()->role == 'admin') 
+            <td><div id="checkReference" data-bab="reference" class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
+              <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch to publish the file</label>
+            </div></td>
+            @endif
           </tr>
           <tr>
             <td class="text-nowrap">Fulltext</td>
             <td><a id="fulltext" ><i class="text-primary ti ti-eye"></i></a></td>
+            @if (auth()->user()->role == 'admin') 
             <td><div id="checkfulltext" data-bab="fulltext" class="form-check form-switch">
               <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked">
               <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch to publish the file</label>
             </div></td>
+            @endif
           </tr>
           <tr>
             <td class="text-nowrap">Cover</td>
@@ -148,12 +188,18 @@
  var bab1 = $("#bab1");
  var bab2 = $("#bab2");
  var bab3 = $("#bab3");
+ var bab4 = $("#bab4");
+ var conclusion = $("#conclusion");
+ var reference = $("#reference");
  var fulltext = $("#fulltext");
  var sampul = $("#sampul");
  var turnitin = $("#turnitin");
  var checkBab1 = $("#checkBab1");
  var checkBab2 = $("#checkBab2");
  var checkBab3 = $("#checkBab3");
+ var checkBab4 = $("#checkBab4");
+ var checkConclusion = $("#checkConclusion");
+ var checkReference = $("#checkReference");
  var checkFulltext = $("#checkfulltext");
  var print = $("#print");
 console.log('{{request()->query('no')}}')
@@ -198,6 +244,9 @@ console.log('{{request()->query('no')}}')
       setHref(bab1,'#checkBab1', data?.bab1?.url,data?.bab1?.status);
       setHref(bab2,'#checkBab2', data?.bab2?.url,data?.bab2?.status);
       setHref(bab3,'#checkBab3', data?.bab3?.url,data?.bab3?.status);
+      setHref(bab4,'#checkBab4', data?.bab4?.url,data?.bab4?.status);
+      setHref(conclusion,'#checkConclusion', data?.conclusion?.url,data?.conclusion?.status);
+      setHref(reference,'#checkReference', data?.reference?.url,data?.reference?.status);
       setHref(fulltext,'#checkfulltext', data?.fulltext?.url,data?.fulltext?.status);
       setHref(sampul,null, data?.sampul,null);
       setHref(turnitin,null, data?.turnitin,null);

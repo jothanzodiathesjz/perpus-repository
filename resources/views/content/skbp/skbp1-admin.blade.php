@@ -338,6 +338,7 @@ function editItem(id){
     $('.datatables-basic').DataTable().ajax.reload();
   }
 
+  var role = '{{auth()->user()->role}}'
   $(function() {
 
   var dt_basic_table = $('.datatables-basic');
@@ -420,8 +421,9 @@ function editItem(id){
           orderable: false,
           searchable: false,
           render: function (data, type, full, meta) {
+            var deleteBtn = role == 'admin' ? ` <a href="javascript:;" onclick="deleteItem('${full.id}')" class="btn btn-sm btn-icon" ><i class="text-primary ti ti-trash"></i></a>` : '<span>-</span>';
             return (
-              `<a href="javascript:;" onclick="deleteItem('${full.id}')" class="btn btn-sm btn-icon" ><i class="text-primary ti ti-trash"></i></a>` + 
+              deleteBtn + 
               `<a href="/admin/skbp1/${full.id}?no=${meta.row + 1}" class="btn btn-sm btn-icon item-edit"><i class="text-primary ti ti-eye"></i></a>`
             );
           }

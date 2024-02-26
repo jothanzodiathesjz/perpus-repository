@@ -48,6 +48,7 @@ Route::get('/skbp1/get',[SkbpController::class, 'getSbkp1']);
 Route::get('/skbp1/get/{id}',[SkbpController::class, 'skbp1detail']);
 Route::post('/skbp1/setfileshow/{id}',[SkbpController::class, 'setFileShow']);
 Route::delete('/pustaka/delete/{id}',[SkbpController::class, 'deletePustaka']);
+Route::get('/pustaka/{id}',[SkbpController::class, 'dataPustakaWithUser']);
 
 
 Route::get('/skbp1/setfileshow',[SkbpController::class, 'setFileShow']);
@@ -82,3 +83,4 @@ Route::get('/users/staff',[DashboardController::class, 'dataStaff']);
 
 Route::post('/users/staff', [AuthController::class, 'createDataStaff']);
 
+Route::get('/dashboard/data-count', [DashboardController::class, 'dataCount']);

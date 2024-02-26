@@ -344,35 +344,37 @@ class DashboardController extends Controller
      {
         $update = $this->updatePinjam();
         $idUser = Auth::user()->id;
-        $data = PinjamBuku::where('id_user', $idUser)->get();
+        $data = PinjamBuku::where('id_user', $idUser)
+            ->orderBy('created_at', 'desc') // Urutkan data berdasarkan created_at secara descending
+            ->get();
         $data2 = $data->map(function ($item) {
             $buku = Books::whereIn('id', explode(',', $item->id_buku))
-            ->select('id', 'judul','penulis','tahun_publikasi','imgfile','kategori_buku')
-            ->get();
+                ->select('id', 'judul', 'penulis', 'tahun_publikasi', 'imgfile', 'kategori_buku')
+                ->get();
             return [
                 'id' => $item->id,
-                'books'=> $buku,
-                'id_user'=> $item->id_user,
-                'tanggal_pinjam'=> $item->tanggal_pinjam,
-                'tanggal_kembali'=> $item->tanggal_kembali,
-                'nama_lengkap'=> $item->nama_lengkap,
-                'status'=> $item->status,
-                'expired_date'=> $item->expired_date,
-                'count_book'=> count($buku)
+                'books' => $buku,
+                'id_user' => $item->id_user,
+                'tanggal_pinjam' => $item->tanggal_pinjam,
+                'tanggal_kembali' => $item->tanggal_kembali,
+                'nama_lengkap' => $item->nama_lengkap,
+                'status' => $item->status,
+                'expired_date' => $item->expired_date,
+                'count_book' => count($buku)
             ];
         });
         $data3 = $data->map(function ($item) {
             $denda = Denda::where('id_pinjam_buku', $item->id)
-            ->where('status', 'unpaid')
-            ->get();
+                ->where('status', 'unpaid')
+                ->get();
             return [
-                'denda'=> $denda->sum('denda'),
+                'denda' => $denda->sum('denda'),
             ];
         });
-            return view('content.pinjam.daftarpinjam', [
-                'data' => $data2,
-                'denda' => $data3->sum('denda')
-            ]);
+        return view('content.pinjam.daftarpinjam', [
+            'data' => $data2,
+            'denda' => $data3->sum('denda')
+        ]);
      }
 
      public function getDataPinjamByUser(Request $request )
@@ -676,5 +678,20 @@ class DashboardController extends Controller
         }
 
         return response()->json(['data' => $data2]);
+    }
+
+    function dataCount()
+    {
+        $users = User::count();
+        $books = Books::count();
+        $jurnal = Skbp1::where('type', 'jurnal')->count();
+        $skripsi = Skbp1::where('type', 'skripsi')->count();
+
+        return response()->json([
+            'message' => 'success',
+            'users' => $users, 
+            'books' => $books, 
+            'jurnal' => $jurnal, 
+            'skripsi' => $skripsi]);
     }
 }

@@ -49,6 +49,7 @@ $navbarDetached = ($navbarDetached ?? '');
         <ul class="navbar-nav flex-row align-items-center ms-auto">
 
           <!-- Notification -->
+          @if ( session()->has('id_users') && Auth::user()->role != 'alumni') 
           <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
             <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
               <i class="ti ti-shopping-cart ti-md"></i>
@@ -90,6 +91,7 @@ $navbarDetached = ($navbarDetached ?? '');
               </li>
             </ul>
           </li>
+          @endif
           <!--/ Notification -->
 
           <!-- Style Switcher -->
@@ -129,7 +131,9 @@ $navbarDetached = ($navbarDetached ?? '');
                         John Doe
                         @endif
                       </span>
+                      @if(session()->has('id_users'))
                       <small class="text-muted">{{Auth::user()->role}}</small>
+                      @endif
                     </div>
                   </div>
                 </a>
@@ -137,12 +141,15 @@ $navbarDetached = ($navbarDetached ?? '');
               <li>
                 <div class="dropdown-divider"></div>
               </li>
+
+              @if(session()->has('id_users'))
               <li>
                 <a class="dropdown-item" href="/users-profile/{{ Auth::user()->id }}">
                   <i class="ti ti-user-check me-2 ti-sm"></i>
                   <span class="align-middle">My Profile</span>
                 </a>
               </li>
+              @endif
               {{-- Below commented code read by artisan command while installing jetstream. !! Do not remove if you want to use jetstream. --}}
 
               {{-- <x-jet-switchable-team :team="$team" /> --}}
@@ -162,7 +169,7 @@ $navbarDetached = ($navbarDetached ?? '');
               </form>
               @else
               <li>
-                <a class="dropdown-item" href="{{ 'javascript:void(0)' }}">
+                <a class="dropdown-item" href="/auth/login-cover">
                   <i class='ti ti-login me-2'></i>
                   <span class="align-middle">Login</span>
                 </a>
@@ -184,6 +191,7 @@ $navbarDetached = ($navbarDetached ?? '');
     @endif
   </nav>
   <!-- / Navbar -->
+  @if(session()->has('id_users'))
   <script>
     var notificationList = []
     function getNotification() {
@@ -243,3 +251,4 @@ function getProfilePicture() {
 }
 getProfilePicture()
   </script>
+@endif

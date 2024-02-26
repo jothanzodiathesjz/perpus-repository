@@ -143,7 +143,7 @@
 @push('body-scripts')
 <script> 
 
-
+  var role = '{{auth()->user()->role}}'
   function addNewRecord() {
     const form = new FormData();
     form.append("imgfile", imgfileInput.files[0]);
@@ -389,6 +389,7 @@ function editItem(id,data){
           targets: -1,
           title: 'Actions',
           orderable: false,
+          visible: role == 'admin' ? true : false,
           searchable: false,
           render: function (data, type, full, meta) {
             return (
@@ -588,6 +589,7 @@ function editItem(id,data){
           title: 'Actions',
           orderable: false,
           searchable: false,
+          visible: role === 'admin' ? true : false, 
           render: function (data, type, full, meta) {
             return (
               `<a href="javascript:;" onclick="deleteItem('${full.user_id}')" class="btn btn-sm btn-icon" ><i class="text-primary ti ti-trash"></i></a>` + 
@@ -634,7 +636,7 @@ function editItem(id,data){
         },
         {
           text: '<i class="ti ti-plus me-1"></i> Add New User',
-          className: 'create-new btn btn-primary',
+          className: role === 'admin' ? 'create-new btn btn-primary' : 'd-none',
           attr: {
             'data-bs-toggle': 'modal',
             'data-bs-target': '#editUser',

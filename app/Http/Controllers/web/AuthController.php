@@ -285,7 +285,7 @@ class AuthController extends Controller
                 'username' => $request->username,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
-                'role' => 'mahasiswa',
+                'role' => 'alumni',
             ]);
                 $userDetail = UserDetail::create([
                     'user_id' => $user->id,

@@ -44,7 +44,9 @@
   <span class="text-muted fw-light">Dashboard /</span> Data Buku
 </h4>
 <div class="card-datatable table-responsive pt-0">
+  @if (auth()->user()->role == 'admin') 
   <button class="create-new btn btn-primary"><i class="ti ti-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Add New Book</span></button>
+  @endif
   <table class="datatables-basic table">
     <thead>
       <tr>
@@ -142,6 +144,63 @@
     </div>
 
   </div>
+  <div class="modal fade" id="editUser" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-simple modal-edit-user">
+    <div class="modal-content p-3 p-md-5">
+      <div class="modal-body">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="text-center mb-4">
+          <h3 class="mb-2">Tambah Staff dan Pimpinan</h3>
+        </div>
+          <div id="formAccountSettings" method="POST" onsubmit="return false">
+            <div class="row">
+              <div class="mb-3 col-md-6">
+                <label for="username" class="form-label">Username</label>
+                <input class="form-control" type="text" id="username" name="username"  placeholder="Masukkan Nama" />
+              </div>
+              <div class="mb-3 col-md-6">
+                <label for="password" class="form-label">Password</label>
+                <input class="form-control" type="password" id="password" name="password"  placeholder="Masukkan Nama" />
+              </div>
+              <div class="mb-3 col-md-6">
+                <label for="email" class="form-label">Email</label>
+                <input class="form-control" type="email" id="email" name="email"  placeholder="Masukkan Nama" />
+              </div>
+              <div class="mb-3 col-md-6">
+                <label for="fullname" class="form-label">Nama Lengkap</label>
+                <input class="form-control" type="text" id="fullname" name="fullname"  placeholder="Masukkan ALamat" />
+              </div>
+              <div class="mb-3 col-md-6">
+                <label for="alamat" class="form-label">Alamat</label>
+                <input class="form-control" type="text" id="alamat" name="alamat"  placeholder="Masukkan ALamat" />
+              </div>
+              <div class="mb-3 col-md-6">
+                <label class="form-label" for="telepon">Telepone</label>
+                <div class="input-group input-group-merge">
+                  <span class="input-group-text">ID (+62)</span>
+                  <input type="text" id="telepon" name="telepon" class="form-control"  />
+                </div>
+              </div>
+              <div class="mb-3 col-md-6">
+                <label class="form-label" for="role">Role</label>
+                <select id="role" class="select2 form-select">
+                  <option value="">Select</option>
+                  <option value="admin">Admin</option>
+                  <option value="staff">Staff</option>
+                  <option value="pimpinan">Pimpinan</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 text-center">
+             <input type="hidden" id="idsumbangan" />
+            <button type="submit" onclick="createUser()" class="btn btn-primary me-sm-3 me-1">Submit</button>
+            <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
 </div>
 
 {{-- <script src="{{ asset(mix('assets/vendor/libs/jquery/jquery.js')) }}"></script> --}}
@@ -325,6 +384,8 @@ function editItem(id,data){
     $('.datatables-basic').DataTable().ajax.reload();
   }
 
+  var role = '{{ auth()->user()->role }}';
+
   $(function() {
 
   var dt_basic_table = $('.datatables-basic');
@@ -334,6 +395,7 @@ function editItem(id,data){
 
   if (dt_basic_table.length) {
     dt_basic = dt_basic_table.DataTable({
+      processing: true,
       ajax: {
         url:'/api/admin/book/get',
         dataSrc: 'data'
@@ -356,7 +418,6 @@ function editItem(id,data){
           className: 'control',
           orderable: false,
           searchable: false,
-          responsivePriority: 2,
           targets: 0,
           render: function (data, type, full, meta) {
             return '';
@@ -368,6 +429,7 @@ function editItem(id,data){
           orderable: false,
           searchable: false,
           responsivePriority: 3,
+          visible :false,
           checkboxes: true,
           render: function () {
             return '<input type="checkbox" class="dt-checkboxes form-check-input">';
@@ -426,9 +488,7 @@ function editItem(id,data){
           orderable: false,
           searchable: false,
           render: function (data, type, full, meta) {
-            return (
-              `<a href="javascript:;" onclick="deleteItem('${full.id}')" class="btn btn-sm btn-icon" ><i class="text-primary ti ti-trash"></i></a>` + 
-              `<a href="javascript:;" onclick="editItem('${full.id}',{
+            var edit = role == 'admin' ? `<a href="javascript:;" onclick="editItem('${full.id}',{
                 'id': '${full.id}',
                 'judul': '${full.judul}',
                 'penulis': '${full.penulis}',
@@ -439,10 +499,22 @@ function editItem(id,data){
                 'deskripsi': '${full.deskripsi}',
                 'kategori_buku': '${full.kategori_buku}',
 
-              })" class="btn btn-sm btn-icon item-edit"><i class="text-primary ti ti-pencil"></i></a>`
-            );
+              })" class="btn btn-sm btn-icon item-edit"><i class="text-primary ti ti-pencil"></i></a>` : ''
+
+              var hapus = role == 'admin' ?
+               `<a href="javascript:;" onclick="deleteItem('${full.id}')" class="btn btn-sm btn-icon" ><i class="text-primary ti ti-trash"></i></a>` : '<span>-</span>';
+              var detail = `<a href="javascript:;" onclick="" class="btn btn-sm btn-icon item-edit" data-bs-toggle="modal" data-bs-target="#editUser"><i class="text-primary ti ti-eye"></i></a>`
+
+            return ( edit + hapus + detail);
           }
-        }
+        },
+        // {
+        //     orderable: false,
+        //     searchable: false,
+        //     targets: -1,
+        //     visible: role == 'pimpinan' ? true : false,
+            
+        // }
       ],
       order: [[2, 'desc']],
       dom: '<"card-header flex-column flex-md-row"<"head-label text-center"><"dt-action-buttons text-end pt-3 pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
@@ -486,7 +558,7 @@ function editItem(id,data){
           display: $.fn.dataTable.Responsive.display.modal({
             header: function (row) {
               var data = row.data();
-              return 'Details of ' + data['full_name'];
+              return 'Details of ' + data['judul'];
             }
           }),
           type: 'column',
@@ -554,6 +626,28 @@ function updateRecord() {
 
     $('.datatables-basic').DataTable().ajax.reload();
 }
+
+ function detailsWithModal(data){
+    let modalCard = document.querySelector('modal');
+    let modalImg = document.getElementById('modal-img');
+    modalImg.src = data.imgfile
+    modalCard.innerHTML = '';
+    modalCard.innerHTML = `
+    <h5 class="card-title">${data.judul}</h5>
+                  <div style="
+                  display: flex;
+                  flex-direction: column;
+                  ">
+                    <span>Penulis : <b>${data.penulis}</b></span>
+                    <span>Tahun : <b>${data.tahun_publikasi}</b></span>
+                    <span>Halaman : <b>120halaman</b></span>
+                    <span>ISBN : <b>${data.isbn}</b></span>
+                  </div>
+                  <p class="card-text">
+                    ${data.deskripsi}
+                  </p>
+    `
+  }
 </script>
 @endpush
 @endsection

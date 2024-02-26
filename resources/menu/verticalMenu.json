@@ -10,71 +10,73 @@
       "name": "Daftar Buku",
       "icon":"menu-icon tf-icons ti ti-book-2",
       "slug":"books",
+      "permmission": ["admin","mahasiswa","dosen","alumni","staff","guest"],
       "submenu": [
         {
           "url": "/books",
           "name": "Books",
           "slug": "books",
-          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
         }
       ]
     },
     {
       "menuHeader": "Repository",
-      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+      "permmission": ["admin","mahasiswa","dosen","alumni","staff","guest"]
     },
     {
       "name": "Journal",
       "icon": "menu-icon tf-icons ti ti-notebook",
       "slug": "jurnal",
+      "permmission": ["admin","mahasiswa","dosen","alumni","staff","guest"],
       "submenu": [
         {
           "url": "/jurnal/sipil",
           "name": "Teknik Sipil",
           "slug": "jurnal.sipil",
-          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
         },
         {
           "url": "/jurnal/mesin",
           "name": "Teknik Mesin",
           "slug": "jurnal.mesin",
-          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
         },
         {
           "url": "/jurnal/elektro",
           "name": "Teknik Elektro",
           "slug": "jurnal.elektro",
-          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
         },
         {
           "url": "/jurnal/kimia",
           "name": "Teknik Kimia",
           "slug": "jurnal.kimia",
-          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
         },
         {
           "url": "/jurnal/informatika",
           "name": "Teknik Informatika",
           "slug": "jurnal.informatika",
-          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
         },
         {
           "url": "/jurnal/akuntansi",
           "name": "Akuntansi",
           "slug": "jurnal.akuntansi",
-          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
         },
         {
           "url": "/jurnal/manajemen",
           "name": "Manajemen",
           "slug": "jurnal.manajemen",
-          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
         },
         {
           "url": "/jurnal/hukum",
           "name": "Hukum",
           "slug": "jurnal.hukum",
-          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
         }
       ]
     },
@@ -82,81 +84,95 @@
       "name": "Skripsi",
       "icon": "menu-icon tf-icons ti ti-notes",
       "slug": "skripsi",
-      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"],
+      "permmission": ["admin","mahasiswa","dosen","alumni","staff","guest"],
       "submenu": [
         {
           "url": "/skripsi/sipil",
           "name": "Teknik Sipil",
           "slug": "skripsi.sipil",
-          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
         },
         {
           "url": "/skripsi/mesin",
           "name": "Teknik Mesin",
           "slug": "skripsi.mesin",
-          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
         },
         {
           "url": "/skripsi/elektro",
           "name": "Teknik Elektro",
           "slug": "skripsi.elektro",
-          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
         },
         {
           "url": "/skripsi/kimia",
           "name": "Teknik Kimia",
           "slug": "skripsi.kimia",
-          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
         },
         {
           "url": "/skripsi/informatika",
           "name": "Teknik Informatika",
           "slug": "skripsi.informatika",
-          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
         },
         {
           "url": "/skripsi/akuntansi",
           "name": "Akuntansi",
           "slug": "skripsi.akuntansi",
-          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
         },
         {
           "url": "/skripsi/manajemen",
           "name": "Manajemen",
           "slug": "skripsi.manajemen",
-          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
         },
         {
           "url": "/skripsi/hukum",
           "name": "Hukum",
           "slug": "skripsi.hukum",
-          "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
         }
       ]
     },
     {
-      "menuHeader": "Others"
+      "menuHeader": "Others",
+       "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
     },
     {
       "url": "/daftarpinjam",
       "name": "Daftar Pinjam",
       "icon": "menu-icon tf-icons ti ti-clipboard",
       "slug": "daftarpinjam",
-      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+      "alumni": true,
+       "pimpinan": false,
+       "adminOnly": false,
+      "permmission": ["admin","mahasiswa","dosen","staff"]
+    },
+    {
+      "url": "/pustaka-user",
+      "name": "Data Pustaka",
+      "icon": "menu-icon tf-icons ti ti-notes",
+      "slug": "pustaka.user",
+      "permmission": ["mahasiswa","alumni"]
     },
     {
       "url": "/books/checkout",
       "name": "Carts",
       "icon": "menu-icon tf-icons ti ti-clipboard",
       "slug": "checkout",
-      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+       "alumni": true,
+       "pimpinan": false,
+       "adminOnly": false,
+      "permmission": ["admin","mahasiswa","dosen","staff"]
     },
     {
       "url": "/form-pustaka",
       "name": "Form Pustaka",
       "icon": "menu-icon tf-icons ti ti-clipboard",
       "slug": "skbp1-form",
-      "permmission": ["admin","mahasiswa","dosen","alumni","pimpinan","staff"]
+      "permmission": ["admin","mahasiswa","alumni","staff"]
     },
     {
       "url": "/admin/books",
@@ -164,7 +180,8 @@
       "icon": "menu-icon tf-icons ti ti-books",
       "slug": "admin.books",
       "adminOnly":true,
-      "pimpinan": true
+      "pimpinan": true,
+      "permmission": ["admin","pimpinan","staff"]
     },
     {
       "url": "/admin/bebas-pinjam",
@@ -172,7 +189,8 @@
       "icon": "menu-icon tf-icons ti ti-clipboard-text",
       "slug": "admin.bebas-pinjam",
       "adminOnly":true,
-      "pimpinan": true
+      "pimpinan": true,
+      "permmission": ["admin","pimpinan","staff"]
     },
     {
       "url": "/admin/skbp1/",
@@ -180,7 +198,8 @@
       "icon": "menu-icon tf-icons ti ti-layout",
       "slug": ["admin.skbp1","admin.skbp1.detail"],
       "adminOnly":true,
-      "pimpinan": true
+      "pimpinan": true,
+      "permmission": ["admin","pimpinan","staff"]
     },
     {
       "url": "/admin/sumbangan",
@@ -188,7 +207,8 @@
       "icon": "menu-icon tf-icons ti ti-archive",
       "slug": "admin.sumbangan",
       "adminOnly":true,
-      "pimpinan": true
+      "pimpinan": true,
+      "permmission": ["admin","pimpinan","staff"]
     },
     {
       "url": "/verification-code",
@@ -196,7 +216,7 @@
       "icon": "menu-icon tf-icons ti ti-layout",
       "slug": "skbp-verification-code",
       "adminOnly":true,
-      "pimpinan": true
+      "permmission": ["admin","staff"]
     },
     {
       "url": "/admin/data-users",
@@ -204,7 +224,8 @@
       "icon": "menu-icon tf-icons ti ti-user-check",
       "slug": "admin.data-users",
       "adminOnly":true,
-      "pimpinan": true
+      "pimpinan": true,
+      "permmission": ["admin","pimpinan","staff"]
     }
   ]
 }

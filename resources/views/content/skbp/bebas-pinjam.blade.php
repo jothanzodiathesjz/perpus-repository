@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'DataTables - Tables')
+@section('title', 'Data Bebas Pinjam')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css')}}">
@@ -294,6 +294,7 @@ function editItem(id){
 
     $('.datatables-basic').DataTable().ajax.reload();
   }
+  var role = '{{ auth()->user()->role }}';
 
   $(function() {
 
@@ -362,7 +363,8 @@ function editItem(id){
           searchable: false,
           render: function (data, type, full, meta) {
             return (
-              `<a href="javascript:;" onclick="deleteItem('${full.id}')" class="btn btn-sm btn-icon" ><i class="text-primary ti ti-trash"></i></a>` + 
+              `${role == 'admin' ? ` <a href="javascript:;" onclick="deleteItem('${full.id}')" class="btn btn-sm btn-icon" ><i class="text-primary ti ti-trash"></i></a>` : '<span>-</span>'}` +
+              
               `<a href="/admin/bebas-pinjam/detail/${full.id_user}?no=${meta.row + 1}" class="btn btn-sm btn-icon item-edit"><i class="text-primary ti ti-eye"></i></a>`
             );
           }

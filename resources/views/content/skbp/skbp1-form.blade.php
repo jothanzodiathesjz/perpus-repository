@@ -91,7 +91,6 @@
                 <option value="">Select Fakultas</option>
               </select>
             </div>
-            <div class="col-sm-6 mb-3">
               <label class="form-label" for="ProgramStudi">Prodi</label>
               <select id="ProgramStudi" class="select2 form-select" data-allow-clear="true">
                 <option value="">Select prodi</option>
@@ -104,7 +103,7 @@
               <input type="text" id="judul" class="form-control" placeholder="Masukkan Judul"  />
             </div>
           </div>
-          <div class="row">
+          <div class="row mb-3">
             <div class="col-sm-6">
               <label class="form-label" for="judul">Alamat</label>
               <div class="input-group input-group-merge">
@@ -118,7 +117,7 @@
               </div>
             </div>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-6 mb-3">
             <label class="form-label" for="tahun">Tahun</label>
             <div class="input-group input-group-merge">
               <input type="text" id="tahun" class="form-control" placeholder="Masukkan Tahun"  />
@@ -154,6 +153,42 @@
             <div class=" col-sm-6" id="bab3parent">
               <label class="form-label" for="bab3">Babb 3</label>
               <input type="file" class="form-control" id="bab3" accept=".pdf, .doc, .docx" />
+              <ul class="list-unstyled pt-1 d-flex flex-row gap-4">
+                <li>
+                  <span class="text-danger fs-tiny">* max. 5 MB</span>
+                </li>
+                <li>
+                  <span class="text-danger fs-tiny">* file. pdf,docx</span>
+                </li>
+              </ul>
+            </div>
+            <div class=" col-sm-6" id="bab4parent">
+              <label class="form-label" for="bab4">Babb 4</label>
+              <input type="file" class="form-control" id="bab4" accept=".pdf, .doc, .docx" />
+              <ul class="list-unstyled pt-1 d-flex flex-row gap-4">
+                <li>
+                  <span class="text-danger fs-tiny">* max. 5 MB</span>
+                </li>
+                <li>
+                  <span class="text-danger fs-tiny">* file. pdf,docx</span>
+                </li>
+              </ul>
+            </div>
+            <div class=" col-sm-6" id="conclusionparent">
+              <label class="form-label" for="conclusion">Conclusion</label>
+              <input type="file" class="form-control" id="conclusion" accept=".pdf, .doc, .docx" />
+              <ul class="list-unstyled pt-1 d-flex flex-row gap-4">
+                <li>
+                  <span class="text-danger fs-tiny">* max. 5 MB</span>
+                </li>
+                <li>
+                  <span class="text-danger fs-tiny">* file. pdf,docx</span>
+                </li>
+              </ul>
+            </div>
+            <div class=" col-sm-6" id="referenceparent">
+              <label class="form-label" for="reference">Reference</label>
+              <input type="file" class="form-control" id="reference" accept=".pdf, .doc, .docx" />
               <ul class="list-unstyled pt-1 d-flex flex-row gap-4">
                 <li>
                   <span class="text-danger fs-tiny">* max. 5 MB</span>
@@ -281,6 +316,9 @@
     var bab1Element = document.getElementById('bab1');
     var bab2Element = document.getElementById('bab2');
     var bab3Element = document.getElementById('bab3');
+    var bab4Element = document.getElementById('bab4');
+    var conclusionElement = document.getElementById('conclusion');
+    var referenceElement = document.getElementById('reference');
     var fulltextElement = document.getElementById('fulltext');
     var sampulElement = document.getElementById('sampul');
     var turnitinElement = document.getElementById('turnitin');
@@ -288,6 +326,9 @@
     var bab1parent = document.getElementById('bab1parent');
     var bab2parent = document.getElementById('bab2parent');
     var bab3parent = document.getElementById('bab3parent');
+    var bab4parent = document.getElementById('bab4parent');
+    var conclusionparent = document.getElementById('conclusionparent');
+    var referenceparent = document.getElementById('referenceparent');
     function toggleSwitch() {
       // Mendapatkan status terkini dari checkbox
       var isChecked = document.getElementById('flexSwitchCheckChecked').checked;
@@ -297,12 +338,18 @@
         bab1parent.classList.remove('hidden');
         bab2parent.classList.remove('hidden');
         bab3parent.classList.remove('hidden');
+        bab4parent.classList.remove('hidden');
+        conclusionparent.classList.remove('hidden');
+        referenceparent.classList.remove('hidden');
       } else {
         type = "Jurnal";
         console.log(type);
         bab1parent.classList.add('hidden');
         bab2parent.classList.add('hidden');
         bab3parent.classList.add('hidden');
+        bab4parent.classList.add('hidden');
+        conclusionparent.classList.add('hidden');
+        referenceparent.classList.add('hidden');
       }
     }
 
@@ -310,7 +357,7 @@
       // Validasi ukuran file dan tipe file
       var fileInputs;
       if(type === "Skripsi"){
-        fileInputs = ['bab1', 'bab2', 'bab3', 'fulltext', 'sampul', 'turnitin'];
+        fileInputs = ['bab1', 'bab2', 'bab3','bab4', 'conclusion', 'reference', 'fulltext', 'sampul', 'turnitin'];
       }else{
         fileInputs = ['fulltext', 'sampul', 'turnitin'];
       }
@@ -348,6 +395,9 @@ const loader = document.getElementById('loader')
       form.append("bab1", bab1Element.files[0]);
       form.append("bab2", bab2Element.files[0]);
       form.append("bab3", bab3Element.files[0]);
+      form.append("bab4", bab4Element.files[0]);
+      form.append("conclusion", conclusionElement.files[0]);
+      form.append("reference", referenceElement.files[0]);
       form.append("turnitin", turnitinElement.files[0]);
       form.append("fulltext", fulltextElement.files[0]);
       form.append("sampul", sampulElement.files[0]);

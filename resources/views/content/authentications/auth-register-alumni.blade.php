@@ -311,7 +311,7 @@ $configData = Helper::appClasses();
       password,
     }
 
-    const user_details = {s
+    const user_details = {
       fullname,
       telepon,
       stambuk,

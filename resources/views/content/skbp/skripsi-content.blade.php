@@ -88,6 +88,7 @@
             <td class="text-nowrap">Bab1</td>
             <td><a id="bab1"><i class="text-primary ti ti-eye"></i></a></td>
           </tr>
+          @if(session()->has('id_users'))
           <tr id="rowbab2">
             <td class="text-nowrap">Bab2</td>
             <td><a id="bab2"><i class="text-primary ti ti-eye"></i></a></td>
@@ -95,6 +96,18 @@
           <tr id="rowbab3">
             <td class="text-nowrap">Bab3</td>
             <td><a id="bab3" ><i class="text-primary ti ti-eye"></i></a></td>
+          </tr>
+          <tr id="rowbab4">
+            <td class="text-nowrap">Bab4</td>
+            <td><a id="bab4" ><i class="text-primary ti ti-eye"></i></a></td>
+          </tr>
+          <tr id="rowconclusion">
+            <td class="text-nowrap">Conclusion</td>
+            <td><a id="conclusion" ><i class="text-primary ti ti-eye"></i></a></td>
+          </tr>
+          <tr id="rowreference">
+            <td class="text-nowrap">Reference</td>
+            <td><a id="reference" ><i class="text-primary ti ti-eye"></i></a></td>
           </tr>
           <tr id="rowfulltext">
             <td class="text-nowrap">Fulltext</td>
@@ -104,6 +117,7 @@
             <td class="text-nowrap">Sampul</td>
             <td><a id="sampul" ><i class="text-primary ti ti-eye"></i></a></td>
           </tr>
+          @endif
         </tbody>
       </table>
     </div>
@@ -124,6 +138,9 @@
  var bab1 = $("#bab1");
  var bab2 = $("#bab2");
  var bab3 = $("#bab3");
+ var bab4 = $("#bab4");
+ var conclusion = $("#conclusion");
+ var reference = $("#reference");
  var fulltext = $("#fulltext");
  var sampul = $("#sampul");
 
@@ -144,19 +161,26 @@
        sampul.attr('href', data.sampul);
 
        function setHref(element, url, status) {
-        console.log(url)
         if (status) {
           element.attr('href', url.url);
         } else {
+          if(url){
             var stringValue = url.url.split('/')[3];
-            console.log(stringValue)
-          $(`#row${stringValue}`).remove();
+            $(`#row${stringValue}`).remove();
+          }
+        }
+
+        if(!url){
+          $(`#row${element.attr('id')}`).remove();
         }
       }
 
       setHref(bab1, data?.bab1,data?.bab1?.status);
       setHref(bab2, data?.bab2,data?.bab2?.status);
       setHref(bab3, data?.bab3,data?.bab3?.status);
+      setHref(bab4, data?.bab4,data?.bab4?.status);
+      setHref(conclusion, data?.conclusion,data?.conclusion?.status);
+      setHref(reference, data?.reference,data?.reference?.status);
       setHref(fulltext, data?.fulltext,data?.fulltext?.status);
 
      },

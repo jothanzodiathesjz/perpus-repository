@@ -45,63 +45,67 @@
   <span class="text-muted fw-light">Dashboard /</span> Data Buku
 </h4>
 <div class="row">
-    <div class="col-lg-4 col-md-12">
-    <div class="card mb-4">
-      <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Tambah Sumangan</h5>
-      </div>
-      <div class="card-body">
-        <div>
-          <div class="mb-3">
-            <label class="form-label" for="basic-icon-default-fullname">Kategori</label>
-            <div class="d-flex flex-row border rounded-3">
-              <span id="basic-icon-default-fullname2" class="input-group-text"><i class="ti ti-access-point"></i></span>
-              <select id="kategori" class="form-select" aria-label="Default select example">
-                <option selected>Open this select menu</option>
-                <option value="mahasiswa">Mahasiswa</option>
-                <option value="dosen">Dosen</option>
-                <option value="alumni">Alumni</option>
-                <option value="umum">Umum</option>
-            </select>
-            </div>
+  @if (Auth::user()->role == 'admin')
+      
+  <div class="col-lg-4 col-md-12">
+  <div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Tambah Sumangan</h5>
+    </div>
+    <div class="card-body">
+      <div>
+        <div class="mb-3">
+          <label class="form-label" for="basic-icon-default-fullname">Kategori</label>
+          <div class="d-flex flex-row border rounded-3">
+            <span id="basic-icon-default-fullname2" class="input-group-text"><i class="ti ti-access-point"></i></span>
+            <select id="kategori" class="form-select" aria-label="Default select example">
+              <option selected>Open this select menu</option>
+              <option value="mahasiswa">Mahasiswa</option>
+              <option value="dosen">Dosen</option>
+              <option value="alumni">Alumni</option>
+              <option value="umum">Umum</option>
+          </select>
           </div>
-          <div class="mb-3">
-            <label class="form-label" for="basic-icon-default-company">NIDN/STAMBUK</label>
-            <div class="d-flex flex-row border rounded-3">
-              <span id="basic-icon-default-company2" class="input-group-text border-0"><i class="ti ti-user"></i></span>
-              <input type="hidden" id="id_profile"  />
-              <select id="stambuk" class="form-select select-2" >
-                <option selected>Masukkan Stambuk</option>
-            </select>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label" for="basic-icon-default-email">Nama</label>
-            <div class="input-group input-group-merge">
-              <span class="input-group-text"><i class="ti ti-user-exclamation"></i></span>
-              <input type="text" id="nama" class="form-control" placeholder="Masukkan Nama" />
-            </div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label" for="basic-icon-default-phone">Judul Buku</label>
-           <div class="d-flex flex-row border rounded-3">
-              <span id="basic-icon-default-company2" class="input-group-text border-0"><i class="ti ti-book-2"></i></span>
-              <select id="judul_buku" class="form-select select-2"placeholder="Masukkan Judul Buku" >
-            </select>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label" for="basic-icon-default-message">Jumlah</label>
-            <div class="input-group input-group-merge">
-              <span id="basic-icon-default-message2" class="input-group-text"><i class="ti ti-number"></i></span>
-              <input type="number" id="jumlah" class="form-control" placeholder="Masukkan Jumlah Sumbangan" />
-            </div>
-          </div>
-          <button id="submitSumbangan" onclick="upsert()" type="submit" class="btn btn-primary">Send</button>
-          <button id="submitSumbangan"  type="submit" class="btn btn-secondary">Reset</button>
         </div>
+        <div class="mb-3">
+          <label class="form-label" for="basic-icon-default-company">NIDN/STAMBUK</label>
+          <div class="d-flex flex-row border rounded-3">
+            <span id="basic-icon-default-company2" class="input-group-text border-0"><i class="ti ti-user"></i></span>
+            <input type="hidden" id="id_profile"  />
+            <select id="stambuk" class="form-select select-2" >
+              <option selected>Masukkan Stambuk</option>
+          </select>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="basic-icon-default-email">Nama</label>
+          <div class="input-group input-group-merge">
+            <span class="input-group-text"><i class="ti ti-user-exclamation"></i></span>
+            <input type="text" id="nama" class="form-control" placeholder="Masukkan Nama" />
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="basic-icon-default-phone">Judul Buku</label>
+         <div class="d-flex flex-row border rounded-3">
+            <span id="basic-icon-default-company2" class="input-group-text border-0"><i class="ti ti-book-2"></i></span>
+            <select id="judul_buku" class="form-select select-2"placeholder="Masukkan Judul Buku" >
+          </select>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="basic-icon-default-message">Jumlah</label>
+          <div class="input-group input-group-merge">
+            <span id="basic-icon-default-message2" class="input-group-text"><i class="ti ti-number"></i></span>
+            <input type="number" id="jumlah" class="form-control" placeholder="Masukkan Jumlah Sumbangan" />
+          </div>
+        </div>
+        <button id="submitSumbangan" onclick="upsert()" type="submit" class="btn btn-primary">Send</button>
+        <button id="submitSumbangan"  type="submit" class="btn btn-secondary">Reset</button>
       </div>
     </div>
+  </div>
+  @endif
+  
   </div>
     <div class="card col-lg-8 col-md-12">
         <div class="card-datatable table-responsive pt-0">
@@ -178,7 +182,10 @@
         </div>
           <div class="col-12 text-center">
              <input type="hidden" id="idsumbangan" />
-            <button type="submit" onclick="updateSubmit()" class="btn btn-primary me-sm-3 me-1">Submit</button>
+             @if (auth()->user()->role == 'admin')
+                 
+             <button type="submit" onclick="updateSubmit()" class="btn btn-primary me-sm-3 me-1">Submit</button>
+             @endif
             <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
           </div>
       </div>
@@ -188,6 +195,7 @@
 {{-- <script src="{{ asset(mix('assets/vendor/libs/jquery/jquery.js')) }}"></script> --}}
 @push('body-scripts')
 <script> 
+var role = '{{ auth()->user()->role }}';
 // datatables
 $(document).ready(function() {
     var table = $('.datatables-basic').DataTable({
@@ -232,9 +240,11 @@ $(document).ready(function() {
             },
             {
                 targets: 4,
+                
                 render: function(data, type, row) {
                     return `
-                    <a href="javascript:void(0);" onclick="deleteItem('${data.id}')" class="item-delete" title="Delete"><i class="ti ti-trash"></i></a>
+                    ${role == 'admin' ? `<a href="javascript:void(0);" onclick="deleteItem('${data.id}')" class="item-delete" title="Delete"><i class="ti ti-trash"></i></a>` : ''}
+                    
                     <a href="javascript:void(0);" onclick="changeUpdate(${JSON.stringify(data).replace(/"/g, '&quot;')})" class="btn btn-sm btn-icon item-edit" data-bs-toggle="modal" data-bs-target="#editUser"><i class="text-primary ti ti-eye"></i></a>
                     `
                 }

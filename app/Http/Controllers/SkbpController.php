@@ -84,6 +84,9 @@ class SkbpController extends Controller
                'bab1' => 'public/uploads/bab1',
                'bab2' => 'public/uploads/bab2',
                'bab3' => 'public/uploads/bab3',
+               'bab4' => 'public/uploads/bab4',
+               'conclusion' => 'public/uploads/conclusion',
+               'reference' => 'public/uploads/reference',
                'fulltext' => 'public/uploads/fulltext',
                'sampul' => 'public/uploads/sampul',
            ];
@@ -111,6 +114,9 @@ class SkbpController extends Controller
                'bab1' => isset($fileUrls['bab1']) ? json_encode(['url' => $fileUrls['bab1'], 'status' => $fileStatus['bab1']]) : null,
                 'bab2' => isset($fileUrls['bab2']) ? json_encode(['url' => $fileUrls['bab2'], 'status' => $fileStatus['bab2']]) : null,
                 'bab3' => isset($fileUrls['bab3']) ? json_encode(['url' => $fileUrls['bab3'], 'status' => $fileStatus['bab3']]) : null,
+                'bab4' => isset($fileUrls['bab4']) ? json_encode(['url' => $fileUrls['bab4'], 'status' => $fileStatus['bab4']]) : null,
+                'conclusion' => isset($fileUrls['conclusion']) ? json_encode(['url' => $fileUrls['conclusion'], 'status' => $fileStatus['conclusion']]) : null,
+                'reference' => isset($fileUrls['reference']) ? json_encode(['url' => $fileUrls['reference'], 'status' => $fileStatus['reference']]) : null,
                 'fulltext' => isset($fileUrls['fulltext']) ? json_encode(['url' => $fileUrls['fulltext'], 'status' => $fileStatus['fulltext']]) : null,
                'sampul' => $fileUrls['sampul'] ?? null,
                'alamat' => $request->input('alamat'),
@@ -153,7 +159,11 @@ class SkbpController extends Controller
        $bab1 = json_decode($data->bab1);
        $bab2 = json_decode($data->bab2);
        $bab3 = json_decode($data->bab3);
+       $bab4 = json_decode($data->bab4);
+       $conclusion = json_decode($data->conclusion);
+       $reference = json_decode($data->reference);
        $fulltext = json_decode($data->fulltext);
+       
        return response()->json([
         'data' => [
             'id' => $data->id,
@@ -168,6 +178,9 @@ class SkbpController extends Controller
             'bab1' => $bab1,
             'bab2' => $bab2,
             'bab3' => $bab3,
+            'bab4' => $bab4,
+            'conclusion' => $conclusion,
+            'reference' => $reference,
             'fulltext' => $fulltext,
             'sampul' => $data->sampul,
             'alamat' => $data->alamat,
@@ -226,6 +239,30 @@ class SkbpController extends Controller
                }else if($query['bab'] == 'fulltext' ) {
                 $fulltext = json_decode($data->fulltext);  
                 $data->fulltext = json_encode(['url' => $fulltext->url, 'status' => $query['status']]);
+                   $data->save();
+                   return response()->json([
+                    'message' => 'Data berhasil diperbarui',
+                    'field' => $data,
+                   ]);
+               }else if($query['bab'] == 'conclusion' ) {
+                $conclusion = json_decode($data->conclusion);
+                $data->conclusion = json_encode(['url' => $conclusion->url, 'status' => $query['status']]);
+                   $data->save();
+                   return response()->json([
+                    'message' => 'Data berhasil diperbarui',
+                    'field' => $data,
+                   ]);
+               }else if($query['bab'] == 'reference' ) {
+                $reference = json_decode($data->reference);
+                $data->reference = json_encode(['url' => $reference->url, 'status' => $query['status']]);
+                   $data->save();
+                   return response()->json([
+                    'message' => 'Data berhasil diperbarui',
+                    'field' => $data,
+                   ]);
+               }else if($query['bab'] == 'bab4' ) {
+                $bab4 = json_decode($data->bab4);
+                $data->bab4 = json_encode(['url' => $bab4->url, 'status' => $query['status']]);
                    $data->save();
                    return response()->json([
                     'message' => 'Data berhasil diperbarui',
@@ -357,6 +394,24 @@ class SkbpController extends Controller
        return response()->json(['data' => null]);
    }
 
+   function dataPustakaWithUser(Request $request)
+   {
+       $id = $request->route('id');
+       $search = $request->query('search');
+       if($search){
+           $data = Skbp1::where('id_user', $id)
+                                ->where('judul', 'like', '%'.$search.'%')
+                                ->get();
+            return response()->json(['data' => $data]);
+       }
+       $data = Skbp1::where('id_user', $id)->get();
+       return response()->json(['data' => $data]);
+   }
+
+   function PustakaUserView(){
+     return view('content.skbp.data-pustaka-user');
+   }
+
    function jurnalContentView()
    {
        return view('content.skbp.skbp1-content');
@@ -472,7 +527,9 @@ class SkbpController extends Controller
        $id = $request->route('id');
        $update = $this->updatePinjam();
        $idUser = Auth::user()->id;
-        $data = PinjamBuku::where('id_user', $id)->get();
+        $data = PinjamBuku::where('id_user', $id)
+                ->orderBy('created_at', 'desc') // Urutkan data berdasarkan created_at secara descending
+                ->get();
         $data2 = $data->map(function ($item) {
             $buku = Books::whereIn('id', explode(',', $item->id_buku))
             ->select('id', 'judul','penulis','tahun_publikasi','imgfile','kategori_buku')

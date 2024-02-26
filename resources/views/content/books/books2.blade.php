@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Cards basic - UI elements')
+@section('title', 'Books')
 @section('vendor-style')
 {{-- <link rel="stylesheet" href="{{asset('assets/vendor/libs/animate-css/animate.css')}}"> --}}
 <link rel="stylesheet" href="{{ asset('vendors/css/extensions/nouislider.min.css') }}">
@@ -133,6 +133,8 @@
 <script src="{{ asset(mix('assets/vendor/libs/jquery/jquery.js')) }}"></script>
 <script src="{{ asset(mix('assets/vendor/libs/popper/popper.js')) }}"></script>
 <script>
+  var role = '{{ isset(Auth::user()->role) ? Auth::user()->role : "null" }}';
+  console.log(role)
     function clickMe(id){
     console.log('hay')
     toastr.options.timeOut = 500;
@@ -150,7 +152,7 @@
       },
       
       body: JSON.stringify({
-        user_id: '{{ Auth::user()->id }}',
+        user_id: '{{ isset(Auth::user()->id) ? Auth::user()->id : null }}',
         id_buku: id
       })
     })
@@ -244,7 +246,7 @@ function getBooks(page){
                   <i data-feather="heart"></i>
                   <span>Detail</span>
                 </a>
-                <a onclick="clickMe('${element.id}')"  class="btn btn-primary text-white">
+                <a onclick="clickMe('${element.id}')"  class="${role === 'alumni' || role === 'null' ? 'd-none': 'btn btn-primary text-white'}">
                   <span class="add-to-cart">Add to cart</span>
                 </a>
               </div>
@@ -309,7 +311,7 @@ function getBooksCategory(category){
                   <i data-feather="heart"></i>
                   <span>Detail</span>
                 </a>
-                <a onclick="clickMe('${element.id}')"  class="btn btn-primary text-white">
+                <a onclick="clickMe('${element.id}')"  class="${role === 'alumni' || role === 'null' ? 'd-none': 'btn btn-primary text-white'}">
                   <span class="add-to-cart">Add to cart</span>
                 </a>
               </div>
@@ -389,7 +391,7 @@ function searchBooks(search){
                   <i data-feather="heart"></i>
                   <span>Detail</span>
                 </a>
-                <a onclick="clickMe('${element.id}')"  class="btn btn-primary text-white">
+               <a onclick="clickMe('${element.id}')"  class="${role === 'alumni' || role === 'null' ? 'd-none': 'btn btn-primary text-white'}">
                   <span class="add-to-cart">Add to cart</span>
                 </a>
               </div>
@@ -432,6 +434,7 @@ function fillPagination(links) {
         newLink.onclick = function() {
           $('#ecommerce-products').html('')
             //getBooks(link.url);
+            document.querySelector('.active-sorting').textContent = element.kategori_buku
             getBooksCategory(element.kategori_buku)
         };
   
