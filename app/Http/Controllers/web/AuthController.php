@@ -13,8 +13,11 @@ use Xendit\Invoice\InvoiceApi;
 use Xendit\Invoice\CreateInvoiceRequest;
 use Illuminate\Support\Str;
 use Xendit\Configuration;
+use Xendit\BalanceAndTransaction\TransactionApi;
+use Xendit\BalanceAndTransaction\BalanceApi;
 use Illuminate\Support\Facades\Log;
 
+use function PHPUnit\Framework\returnSelf;
 
 class AuthController extends Controller
 {
@@ -362,5 +365,43 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         return redirect('/auth/login-cover');
+    }
+
+    function getAllTransaction(Request $request)
+    {
+        $requestQuery = $request->query('for_user_id', '');
+        $apiInstance = new TransactionApi();
+        $for_user_id = ""; // string | The sub-account user-id that you want to make this transaction for. This header is only used if you have access to xenPlatform. See xenPlatform for more information
+        $types = ["PAYMENT"]; // \BalanceAndTransaction\TransactionTypes[] | Transaction types that will be included in the result. Default is to include all transaction types
+        $statuses = ["SUCCESS"]; // \BalanceAndTransaction\TransactionStatuses[] | Status of the transaction. Default is to include all status.
+        $channel_categories = ["BANK", "INVOICE"]; // \BalanceAndTransaction\ChannelsCategories[] | Payment channels in which the transaction is carried out. Default is to include all channels.
+        $reference_id = ""; // string | To filter the result for transactions with matching reference given (case sensitive)
+        $product_id = ""; // string | To filter the result for transactions with matching product_id (a.k.a payment_id) given (case sensitive)
+        $account_identifier = ""; // string | Account identifier of transaction. The format will be different from each channel. For example, on `BANK` channel it will be account number and on `CARD` it will be masked card number.
+        $amount = 10000; // float | Specific transaction amount to search for
+        $currency = new \Xendit\BalanceAndTransaction\Currency('IDR'); // Currency
+        $created = array('key' => new \Xendit\BalanceAndTransaction\DateRangeFilter()); // DateRangeFilter | Filter time of transaction by created date. If not specified will list all dates.
+        $updated = array('key' => new \Xendit\BalanceAndTransaction\DateRangeFilter()); // DateRangeFilter | Filter time of transaction by updated date. If not specified will list all dates.
+        $limit = 10; // float | number of items in the result per page. Another name for \"results_per_page\"
+        $after_id = "'after_id_example'"; // string
+        $before_id = "'before_id_example'"; // string
+        try {
+            $result = $apiInstance->getAllTransactions($for_user_id, $types);
+            return response()->json([
+                "data" => $result
+            ]);
+        } catch (\Xendit\XenditSdkException $e) {
+            echo 'Exception when calling TransactionApi->getAllTransactions: ', $e->getMessage(), PHP_EOL;
+            echo 'Full Error: ', json_encode($e->getFullError()), PHP_EOL;
+            return response()->json([
+                "message" => $e->getMessage(),
+                "error"=> json_encode($e->getFullError()),
+            ]);
+        }
+    }
+
+    function transactionView()
+    {
+        return view('pages.transaction');
     }
 }

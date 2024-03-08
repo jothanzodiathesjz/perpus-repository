@@ -43,25 +43,27 @@
 <h4 class="fw-bold py-3 mb-4">
   <span class="text-muted fw-light">Dashboard /</span> Data Buku
 </h4>
-<div class="card-datatable table-responsive pt-0">
-  @if (auth()->user()->role == 'admin') 
-  <button class="create-new btn btn-primary"><i class="ti ti-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Add New Book</span></button>
-  @endif
-  <table class="datatables-basic table">
-    <thead>
-      <tr>
-        <th></th>
-        <th></th>
-        <th>id</th>
-        <th>Book</th>
-        <th>ISBN</th>
-        <th>STOK</th>
-        <th>Tahun</th>
-        <th>Kategori</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-  </table>
+<div class="card">
+  <div class="card-datatable table-responsive pt-0">
+    @if (auth()->user()->role == 'admin') 
+    <button class="create-new btn btn-primary mt-4 ms-2"><i class="ti ti-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Add New Book</span></button>
+    @endif
+    <table class="datatables-basic table">
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+          <th>id</th>
+          <th>Book</th>
+          <th>ISBN</th>
+          <th>STOK</th>
+          <th>Tahun</th>
+          <th>Kategori</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
 </div>
 <!-- DataTable with Buttons -->
 <div class="offcanvas offcanvas-end" id="add-new-record">

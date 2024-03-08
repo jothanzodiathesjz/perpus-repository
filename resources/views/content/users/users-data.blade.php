@@ -50,9 +50,8 @@
     <thead>
       <tr>
         <th></th>
-        <th></th>
-        <th>id</th>
         <th>Nama</th>
+        <th>Tanggal</th>
         <th>Fakultas</th>
         <th>Prodi</th>
         <th>Role</th>
@@ -280,9 +279,8 @@ function editItem(id,data){
       },
       columns: [
         { data: '' },
-        { data: 'id' },
-        { data: 'id' },
         { data: 'fullname' },
+        { data: 'tanggal' },
         { data: 'fakultas' },
         { data: 'prodi' },
         { data: 'role' },
@@ -292,39 +290,15 @@ function editItem(id,data){
       ],
      
       columnDefs: [
-        {
-          // For Responsive
-          className: 'control',
-          orderable: false,
-          searchable: false,
-          responsivePriority: 2,
-          targets: 0,
-          render: function (data, type, full, meta) {
-            return '';
-          }
-        },
-        {
-          // For Checkboxes
-          targets: 1,
-          orderable: false,
-          searchable: false,
-          responsivePriority: 3,
-          checkboxes: true,
-          render: function () {
-            return '<input type="checkbox" class="dt-checkboxes form-check-input">';
-          },
-          checkboxes: {
-            selectAllRender: '<input type="checkbox" class="form-check-input">'
-          }
-        },
-        {
-          targets: 2,
-          searchable: false,
-          visible: false
-        },
+      {
+                targets: 0,
+                render: function(data, type, row, meta) {
+                    return meta.row + 1;
+                }
+            },
         {
           // Avatar image/badge, Name and post
-          targets: 3,
+          targets: 1,
           responsivePriority: 1,
           render: function (data, type, full, meta) {
             var $user_img = full['img'],
@@ -363,13 +337,7 @@ function editItem(id,data){
             return $row_output;
           }
         },
-        {
-          targets: 4
-        },
-        {
-          responsivePriority: 4,
-          targets: 5
-        },
+       
         {
           responsivePriority: 4,
           targets: 6,
@@ -379,10 +347,7 @@ function editItem(id,data){
             return $badge;
           }
         },
-        {
-          responsivePriority: 4,
-          targets: 7
-        },
+       
         
         {
           // Actions
@@ -399,7 +364,7 @@ function editItem(id,data){
           }
         }
       ],
-      order: [[2, 'desc']],
+      
       dom: '<"card-header flex-column flex-md-row"<"head-label text-center"><"dt-action-buttons text-end pt-3 pt-md-0"B>><"row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
       displayLength: 7,
       lengthMenu: [7, 10, 25, 50, 75, 100],

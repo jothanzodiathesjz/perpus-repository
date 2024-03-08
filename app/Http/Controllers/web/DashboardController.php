@@ -182,10 +182,10 @@ class DashboardController extends Controller
         $category = $request->query('category');
         $entries = $request->query('entries');
         if($category){
-            $data = Books::where('kategori_buku', $category)->paginate($entries ? $entries : 8, ['*'], 'page', $paginate)->withQueryString(['category' => $category]);
+            $data = Books::where('kategori_buku', $category)->where('ketersediaan', '>',0)->paginate($entries ? $entries : 8, ['*'], 'page', $paginate)->withQueryString(['category' => $category]);
             return response()->json(['data' => $data]);
         }
-        $data = Books::where('judul', 'like', '%' . $search . '%')->orderBy('judul', 'asc')->paginate(8, ['*'], 'page', $paginate);
+        $data = Books::where('judul', 'like', '%' . $search . '%')->where('ketersediaan', '>',0)->orderBy('judul', 'asc')->paginate(8, ['*'], 'page', $paginate);
         return response()->json(['data' => $data]);
     }
 
@@ -633,7 +633,8 @@ class DashboardController extends Controller
                 'alamat' => $userDetail->alamat,
                 'telepon' => $userDetail->telepon,
                 'status' => $payment->status ?? null,
-                'role' => $item->role
+                'role' => $item->role,
+                'tanggal' => Carbon::parse($item->created_at)->format('d-m-Y'),
             ];
         }
 
@@ -675,9 +676,10 @@ class DashboardController extends Controller
                 'telepon' => $userDetail->telepon,
                 'role' => $item->role,
             ];
+            
         }
 
-        return response()->json(['data' => $data2]);
+        return response()->json(['data' => arsort($data2)]);
     }
 
     function dataCount()

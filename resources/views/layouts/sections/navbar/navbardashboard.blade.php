@@ -169,8 +169,14 @@ $navbarDetached = ($navbarDetached ?? '');
               </form>
               @else
               <li>
-                <a class="dropdown-item" href="/auth/login-cover">
+                <a class="dropdown-item" href="/auth/register">
                   <i class='ti ti-login me-2'></i>
+                  <span class="align-middle">Register</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="/auth/login-cover">
+                  <i class='ti ti-arrow-bar-left me-2'></i>
                   <span class="align-middle">Login</span>
                 </a>
               </li>

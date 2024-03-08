@@ -84,3 +84,5 @@ Route::get('/users/staff',[DashboardController::class, 'dataStaff']);
 Route::post('/users/staff', [AuthController::class, 'createDataStaff']);
 
 Route::get('/dashboard/data-count', [DashboardController::class, 'dataCount']);
+
+route::get('/getalltransaction', [AuthController::class, 'getAllTransaction']);

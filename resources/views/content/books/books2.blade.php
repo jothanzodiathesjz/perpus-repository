@@ -137,11 +137,17 @@
   console.log(role)
     function clickMe(id){
     console.log('hay')
-    toastr.options.timeOut = 500;
+    toastr.options.timeOut = 800;
     const isItemExists = notificationList.some(item => item === id);
     if (isItemExists) {
       
       toastr.error('Buku Sudah ada dikeranjang');
+        return; // Stop the execution of the function
+    }
+
+    if(notificationList.length > 2){
+      
+      toastr.error('Melewati Batas Peminjaman');
         return; // Stop the execution of the function
     }
     

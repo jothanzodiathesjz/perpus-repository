@@ -596,14 +596,20 @@ class SkbpController extends Controller
         try {
             $id = $request->route('id');
             $status = $request->input('status');
-            $update = PinjamBuku::where('id', $id)->update([
-                'status' => $status,
-                'tanggal_kembali' => now()->timestamp * 1000
-            ]);
+            
             if($status == 'kembali'){
+                $update = PinjamBuku::where('id', $id)->update([
+                    'status' => $status,
+                    'tanggal_kembali' => now()->timestamp * 1000
+                ]);
                 $updateDenda = Denda::where('id_pinjam_buku', $id)->update([
                     'status' => 'paid',
                 ]);
+            }else if($status == 'expired'){
+                $update = PinjamBuku::where('id', $id)->update([
+                    'status' => $status,
+                ]);
+                $this->updatePinjam();
             }
             $data = PinjamBuku::find($id);
             $data2 = PinjamBuku::where('id_user', $data->id_user)->get();

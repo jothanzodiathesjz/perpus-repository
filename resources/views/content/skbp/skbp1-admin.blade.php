@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'DataTables - Tables')
+@section('title', 'Data Pustaka')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css')}}">
@@ -87,6 +87,7 @@
           <th>No</th>
           <th>Nama</th>
           <th>Judul</th>
+          <th>Tahun</th>
           <th>Jurusan</th>
           <th>Stambuk</th>
           <th>Type</th>
@@ -357,6 +358,7 @@ function editItem(id){
         { data: '' },
         { data: 'nama' },
         { data: 'judul' },
+        { data: 'tahun' },
         { data: 'jurusan' },
         { data: 'stambuk' },
         { data: 'type' },
@@ -386,6 +388,7 @@ function editItem(id){
         {
           targets: 2,
           searchable: true, 
+          responsivePriority: 4,
         },
         {
           // Avatar image/badge, Name and post
@@ -404,10 +407,16 @@ function editItem(id){
           }
         },
         {
+          responsivePriority: 4,
           targets: 4
         },
         {
+          responsivePriority: 4,
           targets: 5
+        },
+        {
+          responsivePriority: 4,
+          targets: 6
         },
         {
           responsivePriority: 4,
@@ -504,14 +513,14 @@ function editItem(id){
 
 function filteredData(value){
   if(value === 'All'){
-    $('.datatables-basic').DataTable().column(4).search('').draw();
+    $('.datatables-basic').DataTable().column(5).search('').draw();
   }else{
-    $('.datatables-basic').DataTable().column(4).search(value).draw();
+    $('.datatables-basic').DataTable().column(5).search(value).draw();
   }
 }
 function filteredByType(value) {
     $('.selected-type').text(value);
-    $('.datatables-basic').DataTable().column(6).search(value).draw();
+    $('.datatables-basic').DataTable().column(7).search(value).draw();
   }
 </script>
 @endpush

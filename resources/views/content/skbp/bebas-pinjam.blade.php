@@ -43,21 +43,23 @@
 <h4 class="fw-bold py-3 mb-4">
   <span class="text-muted fw-light">Dashboard/</span> Skbp1 / Bebas pinjam
 </h4>
-<div class="card-datatable table-responsive pt-0">
-  {{-- <button class="create-new btn btn-primary"><i class="ti ti-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Add New Book</span></button> --}}
-  <table class="datatables-basic table">
-    <thead>
-      <tr>
-        <th></th>
-        <th>No</th>
-        <th>Nama</th>
-        <th>Prodi</th>
-        <th>Stambuk</th>
-        <th>Total Pinjam</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-  </table>
+<div class="card">
+  <div class="card-datatable table-responsive pt-0">
+    {{-- <button class="create-new btn btn-primary"><i class="ti ti-plus me-sm-1"></i> <span class="d-none d-sm-inline-block">Add New Book</span></button> --}}
+    <table class="datatables-basic table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>No</th>
+          <th>Nama</th>
+          <th>Prodi</th>
+          <th>Stambuk</th>
+          <th>Total Pinjam</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+    </table>
+  </div>
 </div>
 <!-- DataTable with Buttons -->
 <div class="offcanvas offcanvas-end" id="add-new-record">

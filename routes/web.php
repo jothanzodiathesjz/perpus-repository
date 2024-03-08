@@ -203,6 +203,10 @@ Route::get('/auth/register-multisteps', $controller_path . '\authentications\Reg
 
 // web app
 // register
+Route::get('/auth/register', function(){
+    $pageConfigs = ['myLayout' => 'blank'];
+    return view('content.users.register-select', ['pageConfigs' => $pageConfigs]);
+});
 Route::get('/auth/register/mahasiswa',[AuthController::class, 'RegisterMahasiswa'])->name('register.mahasiswa');
 Route::get('/auth/register/dosen',[AuthController::class, 'RegisterDosen'])->name('register.dosen');
 Route::get('/auth/register/alumni',[AuthController::class, 'RegisterAlumni'])->name('register.alumni');
