@@ -137,6 +137,62 @@
       ]
     },
     {
+      "name": "OJS",
+      "icon": "menu-icon tf-icons ti ti-note",
+      "slug": "skripsi",
+      "permmission": ["admin","mahasiswa","dosen","alumni","staff","guest"],
+      "submenu": [
+        {
+          "url": "https://ojs.ukipaulus.ac.id/index.php/pcej",
+          "name": "Teknik Sipil",
+          "slug": "",
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
+        },
+        {
+          "url": "https://ojs.ukipaulus.ac.id/index.php/pmej",
+          "name": "Teknik Mesin",
+          "slug": "",
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
+        },
+        {
+          "url": "https://ojs.ukipaulus.ac.id/index.php/peej",
+          "name": "Teknik Elektro",
+          "slug": "",
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
+        },
+        {
+          "url": "https://ojs.ukipaulus.ac.id/index.php/pcj",
+          "name": "Teknik Kimia",
+          "slug": "",
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
+        },
+        {
+          "url": "https://ojs.ukipaulus.ac.id/index.php/PIJ",
+          "name": "Teknik Informatika",
+          "slug": "",
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
+        },
+        {
+          "url": "https://ojs.ukipaulus.ac.id/index.php/pja",
+          "name": "Akuntansi",
+          "slug": "",
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
+        },
+        {
+          "url": "https://ojs.ukipaulus.ac.id/index.php/pjmr",
+          "name": "Manajemen",
+          "slug": "",
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
+        },
+        {
+          "url": "https://ojs.ukipaulus.ac.id/index.php/plj",
+          "name": "Hukum",
+          "slug": "",
+          "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
+        }
+      ]
+    },
+    {
       "menuHeader": "Others",
        "permmission": ["admin","mahasiswa","dosen","alumni","staff"]
     },

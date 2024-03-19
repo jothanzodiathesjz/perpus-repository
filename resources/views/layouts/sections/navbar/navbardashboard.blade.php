@@ -47,7 +47,37 @@ $navbarDetached = ($navbarDetached ?? '');
         <!-- /Search -->
 
         <ul class="navbar-nav flex-row align-items-center ms-auto">
+          <li class="nav-item navbar-dropdown dropdown-user dropdown">
+            <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
+              <span>Resources</span><span><i class="ti ti-chevron-down me-2 ti-sm"></i></span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a class="dropdown-item" href="https://journalfinder.elsevier.com/">
+                 <span>Elsevier</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="https://sinta.kemdikbud.go.id/journals">
+                 <span>Sinta</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href=https://ieeexplore.ieee.org/browse/periodicals/title">
+                 <span>IEEE</span>
+                </a>
+              </li>
 
+              {{-- Below commented code read by artisan command while installing jetstream. !! Do not remove if you want to use jetstream. --}}
+
+              {{-- <x-jet-switchable-team :team="$team" /> --}}
+             
+              
+            </ul>
+          </li>
+          <li class="nav-item me-3 me-xl-1">
+            <a class="nav-link" href="/asd"><span>ASD</span></a>
+          </li>
           <!-- Notification -->
           @if ( session()->has('id_users') && Auth::user()->role != 'alumni') 
           <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
@@ -147,6 +177,12 @@ $navbarDetached = ($navbarDetached ?? '');
                 <a class="dropdown-item" href="/users-profile/{{ Auth::user()->id }}">
                   <i class="ti ti-user-check me-2 ti-sm"></i>
                   <span class="align-middle">My Profile</span>
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="https://wa.me/+6282197163534">
+                  <i class="ti ti-report me-2 ti-sm"></i>
+                  <span class="align-middle">Hubungi Admin</span>
                 </a>
               </li>
               @endif

@@ -43,7 +43,9 @@
               </div>
               <div class="col-md-8">
                 <div class="card-body" id="modal-card">
+                  
                 </div>
+
               </div>
             </div>
           </div>
@@ -234,6 +236,7 @@ function getBooks(page){
                   <span><i class='ti ti-pencil me-2'></i></span>
                   <span><i>Author : ${element.penulis}</i></span>
                   <span>${element.tahun_publikasi}</span>
+                  <span>Stok : ${element.ketersediaan}</span>
               </div>
               <div class="mb-3 ">
                 <span><i>isbn : ${element.isbn}</i></span>
@@ -248,11 +251,12 @@ function getBooks(page){
                   deskripsi: '${element.deskripsi}',
                   tahun_publikasi: '${element.tahun_publikasi}',
                   isbn: '${element.isbn}',
+                  ketersediaan: '${element.ketersediaan}',
                 })" class="btn btn-light btn-wishlist" data-bs-toggle="modal" data-bs-target="#animationModal">
                   <i data-feather="heart"></i>
                   <span>Detail</span>
                 </a>
-                <a onclick="clickMe('${element.id}')"  class="${role === 'alumni' || role === 'null' ? 'd-none': 'btn btn-primary text-white'}">
+                <a onclick="clickMe('${element.id}')"  class="${role === 'alumni' || role === 'null' ? 'd-none': 'btn btn-primary text-white'} ${element.ketersediaan === 0 ? 'disabled' : ''}">
                   <span class="add-to-cart">Add to cart</span>
                 </a>
               </div>
@@ -299,6 +303,7 @@ function getBooksCategory(category){
                   <span><i class='ti ti-pencil me-2'></i></span>
                   <span><i>Author : ${element.penulis}</i></span>
                   <span>${element.tahun_publikasi}</span>
+                  <span>Stok : ${element.ketersediaan}</span>
               </div>
               <div class="mb-3 ">
                 <span><i>isbn : ${element.isbn}</i></span>
@@ -313,6 +318,7 @@ function getBooksCategory(category){
                   deskripsi: '${element.deskripsi}',
                   tahun_publikasi: '${element.tahun_publikasi}',
                   isbn: '${element.isbn}',
+                  ketersediaan: '${element.ketersediaan}',
                 })" class="btn btn-light btn-wishlist" data-bs-toggle="modal" data-bs-target="#animationModal">
                   <i data-feather="heart"></i>
                   <span>Detail</span>
@@ -387,6 +393,7 @@ function searchBooks(search){
                   <span><i class='ti ti-pencil me-2'></i></span>
                   <span><i>Author : ${element.penulis}</i></span>
                   <span>${element.tahun_publikasi}</span>
+                  <span>Stok : ${element.ketersediaan}</span>
               </div>
               <div class="mb-3 ">
                 <span><i>isbn : ${element.isbn}</i></span>
@@ -467,10 +474,12 @@ function fillPagination(links) {
                     <span>Tahun : <b>${data.tahun_publikasi}</b></span>
                     <span>Halaman : <b>120halaman</b></span>
                     <span>ISBN : <b>${data.isbn}</b></span>
+                    <span>Stok : <b>${data.ketersediaan}</b></span>
                   </div>
                   <p class="card-text">
                     ${data.deskripsi}
                   </p>
+                  
     `
   }
 </script>

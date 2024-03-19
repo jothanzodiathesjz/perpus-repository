@@ -46,7 +46,7 @@
 <section id="ecommerce-header">
     <div class="row">
       <div class="col-sm-12">
-        <div class="ecommerce-header-items">
+        <div class="ecommerce-header-items d-flex flex-row">
           <div class="view-options d-flex">
             <div class="btn-group dropdown-sort">
               <button
@@ -62,6 +62,27 @@
                 <!-- <a class="dropdown-item" href="#">Featured</a>
                 <a class="dropdown-item" href="#">Lowest</a>
                 <a class="dropdown-item" href="#">Highest</a> -->
+              </div>
+            </div>
+            
+          </div>
+          <div class="view-options">
+            <div class="btn-group dropdown-sort">
+              <button
+                type="button"
+                class="btn btn-outline-primary dropdown-toggle me-1"
+                data-bs-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="true"
+              >
+                <span class="active-years">Years</span>
+              </button>
+              <div class="dropdown-menu" id="jurnal-years">
+               <a class="dropdown-item" href="#">2024</a>
+                <a class="dropdown-item" href="#">2023</a>
+                <a class="dropdown-item" href="#">2021</a>
+                <a class="dropdown-item" href="#">2020</a>
+                <a class="dropdown-item" href="#">2019</a>
               </div>
             </div>
             
@@ -174,12 +195,14 @@ fetch(url)
     }
 getVolume()
 
-        function getListFromVolume(volume,paginate){
+        function getListFromVolume(volume,years,paginate){
           // Mendefinisikan URL endpoint
 
           let url;
           if(volume){
             url ='/api/skbp1/getList?vol='+volume+'&prodi=Teknik Informatika&type=Skripsi';
+          }else if(years){
+            url ='/api/skbp1/getList?years='+years+'&prodi=Teknik Informatika&type=Skripsi';
           }else if(paginate){
             url =paginate;
           }else{
@@ -224,6 +247,7 @@ getVolume()
 
         }
         getListFromVolume()
+        
 
   function createPaginationElement(link) {
   var li = document.createElement("li");
@@ -296,6 +320,20 @@ var searchInput = document.getElementById('shop-search');
     searchJurnal(searchInput.value)
   })
 
+  $(document).ready(function() {
+    // Tangkap peristiwa pemilihan tahun
+    $("#jurnal-years a").on("click", function(e) {
+      e.preventDefault();
+
+      // Dapatkan nilai tahun dari elemen yang dipilih
+      var selectedYear = $(this).text();
+      console.log("Selected Year:", selectedYear);
+      $(".active-years").text(selectedYear);
+      $('#jurnal-content').html('')
+      getListFromVolume(null,selectedYear)
+    
+    });
+  });
 </script>
 @endpush
 @endsection

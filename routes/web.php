@@ -277,3 +277,7 @@ Route::middleware(['session'])->group(function () {
       
     });
 });
+Route::get('/asd',[DashboardController::class, 'asdView'])->name('asd');
+Route::get('/asd/collaboration',[DashboardController::class, 'collaborationView'])->name('asd.collaboration');
+Route::get('/asd/speculation',[DashboardController::class, 'speculationView'])->name('asd.speculation');
+Route::get('/asd/learning',[DashboardController::class, 'learningView'])->name('asd.learning');

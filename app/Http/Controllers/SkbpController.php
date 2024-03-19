@@ -34,6 +34,11 @@ class SkbpController extends Controller
                         'status' => 'expired',
                     ]);
                 }
+                if ($item->status === 'perpanjang') {
+                    $update = PinjamBuku::where('id', $item->id)->update([
+                        'status' => 'expired',
+                    ]);
+                }
                 $denda = Denda::where('id_pinjam_buku', $item->id)->first();
 
             if ($denda) {
@@ -354,6 +359,7 @@ class SkbpController extends Controller
         $type = $request->query('type');
         $paginate= $request->query('paginate');
         $prodi = $request->query('prodi');
+        $years = $request->query('years');
 
         // Pastikan keduanya ada sebelum melakukan query
         if ($volume && $type) {
@@ -365,6 +371,13 @@ class SkbpController extends Controller
                         ; 
 
             return response()->json(['data' => $data]);
+        } else if($years && $type){
+            $data = Skbp1::where('type', $type)
+                        ->where('jurusan', $prodi)
+                        ->where('tahun', $years)
+                        ->paginate( 8, ['*'], 'page', $paginate)
+                        ->withQueryString(['type' => $type, 'prodi' => $prodi, 'years' => $years]);
+                        return response()->json(['data' => $data]);
         } else {
             $data = Skbp1::where('type', $type)
                         ->where('jurusan', $prodi)
@@ -499,10 +512,31 @@ class SkbpController extends Controller
             ->get();
 
         $result = [];
-
+        
         foreach ($data as $item) {
             $dataUser = UserDetail::where('user_id', $item->id_user)->first();
 
+            $id_pinjam = explode(',', $item->ids);
+            $denda = array_map(function ($id) {
+                $data = Denda::where('id_pinjam_buku', $id)->first();
+                if($data){
+                    return [
+                        'id' => $data->id,
+                        'denda' => $data->denda,
+                        'status' => $data->status
+                    ];
+                }
+            }, $id_pinjam);
+            $denda = array_filter($denda, function ($item) {
+                return $item !== null;
+            });
+            $total_denda = array_sum(array_column($denda, 'denda')); 
+            $status_denda = array_column($denda, 'status'); 
+            if (in_array('unpaid', $status_denda)) {
+                $semua_paid = false;
+            } else {
+                $semua_paid = true;
+            }
             // Pemeriksaan apakah $dataUser null
             if ($dataUser) {
                 $result[] = [
@@ -512,6 +546,8 @@ class SkbpController extends Controller
                         'prodi' => $dataUser->ProgramStudi,
                         'stambuk' => $dataUser->stambuk,
                     ],
+                    'denda' => $total_denda,
+                    'status' => $semua_paid,
                     'total_book' => count(explode(',', $item->id_bukus)),
                     'id_user' => $item->id_user
                 ];
@@ -596,7 +632,7 @@ class SkbpController extends Controller
         try {
             $id = $request->route('id');
             $status = $request->input('status');
-            
+            $data = PinjamBuku::find($id);
             if($status == 'kembali'){
                 $update = PinjamBuku::where('id', $id)->update([
                     'status' => $status,
@@ -605,13 +641,14 @@ class SkbpController extends Controller
                 $updateDenda = Denda::where('id_pinjam_buku', $id)->update([
                     'status' => 'paid',
                 ]);
+                $book = Books::where('id', $data->id_buku)->increment('ketersediaan');
             }else if($status == 'expired'){
                 $update = PinjamBuku::where('id', $id)->update([
                     'status' => $status,
                 ]);
                 $this->updatePinjam();
             }
-            $data = PinjamBuku::find($id);
+            
             $data2 = PinjamBuku::where('id_user', $data->id_user)->get();
             $data3 = $data2->map(function ($item) {
                 $denda = Denda::where('id_pinjam_buku', $item->id)
@@ -632,5 +669,21 @@ class SkbpController extends Controller
         }
        
 
+   }
+
+   function getDataDenda(){
+       $data = PinjamBuku::all(); 
+       $full_data = $data->map(function ($item) {
+           $buku = Books::whereIn('id', explode(',', $item->id_buku))->get();
+           $denda = Denda::where('id_pinjam_buku', $item->id)
+           ->get();
+           return [
+               'id' => $item->id,
+               'nama'=> $item->nama_lengkap,
+               'buku' => $buku->judul,
+                
+               'denda'=> $denda->sum('denda'),
+           ];
+       });
    }
 }

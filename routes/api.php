@@ -41,6 +41,12 @@ Route::delete('/cart/{id}',[DashboardController::class, 'deleteItemCart']);
 Route::get('/validation-code',[DashboardController::class, 'CreateValidationCode']);
 Route::post('/books/pinjam',[DashboardController::class, 'CreatePeminjaman']);
 Route::get('/daftarpinjam/{id}',[DashboardController::class, 'getDataPinjamByUser']);
+
+
+Route::put('/pinjam/update',[DashboardController::class, 'updatePerpanjangan']);
+
+
+
 Route::post('/admin/register',[AuthController::class, 'registerAdmin']);
 
 Route::post('/skbp1/store',[SkbpController::class, 'createSkbp1']);

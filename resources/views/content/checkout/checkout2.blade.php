@@ -184,14 +184,18 @@
       })
       .then(response => response.json())
       .then(data => {
+        // getNotification()
         toastr.success('data berhasil dihapus')
-        getNotification()
+        notificationList = []
         itemChekout.innerHTML = ''
         getCart()
       })
       .catch(error => {
         toastr.error('data gagal dihapus')
-      });
+      })
+      .finally(() => {
+        getNotification()
+      })
     }
 
     document.getElementById('modalSubmit').addEventListener('click', function() {

@@ -4,8 +4,10 @@
 @section('vendor-style')
 <link rel="stylesheet" href="{{ asset('vendors/css/extensions/nouislider.min.css') }}">
 <link rel="stylesheet" href="{{ asset('vendors/css/extensions/toastr.min.css') }}">
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
 @endsection
 @section('page-style')
+<link rel="stylesheet" href="{{ asset('css/base/pages/app-ecommerce.css') }}">
 <link rel="stylesheet" href="{{ asset('css/base/plugins/extensions/ext-component-toastr.css') }}">
 @endsection
 @section('vendor-script')
@@ -13,6 +15,11 @@
 <script src="{{ asset('vendors/js/extensions/wNumb.min.js') }}"></script>
 <script src="{{ asset('vendors/js/extensions/nouislider.min.js') }}"></script>
 <script src="{{ asset('vendors/js/extensions/toastr.min.js') }}"></script>
+<script src="{{asset('assets/vendor/libs/flatpickr/flatpickr.js')}}"></script>
+@endsection
+@section('page-script')
+<script src="{{ asset('js/pages/app-ecommerce-checkout.js') }}"></script>
+<script src="{{asset('assets/js/form-layouts.js')}}"></script>
 @endsection
 @section('content')
 <h4 class="fw-bold py-3 "><span class="text-muted fw-light">Daftar Pinjam /</span> Data Pinjam</h4>
@@ -82,8 +89,15 @@
                       <option disabled>Status Buku</option>
                       <option value="kembali" {{ $item['status'] === 'kembali' ? 'selected' : '' }}>Kembali</option>
                       <option value="pinjam" {{ $item['status'] === 'pinjam' ? 'selected' : '' }}>Pinjam</option>
+                      <option value="perpanjang" {{ $item['status'] === 'perpanjang' ? 'selected' : '' }}>Perpanjang</option>
                       <option value="expired" {{ $item['status'] === 'expired' ? 'selected' : '' }}>Expired</option>
                   </select>
+                </div>
+                <div id="updatePerpanjang{{$item['id']}}" class="price-details {{$item['status'] === 'perpanjang' ? '' : 'd-none'}}" >
+                    <dt class="col-6 fw-normal">Pilih tanggal Kembali</dt>
+                    <input type="text" id="multicol-birthdate{{$item['id']}}" class="form-control dob-picker" placeholder="YYYY-MM-DD" />
+                    <button type="button"  onclick="updatePerpanjangan('{{$item['id']}}')" class="btn btn-primary mt-3 w-100 btn-next place-order">Submit</button>
+                   
                 </div>
               </div>
             </div>
@@ -120,25 +134,56 @@
     // Lakukan apa yang Anda perlukan dengan nilai yang dipilih
     console.log("Selected Status: " + selectedValue);
     console.log("Selected Status: " + itemId);
+    if(selectedValue === "perpanjang"){
+      document.getElementById('updatePerpanjang'+itemId).classList.remove('d-none');
+      return;
+    }else{
+      document.getElementById('updatePerpanjang'+itemId).classList.add('d-none');
+      fetch(`/api/skbp1/bebaspinjam/update/${itemId}`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ status: selectedValue }),
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log(data.message);
+        document.getElementById('status'+itemId).innerHTML = data.data.status;
+        document.getElementById('kembali'+itemId).innerHTML = new Date(data.data.tanggal_kembali).toLocaleDateString();
+        document.getElementById('total-book').innerHTML = 'Rp '+data.denda;
+        toastr.success(data.message);
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+    }
+}
 
-    fetch(`/api/skbp1/bebaspinjam/update/${itemId}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ status: selectedValue }),
+function updatePerpanjangan(itemId){
+  console.log(itemId);
+  const date = new Date(document.getElementById('multicol-birthdate'+itemId).value); 
+  fetch('/api/pinjam/update',{
+    method:"PUT",
+    headers:{
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      id: itemId,
+      tanggal_kembali: date.getTime(),
+      status:"perpanjang",
+      expired_date: date.getTime()
     })
-    .then(response => response.json())
-    .then(data => {
+  })
+  .then(response => response.json())
+  .then(data => {
         console.log(data.message);
-      document.getElementById('status'+itemId).innerHTML = data.data.status;
-      document.getElementById('kembali'+itemId).innerHTML = new Date(data.data.tanggal_kembali).toLocaleDateString();
-      document.getElementById('total-book').innerHTML = 'Rp '+data.denda;
-      toastr.success(data.message);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
+        // document.getElementById('status'+itemId).innerHTML = data.data.status;
+        document.getElementById('kembali'+itemId).innerHTML = new Date(data.data.tanggal_kembali).toLocaleDateString();
+        // document.getElementById('total-book').innerHTML = 'Rp '+data.denda;
+        toastr.success(data.message);
+  })
+
 }
 
 </script>

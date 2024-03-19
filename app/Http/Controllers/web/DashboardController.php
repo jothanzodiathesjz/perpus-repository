@@ -53,6 +53,11 @@ class DashboardController extends Controller
                         'status' => 'expired',
                     ]);
                 }
+                if ($item->status === 'perpanjang') {
+                    $update = PinjamBuku::where('id', $item->id)->update([
+                        'status' => 'expired',
+                    ]);
+                }
                 $denda = Denda::where('id_pinjam_buku', $item->id)->first();
 
                 if ($denda) {
@@ -182,10 +187,10 @@ class DashboardController extends Controller
         $category = $request->query('category');
         $entries = $request->query('entries');
         if($category){
-            $data = Books::where('kategori_buku', $category)->where('ketersediaan', '>',0)->paginate($entries ? $entries : 8, ['*'], 'page', $paginate)->withQueryString(['category' => $category]);
+            $data = Books::where('kategori_buku', $category)->paginate($entries ? $entries : 8, ['*'], 'page', $paginate)->withQueryString(['category' => $category]);
             return response()->json(['data' => $data]);
         }
-        $data = Books::where('judul', 'like', '%' . $search . '%')->where('ketersediaan', '>',0)->orderBy('judul', 'asc')->paginate(8, ['*'], 'page', $paginate);
+        $data = Books::where('judul', 'like', '%' . $search . '%')->orderBy('judul', 'asc')->paginate(8, ['*'], 'page', $paginate);
         return response()->json(['data' => $data]);
     }
 
@@ -308,37 +313,73 @@ class DashboardController extends Controller
                 'validation_code'=> 'required',
             ]);
 
-            $id_buku = implode(',', $request->input('id_buku'));
+            // $id_buku = implode(',', $request->input('id_buku'));
+            $id_buku = $request->input('id_buku');
 
-            $check_validation = ValidationCode::where('code', $request->input('validation_code'))->first();
-            if($check_validation->status_code == 'false' || $check_validation == null){
-                return response()->json(['error' => 'Validation code not found'], 400);
-            }
-            $create_pinjam = PinjamBuku::create([
-                'id_buku' => $id_buku,
+            // $check_validation = ValidationCode::where('code', $request->input('validation_code'))->first();
+
+            // if($check_validation->status_code == 'false' || $check_validation == null){
+            //     return response()->json(['error' => 'Validation code not found'], 400);
+            // }
+            foreach ($id_buku as $item) {
+               $create_pinjam = PinjamBuku::create([
+                'id_buku' => $item,
                 'id_user' => $request->input('id_user'),
                 'tanggal_pinjam'=> $request->input('tanggal_pinjam'),
                 'tanggal_kembali'=> $request->input('tanggal_kembali'),
                 'nama_lengkap'=> $request->input('nama_lengkap'),
                 'status'=> 'pinjam',
                 'expired_date'=> $request->input('tanggal_kembali'),
-            ]);
-            foreach ($request->input('id_buku') as $item) {
+                ]);
+                $update_book = Books::where('id', $item)->decrement('ketersediaan');
                 $update_buku = Keranjang::where('user_id', $request->input('id_user'))->where('id_buku', $item)->delete();
             }
 
-            $update_validation = ValidationCode::where('code', $request->input('validation_code'))->update(['status_code'=> 'false']);
+            // $create_pinjam = PinjamBuku::create([
+            //     'id_buku' => $id_buku,
+            //     'id_user' => $request->input('id_user'),
+            //     'tanggal_pinjam'=> $request->input('tanggal_pinjam'),
+            //     'tanggal_kembali'=> $request->input('tanggal_kembali'),
+            //     'nama_lengkap'=> $request->input('nama_lengkap'),
+            //     'status'=> 'pinjam',
+            //     'expired_date'=> $request->input('tanggal_kembali'),
+            // ]);
+            // foreach ($request->input('id_buku') as $item) {
+            //     $update_buku = Keranjang::where('user_id', $request->input('id_user'))->where('id_buku', $item)->delete();
+            // }
 
+            // $update_validation = ValidationCode::where('code', $request->input('validation_code'))->update(['status_code'=> 'false']);
+            
             return response()->json(['message' => 'successfully',
-            'data' => explode(',', $create_pinjam->id_buku)
+            'data' => []
         ]);
         
         } catch (\Throwable $th) {
             //throw $th;
+            // 
             return response()->json(['error' => $th->getMessage()], 400);
         }
        
      }
+
+     public function updatePerpanjangan(Request $request){
+        try {
+            //code...
+            $update = PinjamBuku::where('id', $request->input('id'))->update([
+                'expired_date'=> $request->input('expired_date'),
+                'status'=> $request->input('status'),
+                'tanggal_kembali'=> $request->input('tanggal_kembali'),
+            ]);
+            return response()->json(['message' => 'successfully',
+                'data' => $request->all()
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+            return response()->json(['error' => $th->getMessage()], 400);
+        }
+        
+     }
+
 
      public function DaftarPinjamView()
      {
@@ -695,5 +736,20 @@ class DashboardController extends Controller
             'books' => $books, 
             'jurnal' => $jurnal, 
             'skripsi' => $skripsi]);
+    }
+
+    function asdView(){
+        return view('content.asd.asd');
+    }
+    function collaborationView(){
+        return view('content.asd.collaboration');
+    }
+
+    function speculationView(){
+        return view('content.asd.speculation');
+    }
+
+    function learningView(){
+        return view('content.asd.learn');
     }
 }
